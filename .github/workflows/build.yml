@@ -33,7 +33,7 @@ jobs:
           arguments: build
           wrapper-directory: backend
             # Path to the Gradle executable
-          gradle-executable: backend
+          gradle-executable: backend/gradlew
             # Path to the root directory of the build
           build-root-directory: backend
 
