@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Exit with success
-      - run: exit 0
+        run: exit 0
 
   build-and-test-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Exit with success
-      - run: exit 0
+        run: exit 0
