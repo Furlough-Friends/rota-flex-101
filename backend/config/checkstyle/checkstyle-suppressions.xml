@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <!-- This block can be used to omit certain files, e.g. to omit files in 'generated' folder:
+    <suppress files="[\\/]generated[\\/]" checks="[a-zA-Z0-9]*"/>
+    -->
+</suppressions>
