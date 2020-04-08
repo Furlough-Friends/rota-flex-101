@@ -5,7 +5,7 @@
 # Required checks must have a similar job names here
 
 name: RequiredMerge
-on: pull_request
+on: push
 
 jobs:
   build-backend:
