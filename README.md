@@ -9,7 +9,7 @@ We are using the ["ducks" file structure](https://github.com/erikras/ducks-modul
 * Typescript
 * React
 * Redux
-** Redux Toolkit ([Why use toolkit?](https://redux-toolkit.js.org/introduction/quick-start))
-** Redux Logger
+  * Redux Toolkit ([Why use toolkit?](https://redux-toolkit.js.org/introduction/quick-start))
+  * Redux Logger
 
 
