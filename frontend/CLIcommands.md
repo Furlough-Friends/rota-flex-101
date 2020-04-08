@@ -42,11 +42,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-# [Redux toolkit](https://redux-toolkit.js.org/usage/usage-guide)
-
-[Why use toolkit?](https://redux-toolkit.js.org/introduction/quick-start)
-
-# File Structure
-
-We are using the ["ducks" file structure](https://github.com/erikras/ducks-modular-redux), which works well with redux-toolkit slices ((A slice ~= a duck)[https://redux-toolkit.js.org/usage/usage-guide#creating-slices-of-state]).
