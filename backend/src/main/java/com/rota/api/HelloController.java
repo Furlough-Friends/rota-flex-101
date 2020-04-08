@@ -20,16 +20,21 @@ public class HelloController {
    */
   @GetMapping("/hello")
   public HelloWorld helloEndpoint(
-      @RequestParam(value="message",
-          defaultValue="World")
+      @RequestParam(value = "message",
+          defaultValue = "World")
       String message
   ) {
     return new HelloWorld(
         id.incrementAndGet(),
         String.format(template, message)
     );
-  };
+  }
 
+  /**
+   * /hello/{message} endpoint, will return "Hello {message}!".
+   * @param message message to send
+   * @return HelloWorld DTO
+   */
   @GetMapping("/hello/{message}")
   public HelloWorld helloVariableEndpoint(
       @PathVariable
