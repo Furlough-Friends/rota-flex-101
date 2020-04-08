@@ -14,7 +14,7 @@ public class HelloController {
 
   /**
    * /hello will return "Hello World!".
-   * /hello?message=foo witll return "Hello foo!".
+   * /hello?message=foo will return "Hello foo!".
    * @param message Message to print
    * @return HelloWorld response DTO
    */
