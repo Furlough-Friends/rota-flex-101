@@ -11,8 +11,7 @@ on:
     - 'frontend/**'
 
 jobs:
-  build:
-
+  build-and-test-frontend:
     runs-on: ubuntu-latest
     env:
       working-directory: './frontend'

@@ -1,0 +1,21 @@
+###### NOTE
+# This file is here to fix the same issue as described in 
+# https://github.community/t5/GitHub-Actions/Github-actions-and-required-checks-in-a-monorepo-using-paths-to/td-p/34829
+
+# Required checks must have a similar job names here
+
+name: RequiredMerge
+on: pull_request
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exit with success
+      - run: exit 0
+
+  build-and-test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exit with success
+      - run: exit 0
