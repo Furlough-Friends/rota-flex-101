@@ -1,19 +1,23 @@
-import { configureStore, ThunkAction, Action, getDefaultMiddleware, Middleware, ReducersMapObject } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  getDefaultMiddleware,
+  Middleware,
+  ReducersMapObject,
+} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
+import counterReducer from '../features/counter/counterSlice';
 
-const middleware: Middleware[] = [
-    ...getDefaultMiddleware(),
-    logger,
-  ]
+const middleware: Middleware[] = [...getDefaultMiddleware(), logger];
 
 const reducer: ReducersMapObject = {
   counter: counterReducer,
-}
+};
 
 export const store = configureStore({
   reducer,
-  middleware
+  middleware,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -4,9 +4,8 @@
         "es6": true
     },
     "extends": [
-        "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/eslint-recommended"
+        "airbnb-typescript"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -18,12 +17,26 @@
             "jsx": true
         },
         "ecmaVersion": 2018,
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "tsconfig.json"
     },
     "plugins": [
         "react",
         "@typescript-eslint"
     ],
     "rules": {
+        // Settings below this are those adjusted from the airbnb-typscript
+        // template. We may want to come up with our own list if it
+        // gets too long
+        "linebreak-style": "off",
+        "implicit-arrow-linebreak": "off",
+        "react/jsx-curly-newline": "off",
+        "import/no-cycle": "off", // We may want this on (or on warn), but it makes file stucturing a bit more difficult
+        "no-param-reassign": [
+            "error", 
+            { "props": false } // The props value here was returned to its default value of false, in order
+                               // to make it compatible with package Immer (used in Redux Toolbox)
+                               // Similar to this issue on github: https://github.com/immerjs/immer/issues/189
+            ] 
     }
 }
