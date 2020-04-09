@@ -2,6 +2,9 @@ plugins {
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'com.github.spotbugs' version '3.0.0'
+	id 'pmd'
+	id 'checkstyle'
 }
 
 group = 'com'
@@ -16,6 +19,30 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+spotbugs {
+	toolVersion = "4.0.0-RC1"
+	ignoreFailures = false
+	showProgress = true
+	excludeFilter = file("$rootDir/config/spotbugs/exclusions.xml")
+}
+
+// Generates spotbugs html reports instead of xml
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+	reports.xml.enabled = false
+	reports.html.enabled = true
+}
+
+pmd {
+	ruleSets = []
+	ruleSetConfig = resources.text.fromFile("$rootDir/config/pmd/ruleset.xml")
+	rulePriority = 2 // Show only medium-high or higher priority warnings
+	ignoreFailures = false
+}
+
+checkstyle {
+	ignoreFailures = false
 }
 
 dependencies {

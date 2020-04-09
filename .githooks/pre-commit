@@ -1,0 +1,18 @@
+#!/bin/sh
+
+RESULT=0
+
+# stash any unstaged changes, so code checks only run on staged files
+git stash -q --keep-index
+
+if [ `git diff --staged --name-only | grep -c '.java$'` -ne 0 ]; then
+  # run the java code checks with the gradle wrapper
+  cd backend && ./gradlew check && cd ..
+  # store the exit code
+  RESULT=$?
+fi
+
+# restore the stashed changes
+git stash pop -q
+
+exit $RESULT
