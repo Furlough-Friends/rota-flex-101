@@ -28,6 +28,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        
         // Settings below this are those adjusted from the airbnb-typscript
         // template. We may want to come up with our own list if it
         // gets too long
@@ -38,5 +39,5 @@
                                // to make it compatible with package Immer (used in Redux Toolbox)
                                // Similar to this issue on github: https://github.com/immerjs/immer/issues/189
             ] 
-    }
+    }   
 }
