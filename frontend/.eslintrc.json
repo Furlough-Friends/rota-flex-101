@@ -5,7 +5,10 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb-typescript"
+        "airbnb-typescript",
+        "prettier",
+        "prettier/@typescript-eslint",
+        "prettier/react"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -28,9 +31,6 @@
         // Settings below this are those adjusted from the airbnb-typscript
         // template. We may want to come up with our own list if it
         // gets too long
-        "linebreak-style": "off",
-        "implicit-arrow-linebreak": "off",
-        "react/jsx-curly-newline": "off",
         "import/no-cycle": "off", // We may want this on (or on warn), but it makes file stucturing a bit more difficult
         "no-param-reassign": [
             "error", 
