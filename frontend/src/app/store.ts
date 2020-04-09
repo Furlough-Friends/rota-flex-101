@@ -3,7 +3,7 @@ import counterReducer from '../features/counter/counterSlice';
 import logger from 'redux-logger';
 
 const middleware: Middleware[] = [
-    ...getDefaultMiddleware(),
+    ...getDefaultMiddleware(), // default middleware for redux toolkit contains redux-thunk
     logger,
   ]
 
@@ -13,7 +13,8 @@ const reducer: ReducersMapObject = {
 
 export const store = configureStore({
   reducer,
-  middleware
+  middleware,
+  devTools: process.env.NODE_ENV !== 'production', // disable devtools in production
 });
 
 export type RootState = ReturnType<typeof store.getState>;
