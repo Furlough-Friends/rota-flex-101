@@ -14,22 +14,27 @@ public class HelloController {
 
   /**
    * /hello will return "Hello World!".
-   * /hello?message=foo witll return "Hello foo!".
+   * /hello?message=foo will return "Hello foo!".
    * @param message Message to print
    * @return HelloWorld response DTO
    */
   @GetMapping("/hello")
   public HelloWorld helloEndpoint(
-      @RequestParam(value="message",
-          defaultValue="World")
+      @RequestParam(value = "message",
+          defaultValue = "World")
       String message
   ) {
     return new HelloWorld(
         id.incrementAndGet(),
         String.format(template, message)
     );
-  };
+  }
 
+  /**
+   * /hello/{message} endpoint, will return "Hello {message}!".
+   * @param message message to send
+   * @return HelloWorld DTO
+   */
   @GetMapping("/hello/{message}")
   public HelloWorld helloVariableEndpoint(
       @PathVariable

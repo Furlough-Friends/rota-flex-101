@@ -18,6 +18,7 @@ const reducer: ReducersMapObject = {
 export const store = configureStore({
   reducer,
   middleware,
+  devTools: process.env.NODE_ENV !== 'production', // disable devtools in production
 });
 
 export type RootState = ReturnType<typeof store.getState>;

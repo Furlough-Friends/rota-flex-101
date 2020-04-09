@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset>
+    <exclude-pattern>.*[\\/]build[\\/].*</exclude-pattern>
+    <rule ref="category/java/bestpractices.xml"></rule>
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="OnlyOneReturn"/> <!-- Can have multiple returns in a method -->
+        <exclude name="LocalVariableCouldBeFinal"/> <!-- Don't force to put final everywhere -->
+        <exclude name="ShortVariable"/> <!-- id should be an acceptable variable name -->
+        <exclude name="LongVariable"/> <!-- TODO Revise and shorted some long variable names-->
+    </rule>
+    <rule ref="category/java/design.xml">
+        <exclude name="LawOfDemeter"/> <!-- Removed to allow method chaining -->
+    </rule>
+    <!--rule ref="category/java/documentation.xml"></rule-->
+    <rule ref="category/java/errorprone.xml">
+        <exclude name="DataflowAnomalyAnalysis"/> <!-- This rule is known to be buggy and return
+        false positives -->
+    </rule>
+    <rule ref="category/java/multithreading.xml">
+        <exclude name="DoNotUseThreads"/> <!-- J2EE rule, which we are not using -->
+    </rule>
+    <rule ref="category/java/performance.xml"></rule>
+    <rule ref="category/java/security.xml"></rule>
+</ruleset>
