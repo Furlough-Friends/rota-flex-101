@@ -13,7 +13,6 @@ We are using the ["ducks" file structure](https://github.com/erikras/ducks-modul
     - Redux Thunk
     - Redux Devtools
   - Redux Logger
-- Husky
 
 ## Code Style
 
