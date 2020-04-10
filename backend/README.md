@@ -33,6 +33,15 @@ For example, when running locally, visit:
 http://localhost:8080/swagger-ui.html
 ```
 
+## Database
+
+Spring currently sets up an in-memory H2 database with dummy entries.
+To access it while Spring is running go to
+```
+http://localhost:8080/h2-console
+```
+and enter credentials as found in `src/main/resources/application.properties` file.
+
 ## Linters
 
 PMD, Spotbugs and Checkstyle are used. 
