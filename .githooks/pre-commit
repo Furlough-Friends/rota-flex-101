@@ -5,14 +5,47 @@ RESULT=0
 # stash any unstaged changes, so code checks only run on staged files
 git stash -q --keep-index
 
+# Backend Linting
+BACKEND_LINTING_RESULT=0
+
 if [ `git diff --staged --name-only | grep -c '.java$'` -ne 0 ]; then
+  echo "Running backend linting..."
   # run the java code checks with the gradle wrapper
   cd backend && ./gradlew check && cd ..
   # store the exit code
-  RESULT=$?
+  BACKEND_LINTING_RESULT=$?
+  echo "Finished backend linting"
+fi
+
+# Frontend Linting
+FRONTEND_LINTING_RESULT=0
+
+if [ `git diff --staged --name-only | grep -c '.[js|jsx|ts|tsx]$'` -ne 0 ]; then
+  echo "Running frontend linting..."
+  # run eslint and prettier on js, jsx, ts and tsx files in frontend directory
+  cd frontend \
+  && npx prettier --write "./src/**/*.{js,jsx,ts,tsx}" \
+  && npx eslint --fix "./src/**/*.{js,jsx,ts,tsx}" \
+  && cd ..
+  # store the exit code
+  FRONTEND_LINTING_RESULT=$?
+  echo "Finished frontend linting"
 fi
 
 # restore the stashed changes
 git stash pop -q
+
+# check output of each linting process
+RED='\033[0;31m'
+NO_COLOUR='\033[0m'
+if [[ $BACKEND_LINTING_RESULT != 0 ]]; then
+  echo -e "${RED}✖ Backend linting failed with code:${NO_COLOUR} ${$BACKEND_LINTING_RESULT}"
+  RESULT=1
+fi
+
+if [[ $FRONTEND_LINTING_RESULT != 0 ]]; then
+  echo -e "${RED}✖ Frontend linting failed with code:${NO_COLOUR} ${FRONTEND_LINTING_RESULT}"
+  RESULT=1
+fi
 
 exit $RESULT
