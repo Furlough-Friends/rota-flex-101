@@ -25,4 +25,18 @@ npm run lint
 
 ### Using with VScode
 
-An addiitonal `.vscode` config directory is located in the root directory. This file contains settings to point the eslint and prettier VScode plugins to the `frontend` directory when opening the project from the root directory. If this is not done, the settings for either file will not be found causing linting warning and auto-formatting not to occur correctly.
+An addiitonal `.vscode` config directory is located in the root directory. This file contains settings (in a `settings.json` file) to point the eslint and prettier VScode plugins to the `frontend` directory when opening the project from the root directory. If this is not done, the settings for either file will not be found causing linting warning and auto-formatting not to occur correctly.
+
+The `.vscode/settings.json` should have contents similar to:
+```
+{
+	"eslint": {
+      "workingDirectories": [
+        "frontend"
+    ]
+  },
+  "prettier": {
+    "configPath": "frontend/.prettierrc",
+  }
+}
+```
