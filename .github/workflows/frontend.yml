@@ -6,9 +6,13 @@
 name: FrontendCI
 
 on:
-  push:
-    paths:
-    - 'frontend/**'
+  push: 
+    # The below has been commented out because when a push fails, 
+    # a second push containing no changes to the offending code could 
+    # still pass if the commit has no changes in the directory specified
+    
+    # paths:
+    # - 'frontend/**'
 
 jobs:
   build-and-test-frontend:
