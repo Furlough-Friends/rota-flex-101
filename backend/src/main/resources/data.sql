@@ -1,35 +1,3 @@
-CREATE TABLE STAFF (
-  id INT AUTO_INCREMENT  PRIMARY KEY,
-  first_name VARCHAR(255) NOT NULL,
-  surname VARCHAR(255) NOT NULL,
-  start_date DATE NOT NULL,
-  contracted_hours DECIMAL NOT NULL,
-  hourly_rate DECIMAL NOT NULL,
-  role ENUM('user', 'manager') NOT NULL,
-  job_title VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE PREFERRED_DATES (
-    staff_id INT REFERENCES STAFF(id) ON DELETE CASCADE,
-    PRIMARY KEY(staff_id),
-    monday BOOLEAN,
-    tuesday BOOLEAN,
-    wednesday BOOLEAN,
-    thursday BOOLEAN,
-    friday BOOLEAN,
-    saturday BOOLEAN,
-    sunday BOOLEAN
-);
-
-CREATE TABLE ENGAGEMENT (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    start DATETIME NOT NULL,
-    end DATETIME NOT NULL,
-    type ENUM('shift', 'holiday') NOT NULL,
-    hours_worked DECIMAL,
-    staff_id INT REFERENCES STAFF(id) ON DELETE CASCADE
-);
-
 INSERT INTO STAFF(first_name, surname, start_date, contracted_hours, hourly_rate, role, job_title)
 VALUES
     ('Joe', 'Bloggs', '2018-08-03', 40, 1.23, 'user', 'barista'),
