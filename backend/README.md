@@ -25,6 +25,14 @@ ln -s ../../.githooks/pre-commit .git/hooks
 chmod +x .git/hooks/pre-commit
 ```
 
+## Server endpoints
+
+To list all available endpoints, run the server and go to `{server-root}/swagger-ui.html`.
+For example, when running locally, visit:
+```
+http://localhost:8080/swagger-ui.html
+```
+
 ## Linters
 
 PMD, Spotbugs and Checkstyle are used. 
@@ -43,19 +51,21 @@ Currently using Google's checkstyle.xml, which uses the following:
 - Requires javadoc comments:
      - First sentence must end with a full stop
      - No empty @ clauses
-- class and variable names shouldn't have 2 capital letters in a row (except static final variables which can be UPPER_SNAKE_CASE)
-- modifier keywords ordered according to JLS recommendations: public protected private abstract default static final transient volatile synchronized native strictfp
-- each variable declared in separate statements, e.g. int a; int b; instead of int a, b;
+- class and variable names shouldn't have 2 capital letters in a row (except static final
+ variables must be UPPER_SNAKE_CASE)
+- modifier keywords ordered according to JLS recommendations: `public protected private abstract default static final transient volatile synchronized native strictfp`
+- each variable declared in separate statements, e.g. `int a; int b;` instead of `int a, b`;
 
 The config files can be found in config/checkstyle directory.
 
 ### PMD
 
-See config/pmd/ruleset.xml for a list of disabled rules with comments.
+See `config/pmd/ruleset.xml` for a list of disabled rules with comments.
 
 ### Spotbugs
 
-Compiles via gradle tasks, may cause problems when running the gradle wrapper from terminal if java version is <11. Make sure that java -version returns 11 or higher and if not update the PATH environment variable to include the path to java 11+ binary. which java gives a list of paths containing java binaries and may be helpful here.
+Compiles via gradle tasks, may cause problems when running the gradle wrapper from terminal if java version is <11. 
+Make sure that `java -version` returns 11 or higher and if not update the PATH environment variable to include the path to java 11+ binary. `which java` gives a list of paths containing java binaries and may be helpful here.
 
-For a list of disabled rules with reasons see config/spotbugs/exclusions.xml
+For a list of disabled rules with reasons see `config/spotbugs/exclusions.xml`
 
