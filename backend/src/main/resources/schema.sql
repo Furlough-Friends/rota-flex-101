@@ -6,7 +6,7 @@ CREATE TABLE STAFF (
   start_date DATE,
   contracted_hours DECIMAL,
   hourly_rate DECIMAL,
-  role ENUM('user', 'manager') NOT NULL,
+  role ENUM('USER', 'MANAGER') NOT NULL,
   job_title VARCHAR(255)
 );
 
