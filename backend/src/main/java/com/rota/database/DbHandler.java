@@ -2,6 +2,8 @@ package com.rota.database;
 
 import com.rota.database.orm.Engagement;
 import com.rota.database.orm.EngagementMapper;
+import com.rota.database.orm.PreferredDates;
+import com.rota.database.orm.PreferredDatesMapper;
 import com.rota.database.orm.Staff;
 import com.rota.database.orm.StaffMapper;
 import java.util.HashMap;
@@ -65,10 +67,23 @@ public class DbHandler {
     addToTable("STAFF", propertyMap);
   }
 
+  /**
+   * Adds an engagement.
+   * @param engagement Engagement to add to database.
+   */
   public void addEngagement(Engagement engagement) {
     Map<String,Object> propertyMap = engagement.getPropertyMap();
     propertyMap.remove("id"); // Remove primary key
     addToTable("ENGAGEMENT", propertyMap);
+  }
+
+  /**
+   * Adds preferred dates.
+   * @param preferredDates Preferred dates to add.
+   */
+  public void addPreferredDates(PreferredDates preferredDates) {
+    Map<String,Object> propertyMap = preferredDates.getPropertyMap();
+    addToTable("PREFERRED_DATES", propertyMap);
   }
 
   private String sqlUpdateString(String table, List<String> updateCols, List<String> conditions) {
@@ -109,10 +124,29 @@ public class DbHandler {
     );
   }
 
+  /**
+   * Updates engagement in the database.
+   * @param id Engagement ID
+   * @param update A map with (property name) -> (updated value)
+   */
   public void updateEngagement(int id, Map<String, Object> update) {
     updateTable("ENGAGEMENT", update, new HashMap<>() {
           {
             put("ID", id);
+          }
+        }
+    );
+  }
+
+  /**
+   * Updates staff member's preferred dates.
+   * @param staffId Staff member's ID
+   * @param update Map of (entries to update) -> (values)
+   */
+  public void updatePreferredDates(int staffId, Map<String, Object> update) {
+    updateTable("PREFERRED_DATES", update, new HashMap<>() {
+          {
+            put("STAFF_ID", staffId);
           }
         }
     );
@@ -128,10 +162,24 @@ public class DbHandler {
         id);
   }
 
+  /**
+   * Removes engagement by engagement ID.
+   * @param id Engagement ID
+   */
   public void removeEngagement(int id) {
     jdbcTemplate.update(
         "DELETE FROM ENGAGEMENT WHERE ID=?;",
         id);
+  }
+
+  /**
+   * Deletes member's preferred dates.
+   * @param staffId staff member's ID
+   */
+  public void removePreferredDates(int staffId) {
+    jdbcTemplate.update(
+        "DELETE FROM PREFERRED_DATES WHERE STAFF_ID=?;",
+        staffId);
   }
 
   /**
@@ -161,11 +209,32 @@ public class DbHandler {
         : Optional.of(members.get(0));
   }
 
+  /**
+   * Get staff member's engagements.
+   * @param staffId Staff member's ID
+   * @return List of member's engagements
+   */
   public List<Engagement> getEngagements(int staffId) {
     return jdbcTemplate.query(
       "SELECT * FROM ENGAGEMENT WHERE STAFF_ID=?;",
       new Object[]{staffId},
       new EngagementMapper()
     );
+  }
+
+  /**
+   * Read staff member's preferred dates from the database.
+   * @param staffId staff member's ID
+   * @return member's preferred dates if present
+   */
+  public Optional<PreferredDates> getPreferredDates(int staffId) {
+    List<PreferredDates> preferredDates = jdbcTemplate.query(
+        "SELECT * FROM PREFERRED_DATES WHERE STAFF_ID=?",
+        new Object[]{staffId},
+        new PreferredDatesMapper()
+    );
+    return preferredDates.isEmpty()
+        ? Optional.empty()
+        : Optional.of(preferredDates.get(0));
   }
 }

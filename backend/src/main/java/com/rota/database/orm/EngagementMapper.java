@@ -9,8 +9,8 @@ public class EngagementMapper implements RowMapper {
   public Engagement mapRow(ResultSet rs, int rowNum) throws SQLException {
     return new Engagement.EngagementBuilder()
         .id(rs.getInt("ID"))
-        .start(rs.getTimestamp("START"))
-        .end(rs.getTimestamp("END"))
+        .start(rs.getTimestamp("START").toInstant())
+        .end(rs.getTimestamp("END").toInstant())
         .type(EngagementType.valueOf(rs.getString("TYPE")))
         .hoursWorked(rs.getDouble("HOURS_WORKED"))
         .staffId(rs.getInt("STAFF_ID"))

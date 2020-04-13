@@ -5,20 +5,20 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
 public class Staff {
-  private int id;
-  private String firstName;
-  private String surname;
-  private boolean active;
-  private LocalDate startDate;
-  private double contractedHours;
-  private double hourlyRate;
-  private Role role;
-  private String jobTitle;
+  int id;
+  String firstName;
+  String surname;
+  boolean active;
+  LocalDate startDate;
+  double contractedHours;
+  double hourlyRate;
+  Role role;
+  String jobTitle;
 
   /**
    * Returns a map between the database column name and the object value.

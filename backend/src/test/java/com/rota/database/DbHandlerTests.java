@@ -2,9 +2,10 @@ package com.rota.database;
 
 import com.rota.database.orm.Engagement;
 import com.rota.database.orm.EngagementType;
+import com.rota.database.orm.PreferredDates;
 import com.rota.database.orm.Role;
 import com.rota.database.orm.Staff;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -42,18 +43,24 @@ class DbHandlerTests {
       .staffId(STAFF_ID)
       .type(EngagementType.SHIFT);
 
+  static final PreferredDates.PreferredDatesBuilder PREFERRED_DATES_BUILDER =
+      PreferredDates.builder()
+      .staffId(STAFF_ID);
+
   static final Engagement ENGAGEMENT_1 = ENGAGEMENT_BUILDER
-      .start(Timestamp.valueOf("2020-04-13 00:00:00"))
-      .end(Timestamp.valueOf("2020-04-13 20:00:00"))
+      .start(Instant.parse("2020-04-13T00:00:00Z"))
+      .end(Instant.parse("2020-04-13T20:00:00Z"))
       .build();
 
   static final Engagement ENGAGEMENT_2 = ENGAGEMENT_BUILDER
       .id(ENGAGEMENT_ID + 1)
-      .start(Timestamp.valueOf("2020-04-12 10:00:00"))
-      .end(Timestamp.valueOf("2020-04-15 18:00:00"))
+      .start(Instant.parse("2020-04-12T10:00:00Z"))
+      .end(Instant.parse("2020-04-15T18:00:00Z"))
       .build();
 
   static final Staff STAFF_MEMBER = STAFF_BUILDER.build();
+
+  static final PreferredDates PREFERRED_DATES = PREFERRED_DATES_BUILDER.build();
 
   @BeforeEach
   void wipeDb() {
@@ -128,6 +135,43 @@ class DbHandlerTests {
     Assertions.assertEquals(
         List.of(),
         dbHandler.getEngagements(STAFF_ID)
+    );
+  }
+
+  @Test
+  void addPreferredDates() {
+    dbHandler.addStaff(STAFF_MEMBER);
+    dbHandler.addPreferredDates(PREFERRED_DATES);
+    Assertions.assertEquals(
+        Optional.of(PREFERRED_DATES),
+        dbHandler.getPreferredDates(STAFF_ID)
+    );
+  }
+
+  @Test
+  void updatePreferredDates() {
+    dbHandler.addStaff(STAFF_MEMBER);
+    dbHandler.addPreferredDates(PREFERRED_DATES);
+    dbHandler.updatePreferredDates(STAFF_ID, new HashMap<>() {
+          {
+            put("monday", true);
+          }
+        }
+    );
+    Assertions.assertEquals(
+        Optional.of(PREFERRED_DATES_BUILDER.monday(true).build()),
+        dbHandler.getPreferredDates(STAFF_ID)
+    );
+  }
+
+  @Test
+  void removePreferredDates() {
+    dbHandler.addStaff(STAFF_MEMBER);
+    dbHandler.addPreferredDates(PREFERRED_DATES);
+    dbHandler.removePreferredDates(STAFF_ID);
+    Assertions.assertEquals(
+        Optional.empty(),
+        dbHandler.getPreferredDates(STAFF_ID)
     );
   }
 }
