@@ -26,7 +26,7 @@ CREATE TABLE ENGAGEMENT (
     id INT AUTO_INCREMENT PRIMARY KEY,
     start DATETIME NOT NULL,
     end DATETIME NOT NULL,
-    type ENUM('shift', 'holiday') NOT NULL,
+    type ENUM('SHIFT', 'HOLIDAY') NOT NULL,
     hours_worked DECIMAL,
     staff_id INT REFERENCES STAFF(id) ON DELETE SET NULL
 );

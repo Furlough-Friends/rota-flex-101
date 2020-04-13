@@ -7,16 +7,16 @@ import org.springframework.jdbc.core.RowMapper;
 public class StaffMapper implements RowMapper {
   @Override
   public Staff mapRow(ResultSet rs, int rowNum) throws SQLException {
-    return new Staff(
-        rs.getInt("ID"),
-        rs.getString("FIRST_NAME"),
-        rs.getString("SURNAME"),
-        rs.getBoolean("ACTIVE"),
-        rs.getDate("START_DATE").toLocalDate(),
-        rs.getDouble("CONTRACTED_HOURS"),
-        rs.getDouble("HOURLY_RATE"),
-        Role.valueOf(rs.getString("ROLE")),
-        rs.getString("JOB_TITLE")
-    );
+    return Staff.builder()
+        .id(rs.getInt("ID"))
+        .firstName(rs.getString("FIRST_NAME"))
+        .surname(rs.getString("SURNAME"))
+        .active(rs.getBoolean("ACTIVE"))
+        .startDate(rs.getDate("START_DATE").toLocalDate())
+        .contractedHours(rs.getDouble("CONTRACTED_HOURS"))
+        .hourlyRate(rs.getDouble("HOURLY_RATE"))
+        .role(Role.valueOf(rs.getString("ROLE")))
+        .jobTitle(rs.getString("JOB_TITLE"))
+        .build();
   }
 }

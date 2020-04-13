@@ -1,5 +1,7 @@
 package com.rota.database;
 
+import com.rota.database.orm.Engagement;
+import com.rota.database.orm.EngagementMapper;
 import com.rota.database.orm.Staff;
 import com.rota.database.orm.StaffMapper;
 import java.util.HashMap;
@@ -24,8 +26,8 @@ public class DbHandler {
   public void wipeDb() {
     jdbcTemplate.update(
         "DELETE FROM STAFF WHERE TRUE;"
-        + "DELETE FROM ENGAGEMENT WHERE TRUE;"
-        + "DELETE FROM PREFERRED_DATES WHERE TRUE;"
+            + "DELETE FROM ENGAGEMENT WHERE TRUE;"
+            + "DELETE FROM PREFERRED_DATES WHERE TRUE;"
     );
   }
 
@@ -58,7 +60,15 @@ public class DbHandler {
    * @param staff Staff to add to database.
    */
   public void addStaff(Staff staff) {
-    addToTable("STAFF", staff.getPropertyMap());
+    Map<String,Object> propertyMap = staff.getPropertyMap();
+    propertyMap.remove("id"); // Remove primary key
+    addToTable("STAFF", propertyMap);
+  }
+
+  public void addEngagement(Engagement engagement) {
+    Map<String,Object> propertyMap = engagement.getPropertyMap();
+    propertyMap.remove("id"); // Remove primary key
+    addToTable("ENGAGEMENT", propertyMap);
   }
 
   private String sqlUpdateString(String table, List<String> updateCols, List<String> conditions) {
@@ -99,13 +109,28 @@ public class DbHandler {
     );
   }
 
+  public void updateEngagement(int id, Map<String, Object> update) {
+    updateTable("ENGAGEMENT", update, new HashMap<>() {
+          {
+            put("ID", id);
+          }
+        }
+    );
+  }
+
   /**
    * Removes a staff member with a given id.
    * @param id id of member to remove
    */
   public void removeStaff(int id) {
     jdbcTemplate.update(
-        "DELETE FROM STAFF WHERE ID=?",
+        "DELETE FROM STAFF WHERE ID=?;",
+        id);
+  }
+
+  public void removeEngagement(int id) {
+    jdbcTemplate.update(
+        "DELETE FROM ENGAGEMENT WHERE ID=?;",
         id);
   }
 
@@ -134,5 +159,13 @@ public class DbHandler {
     return members.isEmpty()
         ? Optional.empty()
         : Optional.of(members.get(0));
+  }
+
+  public List<Engagement> getEngagements(int staffId) {
+    return jdbcTemplate.query(
+      "SELECT * FROM ENGAGEMENT WHERE STAFF_ID=?;",
+      new Object[]{staffId},
+      new EngagementMapper()
+    );
   }
 }
