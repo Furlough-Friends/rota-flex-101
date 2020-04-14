@@ -1,0 +1,10 @@
+{
+	"eslint": {
+      "workingDirectories": [
+        "frontend"
+    ]
+  },
+  "prettier": {
+    "configPath": "frontend/.prettierrc",
+  }
+}

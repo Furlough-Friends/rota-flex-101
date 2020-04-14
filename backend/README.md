@@ -12,19 +12,6 @@ Then run the server with
 ./gradlew bootRun
 ```
 
-Optionally, one can set up the git pre-commit hook to run the linters locally before every commit
-for maximum annoyance. The hook will only run if any *.java file has been modfied.
-
-To do so go to the project root directory (one up from the location of this README) and symlink
- .githooks/pre-commit to .git/hooks/pre-commit.
- Make sure that the file is executable.
- 
- This can be done with the following commands:
-```
-ln -s ../../.githooks/pre-commit .git/hooks
-chmod +x .git/hooks/pre-commit
-```
-
 ## Server endpoints
 
 To list all available endpoints, run the server and go to `{server-root}/swagger-ui.html`.

@@ -5,8 +5,12 @@ name: BackendCI
 # Controls when the action will run. Triggers the workflow on any commit push  
 on: 
   push:
-    paths:
-    - 'backend/**'
+    # The below has been commented out because when a push fails, 
+    # a second push containing no changes to the offending code could 
+    # still pass if the commit has no changes in the directory specified
+    
+    # paths:
+    # - 'backend/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
