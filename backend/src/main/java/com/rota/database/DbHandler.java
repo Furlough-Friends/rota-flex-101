@@ -1,12 +1,15 @@
 package com.rota.database;
 
-import com.rota.database.orm.Engagement;
-import com.rota.database.orm.EngagementMapper;
-import com.rota.database.orm.PreferredDates;
-import com.rota.database.orm.PreferredDatesMapper;
-import com.rota.database.orm.Staff;
-import com.rota.database.orm.StaffMapper;
-import java.util.HashMap;
+import com.rota.database.orm.DbColumn;
+import com.rota.database.orm.engagement.Engagement;
+import com.rota.database.orm.engagement.EngagementDbColumn;
+import com.rota.database.orm.engagement.EngagementMapper;
+import com.rota.database.orm.prefdates.PreferredDates;
+import com.rota.database.orm.prefdates.PreferredDatesDbColumn;
+import com.rota.database.orm.prefdates.PreferredDatesMapper;
+import com.rota.database.orm.staff.Staff;
+import com.rota.database.orm.staff.StaffDbColumn;
+import com.rota.database.orm.staff.StaffMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,9 +36,14 @@ public class DbHandler {
     );
   }
 
-  private Pair<List<String>, List<Object>> transposeMap(Map<String,Object> map) {
-    List<String> keyList = map.keySet().stream()
-        .map(String.class::cast)
+  /**
+   * Transposes a map from [{key1:value1},...{keyn:valuen}] to {[key1,...,keyn],[value1,...,valuen]}
+   * @param map map to transpose
+   * @return transposed map
+   */
+  private Pair<List<DbColumn>, List<Object>> transposeMap(Map<DbColumn,Object> map) {
+    List<DbColumn> keyList = map.keySet().stream()
+        .map(DbColumn.class::cast)
         .collect(Collectors.toList());
     List<Object> valueList = keyList.stream()
         .map(map::get)
@@ -43,18 +51,27 @@ public class DbHandler {
     return Pair.of(keyList, valueList);
   }
 
+  /**
+   * Constructs an sql string to insert element into the table.
+   * @param table name of the table to insert into
+   * @param columns list of columns to be modified
+   * @return SQL query string, values replaced with ? placeholders
+   */
   private String sqlInsertString(String table, List<String> columns) {
     return "INSERT INTO " + table + "("
-        + columns.stream().collect(Collectors.joining(","))
+        + String.join(",", columns)
         + ") VALUES ("
         + columns.stream().map(col -> "?").collect(Collectors.joining(","))
         + ");";
   }
 
-  private void addToTable(String table, Map<String,Object> properties) {
-    Pair<List<String>,List<Object>> keyValues = transposeMap(properties);
-    String sqlInsertString = sqlInsertString(table, keyValues.getFirst());
-    jdbcTemplate.update(sqlInsertString, keyValues.getSecond().toArray());
+  private void addToTable(String table, Map<DbColumn,Object> properties) {
+    Pair<List<DbColumn>,List<Object>> keyValues = transposeMap(properties);
+    List<String> columnNames = keyValues.getFirst().stream()
+        .map(DbColumn::toString)
+        .collect(Collectors.toList());
+    String sqlCommand = sqlInsertString(table, columnNames);
+    jdbcTemplate.update(sqlCommand, keyValues.getSecond().toArray());
   }
 
   /**
@@ -62,8 +79,8 @@ public class DbHandler {
    * @param staff Staff to add to database.
    */
   public void addStaff(Staff staff) {
-    Map<String,Object> propertyMap = staff.getPropertyMap();
-    propertyMap.remove("id"); // Remove primary key
+    Map<DbColumn,Object> propertyMap = staff.getPropertyMap();
+    propertyMap.remove(StaffDbColumn.ID); // Remove primary key
     addToTable("STAFF", propertyMap);
   }
 
@@ -72,8 +89,8 @@ public class DbHandler {
    * @param engagement Engagement to add to database.
    */
   public void addEngagement(Engagement engagement) {
-    Map<String,Object> propertyMap = engagement.getPropertyMap();
-    propertyMap.remove("id"); // Remove primary key
+    Map<DbColumn,Object> propertyMap = engagement.getPropertyMap();
+    propertyMap.remove(EngagementDbColumn.ID); // Remove primary key
     addToTable("ENGAGEMENT", propertyMap);
   }
 
@@ -82,7 +99,7 @@ public class DbHandler {
    * @param preferredDates Preferred dates to add.
    */
   public void addPreferredDates(PreferredDates preferredDates) {
-    Map<String,Object> propertyMap = preferredDates.getPropertyMap();
+    Map<DbColumn, Object> propertyMap = preferredDates.getPropertyMap();
     addToTable("PREFERRED_DATES", propertyMap);
   }
 
@@ -98,12 +115,16 @@ public class DbHandler {
         + ";";
   }
 
-  private void updateTable(String table, Map<String,Object> columns,
-                           Map<String,Object> conditions) {
-    Pair<List<String>,List<Object>> colUpdates = transposeMap(columns);
-    Pair<List<String>,List<Object>> colConditions = transposeMap(conditions);
-    String sqlQuery = sqlUpdateString(table, colUpdates.getFirst(), colConditions.getFirst());
-    Object[] combinedValues = Stream.concat(
+  private void updateTable(String table, Map<DbColumn, Object> columns,
+                           Map<DbColumn,Object> conditions) {
+    Pair<List<DbColumn>,List<Object>> colUpdates = transposeMap(columns);
+    Pair<List<DbColumn>,List<Object>> colConditions = transposeMap(conditions);
+    final List<String> updateColumnNames = colUpdates.getFirst().stream()
+        .map(DbColumn::toString).collect(Collectors.toList());
+    final List<String> conditionColumnNames = colConditions.getFirst().stream()
+        .map(DbColumn::toString).collect(Collectors.toList());
+    final String sqlQuery = sqlUpdateString(table, updateColumnNames, conditionColumnNames);
+    final Object[] combinedValues = Stream.concat(
         colUpdates.getSecond().stream(),
         colConditions.getSecond().stream()
     ).toArray();
@@ -115,12 +136,11 @@ public class DbHandler {
    * @param id Staff ID
    * @param update A map with (property name) -> (updated value)
    */
-  public void updateStaff(int id, Map<String, Object> update) {
-    updateTable("STAFF", update, new HashMap<>() {
-          {
-            put("ID", id);
-          }
-        }
+  public void updateStaff(int id, Map<DbColumn, Object> update) {
+    updateTable("STAFF", update,
+        Map.of(
+            StaffDbColumn.ID, id
+        )
     );
   }
 
@@ -129,13 +149,8 @@ public class DbHandler {
    * @param id Engagement ID
    * @param update A map with (property name) -> (updated value)
    */
-  public void updateEngagement(int id, Map<String, Object> update) {
-    updateTable("ENGAGEMENT", update, new HashMap<>() {
-          {
-            put("ID", id);
-          }
-        }
-    );
+  public void updateEngagement(int id, Map<DbColumn, Object> update) {
+    updateTable("ENGAGEMENT", update, Map.of(EngagementDbColumn.ID, id));
   }
 
   /**
@@ -143,12 +158,11 @@ public class DbHandler {
    * @param staffId Staff member's ID
    * @param update Map of (entries to update) -> (values)
    */
-  public void updatePreferredDates(int staffId, Map<String, Object> update) {
-    updateTable("PREFERRED_DATES", update, new HashMap<>() {
-          {
-            put("STAFF_ID", staffId);
-          }
-        }
+  public void updatePreferredDates(int staffId, Map<DbColumn, Object> update) {
+    updateTable("PREFERRED_DATES", update,
+        Map.of(
+            PreferredDatesDbColumn.STAFF_ID, staffId
+        )
     );
   }
 

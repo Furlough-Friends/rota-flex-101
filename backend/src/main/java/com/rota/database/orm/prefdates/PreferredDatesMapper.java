@@ -1,4 +1,4 @@
-package com.rota.database.orm;
+package com.rota.database.orm.prefdates;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package com.rota.database.orm;
+package com.rota.database.orm.engagement;
 
 public enum EngagementType {
   SHIFT,

@@ -1,14 +1,17 @@
 package com.rota.database;
 
-import com.rota.database.orm.Engagement;
-import com.rota.database.orm.EngagementType;
-import com.rota.database.orm.PreferredDates;
-import com.rota.database.orm.Role;
-import com.rota.database.orm.Staff;
+import com.rota.database.orm.engagement.Engagement;
+import com.rota.database.orm.engagement.EngagementDbColumn;
+import com.rota.database.orm.engagement.EngagementType;
+import com.rota.database.orm.prefdates.PreferredDates;
+import com.rota.database.orm.prefdates.PreferredDatesDbColumn;
+import com.rota.database.orm.staff.Role;
+import com.rota.database.orm.staff.Staff;
+import com.rota.database.orm.staff.StaffDbColumn;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,16 +96,15 @@ class DbHandlerTests {
         .contractedHours(newHours)
         .build();
     dbHandler.addStaff(STAFF_MEMBER);
-    dbHandler.updateStaff(STAFF_ID, new HashMap<>() {
-          {
-            put("FIRST_NAME", newName);
-            put("CONTRACTED_HOURS", newHours);
-          }
-        }
+    dbHandler.updateStaff(STAFF_ID,
+        Map.of(
+            StaffDbColumn.FIRST_NAME, newName,
+            StaffDbColumn.CONTRACTED_HOURS, newHours
+        )
     );
     Assertions.assertEquals(
-        updatedStaff,
-        dbHandler.getStaffMember(STAFF_ID).get()
+        Optional.of(updatedStaff),
+        dbHandler.getStaffMember(STAFF_ID)
     );
   }
 
@@ -123,6 +125,28 @@ class DbHandlerTests {
     dbHandler.addEngagement(ENGAGEMENT_2);
     Assertions.assertEquals(
         List.of(ENGAGEMENT_1, ENGAGEMENT_2),
+        dbHandler.getEngagements(STAFF_ID)
+    );
+  }
+
+  @Test
+  void updateEngagement() {
+    final Instant updatedStarttime = Instant.parse("2020-04-13T01:00:01Z");
+    final Instant updatedEndtime = Instant.parse("2020-04-13T21:00:00Z");
+    dbHandler.addStaff(STAFF_MEMBER);
+    dbHandler.addEngagement(ENGAGEMENT_1);
+    dbHandler.updateEngagement(ENGAGEMENT_ID,
+        Map.of(
+            EngagementDbColumn.START, updatedStarttime,
+            EngagementDbColumn.END, updatedEndtime
+        )
+    );
+    Assertions.assertEquals(
+        List.of(ENGAGEMENT_BUILDER
+            .id(ENGAGEMENT_ID)
+            .start(updatedStarttime)
+            .end(updatedEndtime)
+            .build()),
         dbHandler.getEngagements(STAFF_ID)
     );
   }
@@ -152,11 +176,10 @@ class DbHandlerTests {
   void updatePreferredDates() {
     dbHandler.addStaff(STAFF_MEMBER);
     dbHandler.addPreferredDates(PREFERRED_DATES);
-    dbHandler.updatePreferredDates(STAFF_ID, new HashMap<>() {
-          {
-            put("monday", true);
-          }
-        }
+    dbHandler.updatePreferredDates(STAFF_ID,
+        Map.of(
+            PreferredDatesDbColumn.MONDAY, true
+        )
     );
     Assertions.assertEquals(
         Optional.of(PREFERRED_DATES_BUILDER.monday(true).build()),

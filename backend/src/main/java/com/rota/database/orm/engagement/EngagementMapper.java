@@ -1,4 +1,4 @@
-package com.rota.database.orm;
+package com.rota.database.orm.engagement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

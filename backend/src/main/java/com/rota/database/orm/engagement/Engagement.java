@@ -1,5 +1,7 @@
-package com.rota.database.orm;
+package com.rota.database.orm.engagement;
 
+import com.rota.database.orm.DbColumn;
+import com.rota.database.orm.DbTableEntry;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class Engagement {
+public class Engagement implements DbTableEntry {
   int id;
   Instant start;
   Instant end;
@@ -24,15 +26,15 @@ public class Engagement {
    * security.
    * @return Map
    */
-  public Map<String,Object> getPropertyMap() {
+  public Map<DbColumn,Object> getPropertyMap() {
     return new HashMap<>() {
       {
-        put("id", id);
-        put("start", Timestamp.from(start));
-        put("end", Timestamp.from(end));
-        put("type", type.toString());
-        put("hours_worked", hoursWorked);
-        put("staff_id", staffId);
+        put(EngagementDbColumn.ID, id);
+        put(EngagementDbColumn.START, Timestamp.from(start));
+        put(EngagementDbColumn.END, Timestamp.from(end));
+        put(EngagementDbColumn.TYPE, type.toString());
+        put(EngagementDbColumn.HOURS_WORKED, hoursWorked);
+        put(EngagementDbColumn.STAFF_ID, staffId);
       }
     };
   }
