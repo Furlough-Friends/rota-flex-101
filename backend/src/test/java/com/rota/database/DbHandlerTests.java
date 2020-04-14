@@ -124,11 +124,13 @@ class DbHandlerTests {
     );
   }
 
+  @Test
   void removeEngagement() {
     staffRepository.save(STAFF_MEMBER);
     engagementRepository.save(ENGAGEMENT_1);
     engagementRepository.delete(ENGAGEMENT_1);
-    Assertions.assertNull(
+    Assertions.assertEquals(
+        List.of(),
         engagementRepository.findByStaffId(STAFF_ID)
     );
   }
