@@ -9,5 +9,4 @@ public class RotaApplication {
   public static void main(String[] args) {
     SpringApplication.run(RotaApplication.class, args);
   }
-
 }
