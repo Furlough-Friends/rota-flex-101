@@ -23,12 +23,15 @@ import lombok.NoArgsConstructor;
 public class Engagement {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  int id;
-  Instant start;
-  Instant end;
+  private int id;
+  private Instant start;
+  private Instant end;
+
   @Enumerated(value = EnumType.STRING)
-  EngagementType type;
-  double hoursWorked;
+  private EngagementType type;
+
+  private double hoursWorked;
+
   @ManyToOne(fetch = FetchType.LAZY)
-  Staff staff;
+  private Staff staff;
 }

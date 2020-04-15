@@ -21,14 +21,23 @@ public class Staff {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
+
   private String firstName;
+
   private String surname;
+
   private boolean active;
+
   private LocalDate startDate;
+
   private double contractedHours;
+
   private double hourlyRate;
+
   @Enumerated(EnumType.STRING)
   private Role role;
+
   private String preferredDates;
+
   private String jobTitle;
 }
