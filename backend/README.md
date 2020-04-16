@@ -84,3 +84,6 @@ follow these steps:
     
 In both these cases IntelliJ will take a few moments to configure itself to recognise the project and set up the gradle 
 plugin to work with it.
+
+**Note** -  In order for IntelliJ to cooperate with Lombok, the `Lombok` IntelliJ plugin must be installed. Otherwise
+warnings will appear on code within IntelliJ (but it will still compile and run correctly).
