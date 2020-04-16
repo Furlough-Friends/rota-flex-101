@@ -6,6 +6,7 @@ import com.rota.database.orm.engagement.EngagementRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,8 +24,11 @@ public class StaffController {
   @Autowired
   EngagementRepository engagementRepository;
 
-  private List<EngagementDto> getEngagementDtos(int staffId) {
+  private List<EngagementDto> getStaffEngagementsBetween(int staffId, Instant start, Instant end) {
     return engagementRepository.findByStaffId(staffId).stream()
+        .filter(engagement ->
+            engagement.getStart().isAfter(start)
+          && engagement.getEnd().isBefore(end))
         .map(EngagementDto::fromEngagement)
         .collect(Collectors.toList());
   }
@@ -40,7 +45,15 @@ public class StaffController {
   public List<EngagementDto> getMyShifts(
       @RequestHeader("Authorization")
       @ApiParam(value = "Authentication token", required = true)
-      String authString
+          String authString,
+
+      @RequestParam(name = "start", required = false)
+      @ApiParam(value = "start time")
+          Instant start,
+
+      @RequestParam(name = "end", required = false)
+      @ApiParam(value = "end time")
+          Instant end
   ) {
     final Optional<String> user = AuthenticationUtils.getUserFromToken(authString);
     user.orElseThrow(
@@ -54,6 +67,9 @@ public class StaffController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user ID format in the "
           + "token.");
     }
-    return getEngagementDtos(staffId);
+
+    Instant startTime = start == null ? Instant.MIN : start;
+    Instant endTime = end == null ? Instant.MAX : end;
+    return getStaffEngagementsBetween(staffId, startTime, endTime);
   }
 }
