@@ -65,3 +65,22 @@ Make sure that `java -version` returns 11 or higher and if not update the PATH e
 
 For a list of disabled rules with reasons see `config/spotbugs/exclusions.xml`
 
+## Using with IntelliJ
+
+In order to use the project with IntelliJ and have it recognise the file as a gradle project, allowing compatibility 
+with the IntelliJ gradle plugin there are 2 options:
+
+- Open the `backend` directory as a project by using `File > New > Project from Existing Sources... ` then navigating 
+to the `backend` folder, selecting the `build.gradle` file and clicking `OK`
+
+- Alternatively if opening the root directory is desired (in order to have all files available from within IntelliJ) 
+follow these steps:
+    1. Open the root directory
+    1. Navigate to `File > Project Structure` or use the keyboard shortcut (default: `Ctrl` + `Alt` + `Shift` + `S`)
+    1. In the right panel, under `Project Settings` select `Modules`
+    1. Press the `+` at the top of the middle panel
+    1. Select `Import Module`
+    1. Navigate to the `backend` directory, select the `build.gradle` file and press `OK`
+    
+In both these cases IntelliJ will take a few moments to configure itself to recognise the project and set up the gradle 
+plugin to work with it.
