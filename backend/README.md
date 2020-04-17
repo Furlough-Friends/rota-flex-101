@@ -20,6 +20,18 @@ For example, when running locally, visit:
 http://localhost:8080/swagger-ui.html
 ```
 
+### myShifts endpoint
+
+Returns shifts of a given user (inferred from the authentication token).
+At the moment authentication has not been implemented yet, so the "token" is just user ID.
+Example call:
+` curl http://localhost:8080/myShifts?start=1410-07-15T00:00:00Z&2100-01-01T00:00:00Z -H
+ 'Authorization: 1' ` 
+
+The start and end dates are optional, so this is valid as well:
+` curl http://localhost:8080/myShifts -H 'Authorization: 1' ` 
+where 1 is the user ID and can be replaced with some other value.
+
 ## Database
 
 Spring currently sets up an in-memory H2 database with dummy entries.
