@@ -1,7 +1,7 @@
 @import '../../constants/styles.scss';
 
 .container {
-    background-color: #106cc8;
+    background-color: $colour-darkBlue;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -11,4 +11,6 @@
     color: white;
     padding: 10px 0px;
     align-self: center;
+    width: 100%;
+    background-color: $colour-darkBlue;
 }

@@ -1,17 +1,16 @@
 import React from 'react';
 import sidebarStyles from './sidebar.module.scss';
-import buttonList from '../../constants/sidebarOptions';
+import sidebarOptions from '../../constants/sidebarOptions';
 
-const Sidebar = () => {
-  return (
-    <div className={sidebarStyles.container}>
-      {buttonList.map((button) => (
-        <div key={button.name} className={sidebarStyles.menuOption}>
-          {button.name}
-        </div>
-      ))}
-    </div>
-  );
-};
+const getButtons = (options: any[]) =>
+  options.map((o) => (
+    <button type="button" className={sidebarStyles.menuOption} key={o.name}>
+      {o.name}
+    </button>
+  ));
+
+const Sidebar = () => (
+  <div className={sidebarStyles.container}>{getButtons(sidebarOptions)}</div>
+);
 
 export default Sidebar;
