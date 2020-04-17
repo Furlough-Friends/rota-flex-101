@@ -1,4 +1,5 @@
 import React from 'react';
+import sidebarStyles from './sidebar.module.scss';
 
 const Sidebar = () => {
   const buttonList = [
@@ -7,9 +8,9 @@ const Sidebar = () => {
     { name: 'Employees' },
   ];
   return (
-    <div>
+    <div className={sidebarStyles.main}>
       {buttonList.map((button) => (
-        <div>{button.name}</div>
+        <div className={sidebarStyles.menuOption}>{button.name}</div>
       ))}
     </div>
   );
