@@ -1,8 +1,8 @@
 import React from 'react';
 import sidebarStyles from './sidebar.module.scss';
-import sidebarOptions from '../../constants/sidebarOptions';
+import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
 
-const getButtons = (options: any[]) =>
+const getButtons = (options: SidebarOption[]) =>
   options.map((o) => (
     <button type="button" className={sidebarStyles.menuOption} key={o.name}>
       {o.name}

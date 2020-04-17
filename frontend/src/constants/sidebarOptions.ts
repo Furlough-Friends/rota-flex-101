@@ -4,4 +4,8 @@ const sidebarOptions = [
   { name: 'Employees' },
 ];
 
+export interface SidebarOption {
+  name: string;
+}
+
 export default sidebarOptions;
