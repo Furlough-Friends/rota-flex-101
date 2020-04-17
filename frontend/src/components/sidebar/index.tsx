@@ -1,14 +1,10 @@
 import React from 'react';
 import sidebarStyles from './sidebar.module.scss';
+import buttonList from '../../constants/sidebarOptions';
 
 const Sidebar = () => {
-  const buttonList = [
-    { name: 'Summary' },
-    { name: 'Rota' },
-    { name: 'Employees' },
-  ];
   return (
-    <div className={sidebarStyles.main}>
+    <div className={sidebarStyles.container}>
       {buttonList.map((button) => (
         <div key={button.name} className={sidebarStyles.menuOption}>
           {button.name}
