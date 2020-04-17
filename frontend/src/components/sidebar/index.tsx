@@ -10,7 +10,9 @@ const Sidebar = () => {
   return (
     <div className={sidebarStyles.main}>
       {buttonList.map((button) => (
-        <div className={sidebarStyles.menuOption}>{button.name}</div>
+        <div key={button.name} className={sidebarStyles.menuOption}>
+          {button.name}
+        </div>
       ))}
     </div>
   );
