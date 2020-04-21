@@ -135,7 +135,7 @@ public class StaffController {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
     }
     // Assuming in general staff entered will be active ones
-    Staff createdStaff = staffService.createStaff(createStaffForm.toActiveStaff());
+    Staff createdStaff = staffService.createStaff(createStaffForm.toStaff());
 
     return ResponseEntity.ok().body(createdStaff);
   }
