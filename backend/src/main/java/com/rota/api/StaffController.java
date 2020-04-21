@@ -33,7 +33,6 @@ public class StaffController {
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
-   *
    * @param authString Authentication token.
    * @return List of all available shifts.
    */
