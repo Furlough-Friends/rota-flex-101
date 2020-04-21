@@ -15,7 +15,7 @@ interface appState {
 }
 
 // Routes user to correct url after authenticating
-const onRedirectCallback = (appState: appState) => {  
+const onRedirectCallback = (appState: appState) => {
   history.push(
     appState && appState.targetUrl
       ? appState.targetUrl
