@@ -48,4 +48,20 @@ public class AuthenticationUtils {
           )
         : Optional.empty();
   }
+
+  /**
+   * TODO Temp solution needs to be changed to be more appropriate when auth is added to backend.
+   * Get user role from token.
+   * @param token Authentication token
+   * @return {@link Role} of the user or <code>null</code> if token is not valid.
+   */
+  public static Optional<Role> getUserRoleFromToken(String token) {
+    return validateToken(token)
+        ? Optional.of(
+          (token.length() % 2 == 0)
+            ? Role.MANAGER
+            : Role.USER
+          )
+        : Optional.empty();
+  }
 }
