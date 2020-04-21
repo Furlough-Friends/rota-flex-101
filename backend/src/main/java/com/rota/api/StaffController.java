@@ -33,6 +33,7 @@ public class StaffController {
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
+   *
    * @param authString Authentication token.
    * @return List of all available shifts.
    */
@@ -103,5 +104,21 @@ public class StaffController {
     Staff createdStaff = staffService.createStaff(staffDto.toStaff());
 
     return ResponseEntity.ok().body(createdStaff);
+  }
+
+  @PostMapping("/staff/create")
+  @ApiOperation(value = "Lets an authenticated manager create a new staff user",
+      consumes = "application/json")
+  public ResponseEntity createStaff(
+      @RequestHeader("Authorization")
+      @ApiParam(value = "Authentication token", required = true)
+          String authString,
+
+      @Valid
+      @RequestBody
+      @ApiParam("Staff details for the new user")
+          CreateStaffForm createStaffForm
+  ) {
+    return ResponseEntity.accepted().build();
   }
 }
