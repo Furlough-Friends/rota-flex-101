@@ -8,6 +8,7 @@ import history from './utils/history';
 import { store } from './app/store';
 import * as serviceWorker from './serviceWorker';
 
+// Routes user to correct url after authenticating
 const onRedirectCallback = (appState: any) => {
   history.push(
     appState && appState.targetUrl
