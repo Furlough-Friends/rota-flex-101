@@ -38,6 +38,7 @@
             { "props": false } // The props value here was returned to its default value of false, in order
                                // to make it compatible with package Immer (used in Redux Toolbox)
                                // Similar to this issue on github: https://github.com/immerjs/immer/issues/189
-            ] 
-    }   
+            ],
+        "arrow-body-style": ["error", "as-needed"]
+        }   
 }
