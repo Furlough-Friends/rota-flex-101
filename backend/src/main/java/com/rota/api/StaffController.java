@@ -125,17 +125,18 @@ public class StaffController {
       @ApiParam("Staff details for the new user")
           CreateStaffForm createStaffForm
   ) {
-
     final Role role = AuthenticationUtils
         .getUserRoleFromToken(authString)
         .orElseThrow(() ->
-          new ResponseStatusException(HttpStatus.UNAUTHORIZED)
+          new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
         );
 
     if (role != Role.MANAGER) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
     }
+    // Assuming in general staff entered will be active ones
+    Staff createdStaff = staffService.createStaff(createStaffForm.toActiveStaff());
 
-    return ResponseEntity.accepted().build();
+    return ResponseEntity.ok().body(createdStaff);
   }
 }

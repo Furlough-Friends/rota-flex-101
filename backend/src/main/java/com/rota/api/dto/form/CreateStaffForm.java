@@ -1,6 +1,7 @@
 package com.rota.api.dto.form;
 
 import com.rota.database.orm.staff.Role;
+import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import javax.validation.constraints.Min;
@@ -39,4 +40,25 @@ public class CreateStaffForm {
 
   @ApiModelProperty("Preferred working dates of the employee")
   String preferredDates;
+
+  //Active is not as a field here as it would default to false which would be wrong most of the time
+
+  /**
+   * Converts this object to a {@link Staff}.
+   * The <code>active</code> field is st as <code>true</code>
+   * @return {@link Staff} wit <code>active</code> set to <code>true</code>
+   */
+  public Staff toActiveStaff() {
+    return Staff.builder()
+        .firstName(firstName)
+        .surname(surname)
+        .role(role)
+        .active(true)
+        .startDate(startDate)
+        .contractedHours(contractedHours)
+        .hourlyRate(hourlyRate)
+        .jobTitle(jobTitle)
+        .preferredDates(preferredDates)
+        .build();
+  }
 }
