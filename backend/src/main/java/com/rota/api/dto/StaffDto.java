@@ -33,6 +33,6 @@ public class StaffDto {
   @ApiModelProperty("Preferred working dates of the employee")
   String preferredDates;
 
-  @ApiModelProperty("Is the staff currenlty inactive")
+  @ApiModelProperty("Is the staff currently inactive?")
   boolean inactive;
 }
