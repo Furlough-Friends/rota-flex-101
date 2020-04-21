@@ -2,6 +2,8 @@ package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
 import com.rota.database.orm.engagement.EngagementRepository;
+import com.rota.database.orm.staff.Staff;
+import com.rota.database.orm.staff.StaffRepository;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Component;
 public class StaffService {
   @Autowired
   EngagementRepository engagementRepository;
+
+  @Autowired
+  StaffRepository staffRepository;
 
   /**
    * Returns staff member's engagements between start and end dates.
@@ -34,4 +39,13 @@ public class StaffService {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Adds a new staff entity to the database.
+   *
+   * @param newStaff {@link Staff} to be added.
+   * @return {@link Staff} object which has just been created.
+   */
+  public Staff createStaff(Staff newStaff) {
+    return staffRepository.save(newStaff);
+  }
 }
