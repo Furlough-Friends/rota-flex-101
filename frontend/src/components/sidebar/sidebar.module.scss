@@ -1,0 +1,17 @@
+@import '../../constants/styles.scss';
+
+.container {
+    background-color: $colour-darkBlue;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.menuOption {
+    color: white;
+    padding: 10px 0px;
+    border: 0px;
+    align-self: center;
+    width: 100%;
+    background-color: $colour-darkBlue;
+}
