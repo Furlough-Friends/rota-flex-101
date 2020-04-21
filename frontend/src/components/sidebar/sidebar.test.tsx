@@ -20,7 +20,6 @@ beforeEach(() => {
 
 test('renders the menu options', () => {
   const { getByText } = render(<Sidebar />);
-  console.log(getByText);
 
   expect(getByText(/Summary/i)).toBeInTheDocument();
   expect(getByText(/Rota/i)).toBeInTheDocument();
