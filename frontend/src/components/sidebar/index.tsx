@@ -2,15 +2,15 @@ import React from 'react';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
 
-const getButtons = (options: SidebarOption[], selctedOption: String) =>
-  options.map((o) => (
+const getButtons = (options: SidebarOption[], selctedOption: string) =>
+  options.map(({ name }) => (
     <button
       type="button"
       className={`${sidebarStyles.menuOption} ${
-        o.name === selctedOption ? sidebarStyles.selectedMenuOption : ''
+        name === selctedOption ? sidebarStyles.selectedMenuOption : ''
       }`}
-      key={o.name}>
-      {o.name}
+      key={name}>
+      {name}
     </button>
   ));
 
