@@ -49,7 +49,7 @@ public class CreateStaffForm {
    * The <code>active</code> field is st as <code>true</code>
    * @return {@link Staff} wit <code>active</code> set to <code>true</code>
    */
-  public Staff toActiveStaff() {
+  public Staff toStaff() {
     return Staff.builder()
         .firstName(firstName)
         .surname(surname)
