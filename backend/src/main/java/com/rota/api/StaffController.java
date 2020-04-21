@@ -4,6 +4,7 @@ import com.rota.api.dto.EngagementDto;
 import com.rota.api.dto.form.CreateStaffForm;
 import com.rota.auth.AuthenticationUtils;
 import com.rota.database.orm.engagement.EngagementRepository;
+import com.rota.database.orm.staff.Role;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -79,6 +80,13 @@ public class StaffController {
     return getStaffEngagementsBetween(staffId, startTime, endTime);
   }
 
+  /**
+   * Endpoint to create and enter a new staff record into the system.
+   * Staff ID and role is inferred from the token passed in the header's Authorization field.
+   * @param authString Authentication token.
+   * @param createStaffForm Staff details.
+   * @return
+   */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
       consumes = "application/json")
@@ -92,6 +100,17 @@ public class StaffController {
       @ApiParam("Staff details for the new user")
           CreateStaffForm createStaffForm
   ) {
+
+    final Role role = AuthenticationUtils
+        .getUserRoleFromToken(authString)
+        .orElseThrow(() ->
+          new ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        );
+
+    if (role != Role.MANAGER) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
     return ResponseEntity.accepted().build();
   }
 }
