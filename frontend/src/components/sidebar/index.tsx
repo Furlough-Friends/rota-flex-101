@@ -7,7 +7,7 @@ const getButtons = (options: SidebarOption[], selctedOption: string) =>
     <button
       type="button"
       className={`${sidebarStyles.menuOption} ${
-        name === selctedOption ? sidebarStyles.selectedMenuOption : ''
+        name === selctedOption ? sidebarStyles.menuOption : ''
       }`}
       key={name}>
       {name}

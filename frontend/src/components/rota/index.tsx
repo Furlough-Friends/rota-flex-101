@@ -6,6 +6,6 @@ const Rota = () => (
     <h1> Rota </h1>
     <p> Rota component </p>
   </div>
-)
+);
 
 export default Rota;

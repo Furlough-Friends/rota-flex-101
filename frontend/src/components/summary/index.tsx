@@ -6,6 +6,6 @@ const Summary = () => (
     <h1> Summary </h1>
     <p> Summary component </p>
   </div>
-)
+);
 
 export default Summary;
