@@ -41,7 +41,8 @@ public class CreateStaffForm {
   @ApiModelProperty("Preferred working dates of the employee")
   String preferredDates;
 
-  //Active is not as a field here as it would default to false which would be wrong most of the time
+  @ApiModelProperty("Is the staff currenlty inactive")
+  boolean inactive;
 
   /**
    * Converts this object to a {@link Staff}.
@@ -53,7 +54,7 @@ public class CreateStaffForm {
         .firstName(firstName)
         .surname(surname)
         .role(role)
-        .active(true)
+        .inactive(inactive)
         .startDate(startDate)
         .contractedHours(contractedHours)
         .hourlyRate(hourlyRate)
