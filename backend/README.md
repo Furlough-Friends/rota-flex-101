@@ -32,6 +32,22 @@ The start and end dates are optional, so this is valid as well:
 ` curl http://localhost:8080/myShifts -H 'Authorization: 1' ` 
 where 1 is the user ID and can be replaced with some other value.
 
+### Create a Staff member endpoint
+
+`/staff/create`
+
+Any Staff with a `MANAGER` role can create a user using the `/staff/create` POST endpoint. This 
+expects the details of the `Staff` within the body of the request and will create and add a new 
+`Staff` record to the database. On a good request, the response will be an `OK` with the 
+details of the new staff record created in the response body.
+
+Users trying to use the endpoint with other roles will fail with an `unauthorized` response.
+
+This endpoint expects an `Authorization` header, if not found this will fail with a `bad request` 
+response.
+
+An example request can be seen through the (swagger endpoint)[#server-endpoints].
+
 ## Database
 
 Spring currently sets up an in-memory H2 database with dummy entries.
