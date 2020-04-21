@@ -1,6 +1,7 @@
 package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
+import com.rota.api.dto.form.CreateStaffForm;
 import com.rota.auth.AuthenticationUtils;
 import com.rota.database.orm.engagement.EngagementRepository;
 import io.swagger.annotations.Api;
@@ -10,9 +11,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +33,7 @@ public class StaffController {
     return engagementRepository.findByStaffId(staffId).stream()
         .filter(engagement ->
             engagement.getStart().isAfter(start)
-          && engagement.getEnd().isBefore(end))
+                && engagement.getEnd().isBefore(end))
         .map(EngagementDto::fromEngagement)
         .collect(Collectors.toList());
   }
@@ -36,6 +41,7 @@ public class StaffController {
   /**
    * Returns all shifts of a given staff ember.
    * Staff ID is inferred from the token passed in the header's Authorization field.
+   *
    * @param authString Authentication token.
    * @return List of all available shifts.
    */
@@ -71,5 +77,21 @@ public class StaffController {
     Instant startTime = start == null ? Instant.MIN : start;
     Instant endTime = end == null ? Instant.MAX : end;
     return getStaffEngagementsBetween(staffId, startTime, endTime);
+  }
+
+  @PostMapping("/staff/create")
+  @ApiOperation(value = "Lets an authenticated manager create a new staff user",
+      consumes = "application/json")
+  public ResponseEntity createStaff(
+      @RequestHeader("Authorization")
+      @ApiParam(value = "Authentication token", required = true)
+          String authString,
+
+      @Valid
+      @RequestBody
+      @ApiParam("Staff details for the new user")
+          CreateStaffForm createStaffForm
+  ) {
+    return ResponseEntity.accepted().build();
   }
 }
