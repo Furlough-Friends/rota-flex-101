@@ -11,10 +11,10 @@ const getButtons = (options: SidebarOption[]) =>
   ));
 
 const Sidebar = () => (
-    <div className={sidebarStyles.container}>
-      {getButtons(sidebarOptions)}
-      <LoginOutButton />
-    </div>
+  <div className={sidebarStyles.container}>
+    {getButtons(sidebarOptions)}
+    <LoginOutButton />
+  </div>
 );
 
 export default Sidebar;
