@@ -4,7 +4,7 @@ import homeStyles from './home.module.scss';
 
 const Home = () => (
   <div className={homeStyles.sidebar}>
-    <Sidebar selctedOption={"Summary"}/>
+    <Sidebar selctedOption="Summary" />
   </div>
 );
 
