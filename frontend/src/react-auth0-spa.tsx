@@ -1,3 +1,8 @@
+// This file creates the Auth0Client and gives access to various hooks which can
+// be used in other components.
+// This file is provided by Auth0:
+// https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
+
 import React, { useState, useEffect, useContext } from 'react';
 import createAuth0Client, {
   PopupLoginOptions,
