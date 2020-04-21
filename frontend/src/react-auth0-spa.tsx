@@ -14,8 +14,8 @@ import createAuth0Client, {
   GetTokenWithPopupOptions,
   LogoutOptions,
   Auth0ClientOptions,
+  Auth0Client
 } from '@auth0/auth0-spa-js';
-import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 
 interface Auth0Context {
   isAuthenticated: boolean;
@@ -61,13 +61,13 @@ export const Auth0Provider = ({
         onRedirectCallback(appState);
       }
 
-      const isAuthenticated = await auth0FromHook.isAuthenticated();
+      const checkIsAuthenticated = await auth0FromHook.isAuthenticated();
 
-      setIsAuthenticated(isAuthenticated);
+      setIsAuthenticated(checkIsAuthenticated);
 
-      if (isAuthenticated) {
-        const user = await auth0FromHook.getUser();
-        setUser(user);
+      if (checkIsAuthenticated) {
+        const checkUser = await auth0FromHook.getUser();
+        setUser(checkUser);
       }
 
       setLoading(false);
@@ -85,18 +85,18 @@ export const Auth0Provider = ({
     } finally {
       setPopupOpen(false);
     }
-    const user = await auth0Client!.getUser();
-    setUser(user);
+    const checkUser = await auth0Client!.getUser();
+    setUser(checkUser);
     setIsAuthenticated(true);
   };
 
   const handleRedirectCallback = async () => {
     setLoading(true);
     const result = await auth0Client!.handleRedirectCallback();
-    const user = await auth0Client!.getUser();
+    const checkUser = await auth0Client!.getUser();
     setLoading(false);
     setIsAuthenticated(true);
-    setUser(user);
+    setUser(checkUser);
     return result;
   };
   return (
