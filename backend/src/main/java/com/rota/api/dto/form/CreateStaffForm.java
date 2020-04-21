@@ -47,7 +47,7 @@ public class CreateStaffForm {
   /**
    * Converts this object to a {@link Staff}.
    * The <code>active</code> field is st as <code>true</code>
-   * @return {@link Staff} wit <code>active</code> set to <code>true</code>
+   * @return {@link Staff} with <code>active</code> set to <code>true</code>
    */
   public Staff toStaff() {
     return Staff.builder()
