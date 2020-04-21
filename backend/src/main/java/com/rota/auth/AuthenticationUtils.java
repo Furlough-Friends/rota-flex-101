@@ -13,7 +13,7 @@ public class AuthenticationUtils {
    * @return Whether authentication was successful.
    */
   public static boolean validateToken(String token) {
-    return true;
+    return !token.toLowerCase().equals("false");
   }
 
   /**
