@@ -1,6 +1,7 @@
 import React from 'react';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
+import LoginOutButton from '../loginOutButton';
 
 const getButtons = (options: SidebarOption[]) =>
   options.map((o) => (
@@ -10,7 +11,10 @@ const getButtons = (options: SidebarOption[]) =>
   ));
 
 const Sidebar = () => (
-  <div className={sidebarStyles.container}>{getButtons(sidebarOptions)}</div>
+    <div className={sidebarStyles.container}>
+      {getButtons(sidebarOptions)}
+      <LoginOutButton />
+    </div>
 );
 
 export default Sidebar;
