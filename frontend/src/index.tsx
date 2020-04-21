@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Auth0Provider } from './react-auth0-spa';
 import { Provider } from 'react-redux';
 import { RedirectLoginResult } from '@auth0/auth0-spa-js';
 import { Router } from 'react-router-dom';
+import { Auth0Provider } from './react-auth0-spa';
 import App from './components/app';
 import config from './auth_config.json';
 import history from './utils/history';
