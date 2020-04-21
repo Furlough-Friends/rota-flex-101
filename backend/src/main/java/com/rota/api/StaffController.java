@@ -106,6 +106,13 @@ public class StaffController {
     return ResponseEntity.ok().body(createdStaff);
   }
 
+  /**
+   * Endpoint to create and enter a new staff record into the system.
+   * Staff ID and role is inferred from the token passed in the header's Authorization field.
+   * @param authString Authentication token.
+   * @param createStaffForm Staff details.
+   * @return
+   */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
       consumes = "application/json")
@@ -119,6 +126,17 @@ public class StaffController {
       @ApiParam("Staff details for the new user")
           CreateStaffForm createStaffForm
   ) {
+
+    final Role role = AuthenticationUtils
+        .getUserRoleFromToken(authString)
+        .orElseThrow(() ->
+          new ResponseStatusException(HttpStatus.UNAUTHORIZED)
+        );
+
+    if (role != Role.MANAGER) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
     return ResponseEntity.accepted().build();
   }
 }
