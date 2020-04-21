@@ -111,7 +111,7 @@ public class StaffController {
       consumes = "application/json")
   public ResponseEntity createStaff(
       @RequestHeader("Authorization")
-      @ApiParam(value = "Authentication token", required = true)
+      @ApiParam(value = "Authentication token")
           String authString,
 
       @Valid
