@@ -14,7 +14,7 @@ const LoginOutButton = () => {
   } = useAuth0();
 
   return (
-    <>
+    <div className="login-out-button">
       {!isAuthenticated ? (
         <button
           type="button"
@@ -30,7 +30,7 @@ const LoginOutButton = () => {
           Log out {!loading && user.name}
         </button>
       )}
-    </>
+    </div>
   );
 };
 
