@@ -9,10 +9,10 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class StaffDto {
-  @ApiModelProperty("First Name")
+  @ApiModelProperty("First name")
   String firstName;
 
-  @ApiModelProperty("Surname")
+  @ApiModelProperty("Last name")
   String surname;
 
   @ApiModelProperty("Action permissions for employee, USER or MANAGER")
@@ -32,4 +32,7 @@ public class StaffDto {
 
   @ApiModelProperty("Preferred working dates of the employee")
   String preferredDates;
+
+  @ApiModelProperty("Is the staff currenlty inactive")
+  boolean inactive;
 }
