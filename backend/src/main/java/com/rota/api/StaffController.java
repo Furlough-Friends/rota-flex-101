@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,15 +44,16 @@ public class StaffController {
           Instant end
   ) {
     if (!AuthenticationUtils.validateToken(authString)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Failed to authorize.");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.");
     }
 
-    final Optional<Integer> user = AuthenticationUtils.getUserFromToken(authString);
-    user.orElseThrow(
-        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user ID format in the "
-            + "token.")
-    );
+    final Integer user =
+        AuthenticationUtils.getUserFromToken(authString)
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Invalid user ID format in the token.")
+            );
 
-    return staffService.getStaffEngagementsBetween(user.get(), start, end);
+    return staffService.getStaffEngagementsBetween(user, start, end);
   }
 }
