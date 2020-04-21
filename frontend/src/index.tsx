@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Auth0Provider } from './react-auth0-spa';
 import App from './components/app';
 import config from './auth_config.json';
-import history from './utils/history';
+import history from './utils/browserHistory';
 import { store } from './app/store';
 import * as serviceWorker from './serviceWorker';
 
