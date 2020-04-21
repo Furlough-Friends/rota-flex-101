@@ -46,7 +46,7 @@ Users trying to use the endpoint with other roles will fail with an `unauthorize
 This endpoint expects an `Authorization` header, if not found this will fail with a `bad request` 
 response.
 
-An example request can be seen through the (swagger endpoint)[#server-endpoints].
+An example request can be seen through the [swagger endpoint](#server-endpoints).
 
 ## Database
 
