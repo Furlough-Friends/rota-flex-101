@@ -2,14 +2,12 @@ package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
 import com.rota.auth.AuthenticationUtils;
-import com.rota.database.orm.engagement.EngagementRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,19 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 @Api(value = "Manages the responses to staff-related queries")
 public class StaffController {
   @Autowired
-  EngagementRepository engagementRepository;
-
-  private List<EngagementDto> getStaffEngagementsBetween(int staffId, Instant start, Instant end) {
-    return engagementRepository.findByStaffId(staffId).stream()
-        .filter(engagement ->
-            engagement.getStart().isAfter(start)
-          && engagement.getEnd().isBefore(end))
-        .map(EngagementDto::fromEngagement)
-        .collect(Collectors.toList());
-  }
+  StaffService staffService;
 
   /**
-   * Returns all shifts of a given staff ember.
+   * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
    * @param authString Authentication token.
    * @return List of all available shifts.
@@ -55,21 +44,16 @@ public class StaffController {
       @ApiParam(value = "end time")
           Instant end
   ) {
-    final Optional<String> user = AuthenticationUtils.getUserFromToken(authString);
-    user.orElseThrow(
-        () -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Failed to authorize.")
-    );
-
-    int staffId;
-    try {
-      staffId = Integer.parseInt(user.get());
-    } catch (NumberFormatException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user ID format in the "
-          + "token.");
+    if (!AuthenticationUtils.validateToken(authString)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Failed to authorize.");
     }
 
-    Instant startTime = start == null ? Instant.MIN : start;
-    Instant endTime = end == null ? Instant.MAX : end;
-    return getStaffEngagementsBetween(staffId, startTime, endTime);
+    final Optional<Integer> user = AuthenticationUtils.getUserFromToken(authString);
+    user.orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user ID format in the "
+            + "token.")
+    );
+
+    return staffService.getStaffEngagementsBetween(user.get(), start, end);
   }
 }

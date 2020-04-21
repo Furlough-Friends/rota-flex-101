@@ -20,9 +20,13 @@ public class AuthenticationUtils {
    * @param token Authentication token.
    * @return User information if token is valid and if present.
    */
-  public static Optional<String> getUserFromToken(String token) {
-    return validateToken(token)
-        ? Optional.of(token)
-        : Optional.empty();
+  public static Optional<Integer> getUserFromToken(String token) {
+    Integer parsedToken;
+    try {
+      parsedToken = Integer.parseInt(token);
+    } catch (NumberFormatException e) {
+      return Optional.empty();
+    }
+    return Optional.of(parsedToken);
   }
 }
