@@ -19,7 +19,7 @@ public class StaffService {
   StaffRepository staffRepository;
 
   /**
-   * Returns staff member's engagements between start and end dates.
+   * Returns staff member's engagements between start and end dates (inclusive).
    * Specifically engagements that start after the start date and end before the end date.
    * Both start and end dates are optional and can be left as null.
    *
@@ -33,8 +33,10 @@ public class StaffService {
     Instant endTime = end == null ? Instant.MAX : end;
     return engagementRepository.findByStaffId(staffId).stream()
         .filter(engagement ->
-            engagement.getStart().isAfter(startTime)
-          && engagement.getEnd().isBefore(endTime))
+            (engagement.getStart().equals(start)
+                || engagement.getStart().isAfter(startTime))
+          && (engagement.getEnd().equals(endTime)
+                || engagement.getEnd().isBefore(endTime)))
         .map(EngagementDto::fromEngagement)
         .collect(Collectors.toList());
   }
