@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { RedirectLoginResult } from '@auth0/auth0-spa-js/dist/typings/global.d';
+import { RedirectLoginResult } from '@auth0/auth0-spa-js';
 import { Auth0Provider } from './react-auth0-spa';
 import App from './components/app';
 import config from './auth_config.json';
