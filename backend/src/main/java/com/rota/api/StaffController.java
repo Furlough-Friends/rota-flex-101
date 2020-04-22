@@ -52,16 +52,17 @@ public class StaffController {
           Instant end
   ) {
     if (!AuthenticationUtils.validateToken(authString)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Failed to authorize.");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.");
     }
 
-    final Optional<Integer> user = AuthenticationUtils.getUserFromToken(authString);
-    user.orElseThrow(
-        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user ID format in the "
-            + "token.")
-    );
+    final Integer user =
+        AuthenticationUtils.getUserFromToken(authString)
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Invalid user ID format in the token.")
+            );
 
-    return staffService.getStaffEngagementsBetween(user.get(), start, end);
+    return staffService.getStaffEngagementsBetween(user, start, end);
   }
 
   /**
