@@ -25,7 +25,7 @@ http://localhost:8080/swagger-ui.html
 Returns shifts of a given user (inferred from the authentication token).
 At the moment authentication has not been implemented yet, so the "token" is just user ID.
 Example call:
-` curl http://localhost:8080/myShifts?start=1410-07-15T00:00:00Z&2100-01-01T00:00:00Z -H
+` curl http://localhost:8080/myShifts?start=1410-07-15T00:00:00Z&end=2100-01-01T00:00:00Z -H
  'Authorization: 1' ` 
 
 The start and end dates are optional, so this is valid as well:
