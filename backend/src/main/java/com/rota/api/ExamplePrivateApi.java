@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
 public class ExamplePrivateApi {
 
-    @GetMapping(value = "/public")
-    public HelloWorld publicEndpoint() {
-        return new HelloWorld(1, "hello");
-    }
+  @GetMapping(value = "/public")
+  public HelloWorld publicEndpoint() {
+    return new HelloWorld(1, "hello");
+  }
 
-    @GetMapping(value = "/private")
-    public HelloWorld privateEndpoint() {
-        return new HelloWorld(1, "hello, this is private");
-    }
+  @GetMapping(value = "/private")
+  public HelloWorld privateEndpoint() {
+    return new HelloWorld(1, "hello, this is private");
+  }
 }
