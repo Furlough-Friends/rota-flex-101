@@ -9,10 +9,12 @@ import java.util.Optional;
 public class AuthenticationUtils {
   /**
    * Checks if the provided token is valid.
+   * Only returns false if token is "false" (case insensitive).
    * @param token Authentication token.
    * @return Whether authentication was successful.
    */
   public static boolean validateToken(String token) {
+    // This will only return false if the token is "false" (case insensitive)
     return !token.toLowerCase().equals("false");
   }
 
