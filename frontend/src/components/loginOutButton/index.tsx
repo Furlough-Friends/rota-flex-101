@@ -13,23 +13,18 @@ const LoginOutButton = () => {
     user,
   } = useAuth0();
 
+  const handleLoginOutButtonClick = () => {
+    isAuthenticated ? logout({ federated: true }) : loginWithRedirect({});
+  };
+
   return (
     <div className="login-out-button">
-      {!isAuthenticated ? (
-        <button
-          type="button"
-          disabled={loading}
-          onClick={() => loginWithRedirect({})}>
-          Log in
-        </button>
-      ) : (
-        <button
-          type="button"
-          disabled={loading}
-          onClick={() => logout({ federated: true })}>
-          Log out {!loading && user.name}
-        </button>
-      )}
+      <button
+        type="button"
+        disabled={loading}
+        onClick={handleLoginOutButtonClick}>
+        {isAuthenticated && !loading ? 'Log out ' + user.name : 'Log in'}
+      </button>
     </div>
   );
 };
