@@ -16,7 +16,6 @@ test('Post new staff member', async () => {
   const url = 'http://localhost:3030/staff';
   const data = await fetch(url).then((res) => res.json());
   const count = data.length;
-
   const newStaff = {
     first_name: 'Johnny',
     surname: 'Herbert',
