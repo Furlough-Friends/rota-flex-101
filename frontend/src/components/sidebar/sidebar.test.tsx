@@ -19,7 +19,7 @@ beforeEach(() => {
 });
 
 test('renders the menu options', () => {
-  const { getByText } = render(<Sidebar />);
+  const { getByText } = render(<Sidebar selctedOption="Summary" />);
 
   expect(getByText(/Summary/i)).toBeInTheDocument();
   expect(getByText(/Rota/i)).toBeInTheDocument();
