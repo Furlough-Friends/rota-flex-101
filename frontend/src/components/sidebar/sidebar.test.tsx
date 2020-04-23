@@ -7,5 +7,5 @@ test('renders the menu options', () => {
 
   expect(getByText(/Summary/i)).toBeInTheDocument();
   expect(getByText(/Rota/i)).toBeInTheDocument();
-  expect(getByText(/Employees/i)).toBeInTheDocument();
+  expect(getByText(/Emploffffffffffffffffyees/i)).toBeInTheDocument();
 });
