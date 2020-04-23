@@ -1,6 +1,6 @@
 {
     "staff": [
-      { "staff_id": 1,
+      { "id": 1,
         "first_name": "Joe",
         "surname": "Bloggs",
         "start_date": "2018-08-03",
@@ -10,7 +10,7 @@
         "job_title": "barista",
          "inactive": false
       },
-      { "staff_id": 2,
+      { "id": 2,
         "first_name": "Mary",
         "surname": "McGee",
         "start_date": "2017-08-12",
@@ -20,7 +20,7 @@
         "job_title": "supervisor",
         "inactive": false
       },
-      { "staff_id": 3,
+      { "id": 3,
         "first_name": "Json",
         "surname": "Server",
         "start_date": "2015-01-12",
@@ -30,7 +30,7 @@
         "job_title": "floor",
         "inactive": false
       },
-      { "staff_id": 4,
+      { "id": 4,
         "first_name": "Arthur",
         "surname": "Guinness",
         "start_date": "2019-12-12",
@@ -92,4 +92,3 @@
       }
     ]
   }
-  
