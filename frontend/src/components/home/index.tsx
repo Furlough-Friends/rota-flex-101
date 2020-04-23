@@ -12,7 +12,7 @@ const Home = () => (
       <Route path="/employees" component={Employees} />
       <Route path="/rota" component={Rota} />
       <Route path="/summary" component={Summary} />
-      <Route path="/" component={Sidebar} selctedOption="Employees" />
+      <Route path="/" render={() => <Sidebar selectedOption="Employees" />} />
     </div>
     <Route exact path="/">
       <Redirect to="/employees" />
