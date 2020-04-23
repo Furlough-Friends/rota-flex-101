@@ -5,7 +5,7 @@ import { RedirectLoginResult } from '@auth0/auth0-spa-js';
 import { Auth0Provider } from './react-auth0-spa';
 import App from './components/app';
 import config from './auth_config.json';
-import history from './utils/browserHistory';
+import history from './utils/history';
 import { store } from './app/store';
 import * as serviceWorker from './serviceWorker';
 
