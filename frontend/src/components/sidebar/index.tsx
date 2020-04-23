@@ -1,35 +1,36 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
 
-const getButtons = (
-  options: SidebarOption[],
-  selected: string,
-  changeSelected: (o: string) => void
-) =>
+const SidebarButton = ({
+  name,
+  endpoint,
+}: {
+  name: string;
+  endpoint: string;
+}) => (
+  <button
+    type="button"
+    className={`${sidebarStyles.menuOption} ${
+      `/${endpoint}` === useLocation().pathname
+        ? sidebarStyles.selectedMenuOption
+        : ''
+    }`}
+    key={name}>
+    {name}
+  </button>
+);
+
+const getButtons = (options: SidebarOption[]) =>
   options.map(({ name, endpoint }) => (
-    <Link to={`/${endpoint}`}>
-      <button
-        type="button"
-        className={`${sidebarStyles.menuOption} ${
-          name === selected ? sidebarStyles.selectedMenuOption : ''
-        }`}
-        key={name}
-        onClick={() => changeSelected(name)}>
-        {name}
-      </button>
+    <Link to={`/${endpoint}`} key={name}>
+      <SidebarButton name={name} endpoint={endpoint} />
     </Link>
   ));
 
-const Sidebar = ({ selectedOption }: { selectedOption: string }) => {
-  const [selected, changeSelected] = useState(selectedOption);
-
-  return (
-    <div className={sidebarStyles.container}>
-      {getButtons(sidebarOptions, selected, changeSelected)}
-    </div>
-  );
-};
+const Sidebar = () => (
+  <div className={sidebarStyles.container}>{getButtons(sidebarOptions)}</div>
+);
 
 export default Sidebar;

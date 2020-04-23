@@ -6,7 +6,7 @@ import Sidebar from './index';
 test('renders the menu options', () => {
   const { getByText } = render(
     <Router>
-      <Sidebar selectedOption="Summary" />
+      <Sidebar />
     </Router>
   );
 
