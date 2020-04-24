@@ -1,5 +1,8 @@
 @import '../../constants/styles.scss';
 
+$boxShadowStart: rgba(0, 0, 0, 0.2);
+$boxShadowEnd: rgba(0, 0, 0, 0.19);
+
 .container {
   background-color: $colour-darkBlue;
   display: flex;
@@ -14,4 +17,13 @@
   align-self: center;
   width: 100%;
   background-color: $colour-darkBlue;
+  height: 2.5rem;
+  font-size: 15px;
+  font-family: $font-primary;
+  box-shadow: 0 4px 8px 0 $boxShadowStart, 0 6px 20px 0 $boxShadowEnd;
+  cursor: pointer;
+}
+
+.selectedMenuOption {
+  background-color: $colour-lightBlue;
 }
