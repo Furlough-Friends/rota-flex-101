@@ -1,44 +1,38 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
+import { StaffData, set, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import employeesStyle from './employees.module.scss';
 
 interface tableColumn {
   id: string;
   name: string;
-  content: (o: staffData) => any;
-}
-
-interface staffData {
-  id: number;
-  firstName: string;
-  surname: string;
-  jobTitle: string;
-  contractedHours: number;
+  content: (o: StaffData) => any;
 }
 
 const FULLTIME_HOURS = 37.5;
-const editUser = (id: number) => toastr.info(`User ${id} edited`);
-const deleteUser = (id: number) => toastr.info(`User ${id} deleted`);
+const editUser = (id: number) => () => toastr.info(`User ${id} edited`);
+const deleteUser = (id: number) => () => toastr.info(`User ${id} deleted`);
 
-const getName = ({ firstName, surname }: staffData) =>
+const getName = ({ firstName, surname }: StaffData) =>
   `${firstName} ${surname}`;
-const getJobTitle = ({ jobTitle }: staffData) => jobTitle;
-const partFullTime = ({ contractedHours }: staffData) =>
-  contractedHours >= FULLTIME_HOURS ? 'full' : 'part';
-const editUserButton = ({ id }: staffData) => (
+const getJobTitle = ({ jobTitle }: StaffData) => jobTitle;
+const partFullTime = (fullTimeHours: number) => ({ contractedHours }: StaffData) =>
+  contractedHours >= fullTimeHours ? 'full' : 'part';
+const editUserButton = (editFunction: (o:number) => () => any) => ({ id }: StaffData) => (
   <button
     type="button"
     className={employeesStyle.editButton}
-    onClick={() => editUser(id)}>
+    onClick={editFunction(id)}>
     &#x1F589;
   </button>
 );
-const removeUserButton = ({ id }: staffData) => (
+const removeUserButton = (removeFunction: (o:number) => () => any) => ({ id }: StaffData) => (
   <button
     type="button"
     className={employeesStyle.removeButton}
-    onClick={() => deleteUser(id)}>
+    onClick={removeFunction(id)}>
     X
   </button>
 );
@@ -47,9 +41,9 @@ const removeUserButton = ({ id }: staffData) => (
 const TABLE_COLUMNS = [
   { id: 'name', name: 'Name', content: getName },
   { id: 'job', name: 'Job title', content: getJobTitle },
-  { id: 'partfull', name: 'Part/Full Time', content: partFullTime },
-  { id: 'editbtn', name: '', content: editUserButton },
-  { id: 'removebtn', name: '', content: removeUserButton },
+  { id: 'partfull', name: 'Part/Full Time', content: partFullTime(FULLTIME_HOURS) },
+  { id: 'editbtn', name: '', content: editUserButton(editUser) },
+  { id: 'removebtn', name: '', content: removeUserButton(deleteUser) },
 ];
 
 const FAKE_DATA = [
@@ -75,7 +69,7 @@ const renderTableHeaders = (tableColumns: tableColumn[]) => (
   </thead>
 );
 
-const renderTableRow = (tableColumns: tableColumn[]) => (row: staffData) => (
+const renderTableRow = (tableColumns: tableColumn[]) => (row: StaffData) => (
   <tr key={row.id}>
     {tableColumns.map(({ id, content }: tableColumn) => (
       <td key={id} className={employeesStyle[id]}>
@@ -85,7 +79,7 @@ const renderTableRow = (tableColumns: tableColumn[]) => (row: staffData) => (
   </tr>
 );
 
-const renderTable = (tableColumns: tableColumn[]) => (data: staffData[]) => (
+const renderTable = (tableColumns: tableColumn[]) => (data: StaffData[]) => (
   <table>
     {renderTableHeaders(tableColumns)}
     <tbody>{data.map(renderTableRow(tableColumns))}</tbody>
@@ -101,12 +95,20 @@ const addButton = (
   </button>
 );
 
-const Employees = () => (
-  <div className={employeesStyle.employees}>
-    <h1> Employees </h1>
-    {addButton}
-    {renderTable(TABLE_COLUMNS)(FAKE_DATA)}
-  </div>
-);
+const Employees = () => {
+  const dispatch = useDispatch();
+  const staffList = useSelector(selectStaff);
+
+  // Fetch data when component loads
+  useEffect(() => { dispatch(set(FAKE_DATA)) }, [dispatch]);
+
+  return (
+    <div className={employeesStyle.employees}>
+      <h1> Employees </h1>
+      {addButton}
+      {renderTable(TABLE_COLUMNS)(staffList)}
+    </div>
+  );
+};
 
 export default Employees;
