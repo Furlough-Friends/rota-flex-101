@@ -5,6 +5,7 @@ $boxShadowEnd: rgba(0, 0, 0, 0.19);
 
 .container {
   background-color: $colour-darkBlue;
+  grid-area: sidebar;
   display: flex;
   flex-direction: column;
   height: 100vh;

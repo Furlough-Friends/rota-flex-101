@@ -1,25 +1,38 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
 import LoginOutButton from '../loginOutButton';
 
-const getButtons = (options: SidebarOption[], selctedOption: String) =>
-  options.map((o) => (
-    <button
-      type="button"
-      className={`${sidebarStyles.menuOption} ${
-        o.name === selctedOption ? sidebarStyles.selectedMenuOption : ''
-      }`}
-      key={o.name}>
-      {o.name}
-    </button>
+const SidebarButton = ({
+  name,
+  endpoint,
+}: {
+  name: string;
+  endpoint: string;
+}) => (
+  <button
+    type="button"
+    className={`${sidebarStyles.menuOption} ${
+      `/${endpoint}` === useLocation().pathname
+        ? sidebarStyles.selectedMenuOption
+        : ''
+    }`}
+    key={name}>
+    {name}
+  </button>
+);
+
+const getButtons = (options: SidebarOption[]) =>
+  options.map(({ name, endpoint }) => (
+    <Link to={`/${endpoint}`} key={name}>
+      <SidebarButton name={name} endpoint={endpoint} />
+    </Link>
   ));
 
-const Sidebar = ({ selctedOption }: { selctedOption: string }) => (
-  <div className={sidebarStyles.container}>
-    {getButtons(sidebarOptions, selctedOption)}
-    <LoginOutButton />
-  </div>
+const Sidebar = () => (
+  <div className={sidebarStyles.container}>{getButtons(sidebarOptions)}</div>
+  <LoginOutButton />
 );
 
 export default Sidebar;

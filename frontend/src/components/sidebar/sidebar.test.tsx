@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import Sidebar from './index';
 import { useAuth0 } from '../../react-auth0-spa';
@@ -19,7 +20,11 @@ beforeEach(() => {
 });
 
 test('renders the menu options', () => {
-  const { getByText } = render(<Sidebar selctedOption="Summary" />);
+  const { getByText } = render(
+    <Router>
+      <Sidebar />
+    </Router>
+  );
 
   expect(getByText(/Summary/i)).toBeInTheDocument();
   expect(getByText(/Rota/i)).toBeInTheDocument();
