@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 import { StaffData, set, selectStaff } from '../../features/staffSlice';
@@ -18,9 +18,12 @@ const deleteUser = (id: number) => () => toastr.info(`User ${id} deleted`);
 const getName = ({ firstName, surname }: StaffData) =>
   `${firstName} ${surname}`;
 const getJobTitle = ({ jobTitle }: StaffData) => jobTitle;
-const partFullTime = (fullTimeHours: number) => ({ contractedHours }: StaffData) =>
-  contractedHours >= fullTimeHours ? 'full' : 'part';
-const editUserButton = (editFunction: (o:number) => () => any) => ({ id }: StaffData) => (
+const partFullTime = (fullTimeHours: number) => ({
+  contractedHours,
+}: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
+const editUserButton = (editFunction: (o: number) => () => any) => ({
+  id,
+}: StaffData) => (
   <button
     type="button"
     className={employeesStyle.editButton}
@@ -28,7 +31,9 @@ const editUserButton = (editFunction: (o:number) => () => any) => ({ id }: Staff
     &#x1F589;
   </button>
 );
-const removeUserButton = (removeFunction: (o:number) => () => any) => ({ id }: StaffData) => (
+const removeUserButton = (removeFunction: (o: number) => () => any) => ({
+  id,
+}: StaffData) => (
   <button
     type="button"
     className={employeesStyle.removeButton}
@@ -41,7 +46,11 @@ const removeUserButton = (removeFunction: (o:number) => () => any) => ({ id }: S
 const TABLE_COLUMNS = [
   { id: 'name', name: 'Name', content: getName },
   { id: 'job', name: 'Job title', content: getJobTitle },
-  { id: 'partfull', name: 'Part/Full Time', content: partFullTime(FULLTIME_HOURS) },
+  {
+    id: 'partfull',
+    name: 'Part/Full Time',
+    content: partFullTime(FULLTIME_HOURS),
+  },
   { id: 'editbtn', name: '', content: editUserButton(editUser) },
   { id: 'removebtn', name: '', content: removeUserButton(deleteUser) },
 ];
@@ -100,7 +109,9 @@ const Employees = () => {
   const staffList = useSelector(selectStaff);
 
   // Fetch data when component loads
-  useEffect(() => { dispatch(set(FAKE_DATA)) }, [dispatch]);
+  useEffect(() => {
+    dispatch(set(FAKE_DATA));
+  }, [dispatch]);
 
   return (
     <div className={employeesStyle.employees}>

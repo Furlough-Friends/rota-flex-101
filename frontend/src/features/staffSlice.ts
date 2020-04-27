@@ -14,7 +14,7 @@ interface StaffState {
 }
 
 const initialState: StaffState = {
-  value: []
+  value: [],
 };
 
 export const staffSlice = createSlice({
@@ -43,6 +43,5 @@ export const incrementAsync = (amount: number): AppThunk => (dispatch) => {
 */
 
 export const selectStaff = (state: RootState) => state.staff.value;
-
 
 export default staffSlice.reducer;
