@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../app/store';
+import { RootState, AppThunk } from '../app/store';
 
 export interface StaffData {
   id: number;
@@ -30,17 +30,12 @@ export const staffSlice = createSlice({
 
 export const { set } = staffSlice.actions;
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-/*
-export const incrementAsync = (amount: number): AppThunk => (dispatch) => {
-  setTimeout(() => {
-    dispatch(incrementByAmount(amount));
-  }, 1000);
-};
-*/
+export const fetchStaff = (token: string, url: string): AppThunk => (
+  dispatch
+) =>
+  fetch(url, { headers: { Authorization: token } })
+    .then((response) => response.json())
+    .then((response) => dispatch(set(response)));
 
 export const selectStaff = (state: RootState) => state.staff.value;
 

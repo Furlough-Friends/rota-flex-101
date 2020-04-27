@@ -1,20 +1,32 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
-import { StaffData, set, selectStaff } from '../../features/staffSlice';
+import { StaffData, fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import employeesStyle from './employees.module.scss';
 
-interface tableColumn {
+const STAFF_FETCH_URL = 'http://localhost:8080/staff/get';
+const AUTHENTICATION_TOKEN = 'xx';
+const FULLTIME_HOURS = 37.5;
+
+interface TableColumn {
   id: string;
   name: string;
   content: (o: StaffData) => any;
 }
 
-const FULLTIME_HOURS = 37.5;
+/**
+ * Functions which are called when add/edit/delete buttons are pressed.
+ * Note that the signature of addUser is different from editUser/deleteUser.
+ */
+const addUser = () => toastr.info('Add user');
 const editUser = (id: number) => () => toastr.info(`User ${id} edited`);
 const deleteUser = (id: number) => () => toastr.info(`User ${id} deleted`);
 
+/**
+ * Functions which extract the data to be displayed in the table columns
+ * from StaffData.
+ */
 const getName = ({ firstName, surname }: StaffData) =>
   `${firstName} ${surname}`;
 const getJobTitle = ({ jobTitle }: StaffData) => jobTitle;
@@ -42,7 +54,15 @@ const removeUserButton = (removeFunction: (o: number) => () => any) => ({
   </button>
 );
 
-// A list of table column names and the function on how to derive the quantity from raw data
+/**
+ * Specifies the list of table columns to be displayed.
+ * Each  column has the following properties:
+ * id - column's unique id (also its class name for css)
+ * name - column name - the top row of the table
+ * content - a function taking StaffData as an argument
+ *    and returning the value of the corresponding table
+ *    cell
+ */
 const TABLE_COLUMNS = [
   { id: 'name', name: 'Name', content: getName },
   { id: 'job', name: 'Job title', content: getJobTitle },
@@ -55,21 +75,10 @@ const TABLE_COLUMNS = [
   { id: 'removebtn', name: '', content: removeUserButton(deleteUser) },
 ];
 
-const FAKE_DATA = [
-  {
-    id: 1,
-    firstName: 'foo',
-    surname: 'bar',
-    jobTitle: 'baz',
-    contractedHours: 999,
-  },
-  { id: 2, firstName: 'a', surname: 'b', jobTitle: 'c', contractedHours: 9 },
-];
-
-const renderTableHeaders = (tableColumns: tableColumn[]) => (
+const renderTableHeaders = (tableColumns: TableColumn[]) => (
   <thead>
     <tr>
-      {tableColumns.map(({ id, name }: tableColumn) => (
+      {tableColumns.map(({ id, name }: TableColumn) => (
         <th key={id} className={employeesStyle[id]}>
           {name}
         </th>
@@ -78,9 +87,9 @@ const renderTableHeaders = (tableColumns: tableColumn[]) => (
   </thead>
 );
 
-const renderTableRow = (tableColumns: tableColumn[]) => (row: StaffData) => (
+const renderTableRow = (tableColumns: TableColumn[]) => (row: StaffData) => (
   <tr key={row.id}>
-    {tableColumns.map(({ id, content }: tableColumn) => (
+    {tableColumns.map(({ id, content }: TableColumn) => (
       <td key={id} className={employeesStyle[id]}>
         {content(row)}
       </td>
@@ -88,7 +97,7 @@ const renderTableRow = (tableColumns: tableColumn[]) => (row: StaffData) => (
   </tr>
 );
 
-const renderTable = (tableColumns: tableColumn[]) => (data: StaffData[]) => (
+const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
   <table>
     {renderTableHeaders(tableColumns)}
     <tbody>{data.map(renderTableRow(tableColumns))}</tbody>
@@ -96,21 +105,18 @@ const renderTable = (tableColumns: tableColumn[]) => (data: StaffData[]) => (
 );
 
 const addButton = (
-  <button
-    type="button"
-    className={employeesStyle.addButton}
-    onClick={() => toastr.info('Add user')}>
+  <button type="button" className={employeesStyle.addButton} onClick={addUser}>
     Add
   </button>
 );
 
 const Employees = () => {
-  const dispatch = useDispatch();
   const staffList = useSelector(selectStaff);
+  const dispatch = useDispatch();
 
   // Fetch data when component loads
   useEffect(() => {
-    dispatch(set(FAKE_DATA));
+    dispatch(fetchStaff(AUTHENTICATION_TOKEN, STAFF_FETCH_URL));
   }, [dispatch]);
 
   return (
