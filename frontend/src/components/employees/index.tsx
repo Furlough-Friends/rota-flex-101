@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import toastr from 'toastr';
 import { StaffData, fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
@@ -76,38 +83,45 @@ const TABLE_COLUMNS = [
 ];
 
 const renderTableHeaders = (tableColumns: TableColumn[]) => (
-  <thead>
-    <tr>
+  <TableHead>
+    <TableRow>
       {tableColumns.map(({ id, name }: TableColumn) => (
-        <th key={id} className={employeesStyle[id]}>
+        <TableCell key={id} className={employeesStyle[id]}>
           {name}
-        </th>
+        </TableCell>
       ))}
-    </tr>
-  </thead>
+    </TableRow>
+  </TableHead>
 );
 
 const renderTableRow = (tableColumns: TableColumn[]) => (row: StaffData) => (
-  <tr key={row.id}>
+  <TableRow key={row.id}>
     {tableColumns.map(({ id, content }: TableColumn) => (
-      <td key={id} className={employeesStyle[id]}>
+      <TableCell key={id} className={employeesStyle[id]}>
         {content(row)}
-      </td>
+      </TableCell>
     ))}
-  </tr>
+  </TableRow>
 );
 
 const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
-  <table>
+  <Table size="small">
     {renderTableHeaders(tableColumns)}
-    <tbody>{data.map(renderTableRow(tableColumns))}</tbody>
-  </table>
+    <TableBody>{data.map(renderTableRow(tableColumns))}</TableBody>
+  </Table>
 );
 
 const addButton = (
-  <button type="button" className={employeesStyle.addButton} onClick={addUser}>
-    Add
-  </button>
+  <Box display="flex" justifyContent="flex-end" alignItems="center">
+    <Button
+      className={employeesStyle.addButton}
+      color="primary"
+      variant="contained"
+      size="small"
+      onClick={addUser}>
+      Add
+    </Button>
+  </Box>
 );
 
 const Employees = () => {

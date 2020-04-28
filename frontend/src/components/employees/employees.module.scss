@@ -10,6 +10,7 @@
 
 h1 {
   grid-area: header;
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
 .addButton {
@@ -17,19 +18,8 @@ h1 {
   margin: 2em;
 }
 
-table {
-  border-collapse: collapse;
+Table {
   grid-area: table;
-}
-
-tr {
-  border: 1px solid black;
-  height: 3em;
-}
-
-th {
-  text-align: left;
-  height: 3em;
 }
 
 .editbtn,
@@ -38,31 +28,23 @@ th {
   width: 1em;
 }
 
+.editButton,
 .removeButton {
-  color: red;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-weight: 1000;
-  margin: 0.1em;
-  font-size: 1em;
-}
-
-.removeButton:hover {
-  font-size: 1.2em;
-  margin: 0em;
-}
-
-.editButton {
   border: none;
   outline: none;
   background-color: transparent;
   font-weight: 100;
-  margin: 0.1em;
+  margin: 0.15em;
   font-size: 1em;
 }
 
-.editButton:hover {
+.removeButton {
+  color: red;
+  font-weight: 1000;
+}
+
+.editButton:hover,
+.removeButton:hover {
   font-size: 1.2em;
   margin: 0em;
 }
