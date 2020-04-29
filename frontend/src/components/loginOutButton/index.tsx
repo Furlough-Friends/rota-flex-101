@@ -17,7 +17,7 @@ const LoginOutButton = () => {
     if (isAuthenticated) {
       logout({ federated: true });
     } else {
-      loginWithRedirect({});
+      loginWithRedirect({ appState: { targetUrl: window.location.pathname } });
     }
   };
 
