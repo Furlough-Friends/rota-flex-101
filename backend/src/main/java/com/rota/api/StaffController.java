@@ -1,9 +1,8 @@
 package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
-import com.rota.api.dto.form.CreateStaffForm;
+import com.rota.api.dto.StaffDto;
 import com.rota.auth.AuthenticationUtils;
-import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +10,6 @@ import io.swagger.annotations.ApiParam;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,12 +72,12 @@ public class StaffController {
    *
    * @param authString      Authentication token.
    * @param createStaffForm Staff details.
-   * @return
+   * @return {@link Staff} the created staff object.
    */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
       consumes = "application/json")
-  public ResponseEntity createStaff(
+  public ResponseEntity<Staff> createStaff(
       @RequestHeader("Authorization")
       @ApiParam(value = "Authentication token")
           String authString,
@@ -87,7 +85,7 @@ public class StaffController {
       @Valid
       @RequestBody
       @ApiParam("Staff details for the new user")
-          CreateStaffForm createStaffForm
+          StaffDto createStaffForm
   ) {
     if (!staffService.hasManagerPermissions(authString)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
