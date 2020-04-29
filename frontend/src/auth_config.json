@@ -1,6 +1,6 @@
 {
   "domain": "rota-flex-101.eu.auth0.com",
   "clientId": "NqmZExdF9Q14mgi7p5o5RkPt338B2irO",
-  "audience": "rota-flex-api"
+  "audience": "rota-flex-api",
   "callbackUri": "http://localhost:3000/callback"
 }
