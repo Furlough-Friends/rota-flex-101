@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { RedirectLoginResult } from '@auth0/auth0-spa-js';
+import { Router } from 'react-router-dom';
 import { Auth0Provider } from './react-auth0-spa';
 import App from './components/app';
 import config from './auth_config.json';
@@ -29,9 +30,11 @@ ReactDOM.render(
       <Auth0Provider
         domain={config.domain}
         client_id={config.clientId}
-        redirect_uri={window.location.origin}
+        redirect_uri="http://localhost:3000/callback"
         onRedirectCallback={onRedirectCallback}>
-        <App />
+        <Router history={history}>
+          <App />
+        </Router>
       </Auth0Provider>
     </Provider>
   </React.StrictMode>,
