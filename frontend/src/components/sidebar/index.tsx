@@ -23,7 +23,11 @@ const SidebarButton = ({
   </button>
 );
 
-const getButtons = (options: SidebarOption[]) =>
+const getButtons =
+
+
+
+ (options: SidebarOption[]       )   =>
   options.map(({ name, endpoint }) => (
     <Link to={`/${endpoint}`} key={name}>
       <SidebarButton name={name} endpoint={endpoint} />
