@@ -31,6 +31,7 @@ ReactDOM.render(
         domain={config.domain}
         client_id={config.clientId}
         redirect_uri={config.callbackUri}
+        audience={config.audience}
         onRedirectCallback={onRedirectCallback}>
         <Router history={history}>
           <App />
