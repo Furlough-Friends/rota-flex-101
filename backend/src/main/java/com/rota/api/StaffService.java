@@ -1,14 +1,18 @@
 package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
+import com.rota.auth.AuthenticationUtils;
 import com.rota.database.orm.engagement.EngagementRepository;
+import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class StaffService {
@@ -49,5 +53,20 @@ public class StaffService {
    */
   public Staff createStaff(Staff newStaff) {
     return staffRepository.save(newStaff);
+  }
+
+  /**
+   * Checks to see if the current user is a manager.
+   *
+   * @param authString the current threads authentication token.
+   * @return true if user has manager permissions.
+   */
+  public boolean hasManagerPermissions(String authString) {
+    final Role role = AuthenticationUtils
+        .getUserRoleFromToken(authString)
+        .orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
+        );
+    return role == Role.MANAGER;
   }
 }

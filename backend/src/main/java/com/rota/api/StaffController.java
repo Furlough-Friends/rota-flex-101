@@ -8,10 +8,12 @@ import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class StaffController {
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
+   *
    * @param authString Authentication token.
    * @return List of all available shifts.
    */
@@ -68,7 +71,8 @@ public class StaffController {
   /**
    * Endpoint to create and enter a new staff record into the system.
    * Staff ID and role is inferred from the token passed in the header's Authorization field.
-   * @param authString Authentication token.
+   *
+   * @param authString      Authentication token.
    * @param createStaffForm Staff details.
    * @return
    */
@@ -85,13 +89,7 @@ public class StaffController {
       @ApiParam("Staff details for the new user")
           CreateStaffForm createStaffForm
   ) {
-    final Role role = AuthenticationUtils
-        .getUserRoleFromToken(authString)
-        .orElseThrow(() ->
-          new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
-        );
-
-    if (role != Role.MANAGER) {
+    if (!staffService.hasManagerPermissions(authString)) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
     }
     // Assuming in general staff entered will be active ones
