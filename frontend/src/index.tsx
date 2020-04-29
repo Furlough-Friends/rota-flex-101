@@ -30,7 +30,7 @@ ReactDOM.render(
       <Auth0Provider
         domain={config.domain}
         client_id={config.clientId}
-        redirect_uri="http://localhost:3000/callback"
+        redirect_uri={config.callbackUri}
         onRedirectCallback={onRedirectCallback}>
         <Router history={history}>
           <App />
