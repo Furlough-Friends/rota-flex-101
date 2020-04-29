@@ -26,7 +26,7 @@ public class Staff {
 
   private String surname;
 
-  private boolean active;
+  private boolean inactive;
 
   private LocalDate startDate;
 

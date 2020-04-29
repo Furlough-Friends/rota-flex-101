@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
+import LoginOutButton from '../loginOutButton';
 
 const SidebarButton = ({
   name,
@@ -30,7 +31,10 @@ const getButtons = (options: SidebarOption[]) =>
   ));
 
 const Sidebar = () => (
-  <div className={sidebarStyles.container}>{getButtons(sidebarOptions)}</div>
+  <div className={sidebarStyles.container}>
+    {getButtons(sidebarOptions)}
+    <LoginOutButton />
+  </div>
 );
 
 export default Sidebar;

@@ -1,10 +1,10 @@
 INSERT INTO STAFF(first_name, surname, start_date, contracted_hours, hourly_rate, role, job_title,
-active)
+inactive)
 VALUES
-    ('Joe', 'Bloggs', '2018-08-03', 40, 1.23, 'USER', 'barista', true),
-    ('Mary', 'McGee', '2017-08-12', 40, 999.99, 'MANAGER', 'supervisor', true),
-    ('Json', 'Server', '2015-01-12', 40, 0.01, 'USER', 'floor', true),
-    ('Arthur', 'Guinness', '2019-12-12', 40, 2.99, 'USER', 'chef', true);
+    ('Joe', 'Bloggs', '2018-08-03', 40, 1.23, 'USER', 'barista', false),
+    ('Mary', 'McGee', '2017-08-12', 40, 999.99, 'MANAGER', 'supervisor', false),
+    ('Json', 'Server', '2015-01-12', 40, 0.01, 'USER', 'floor', false),
+    ('Arthur', 'Guinness', '2019-12-12', 40, 2.99, 'USER', 'chef', false);
 
 INSERT INTO ENGAGEMENT(start, end, type, hours_worked, staff_id)
 VALUES

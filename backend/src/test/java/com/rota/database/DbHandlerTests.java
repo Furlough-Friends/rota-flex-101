@@ -31,7 +31,7 @@ class DbHandlerTests {
       .id(STAFF_ID)
       .firstName("Grzegorz")
       .surname("Brzeczyszczykiewicz")
-      .active(true)
+      .inactive(false)
       .startDate(LocalDate.of(2020, 4, 12))
       .contractedHours(10.0)
       .hourlyRate(40.0)
