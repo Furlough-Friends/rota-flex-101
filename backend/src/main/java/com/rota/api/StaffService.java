@@ -38,7 +38,7 @@ public class StaffService {
     return engagementRepository.findByStaffId(staffId).stream()
         .filter(engagement ->
             (engagement.getStart().equals(start)
-                || engagement.getStart().isAfter(startTime))
+                || !engagement.getStart().isBefore(startTime))
           && (engagement.getEnd().equals(endTime)
                 || engagement.getEnd().isBefore(endTime)))
         .map(EngagementDto::fromEngagement)
