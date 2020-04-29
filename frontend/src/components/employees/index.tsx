@@ -8,38 +8,44 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import toastr from 'toastr';
-import { StaffData, fetchStaff, selectStaff } from '../../features/staffSlice';
+import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import employeesStyle from './employees.module.scss';
+import {
+  STAFF_FETCH_URL,
+  FULLTIME_HOURS,
+  StaffData,
+  TableColumn,
+} from '../../constants/employees';
 
-const STAFF_FETCH_URL = 'http://localhost:8080/staff/get';
-const AUTHENTICATION_TOKEN = 'xx';
-const FULLTIME_HOURS = 37.5;
-
-interface TableColumn {
-  id: string;
-  name: string;
-  content: (o: StaffData) => any;
-}
+// A placeholder for authentication token
+const getAuthenticationToken = (): string => 'xx';
 
 /**
  * Functions which are called when add/edit/delete buttons are pressed.
  * Note that the signature of addUser is different from editUser/deleteUser.
  */
+
 const addUser = () => toastr.info('Add user');
+
 const editUser = (id: number) => () => toastr.info(`User ${id} edited`);
+
 const deleteUser = (id: number) => () => toastr.info(`User ${id} deleted`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
  * from StaffData.
  */
+
 const getName = ({ firstName, surname }: StaffData) =>
   `${firstName} ${surname}`;
+
 const getJobTitle = ({ jobTitle }: StaffData) => jobTitle;
+
 const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
 }: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
+
 const editUserButton = (editFunction: (o: number) => () => any) => ({
   id,
 }: StaffData) => (
@@ -50,6 +56,7 @@ const editUserButton = (editFunction: (o: number) => () => any) => ({
     &#x1F589;
   </button>
 );
+
 const removeUserButton = (removeFunction: (o: number) => () => any) => ({
   id,
 }: StaffData) => (
@@ -70,6 +77,7 @@ const removeUserButton = (removeFunction: (o: number) => () => any) => ({
  *    and returning the value of the corresponding table
  *    cell
  */
+
 const TABLE_COLUMNS = [
   { id: 'name', name: 'Name', content: getName },
   { id: 'job', name: 'Job title', content: getJobTitle },
@@ -130,7 +138,7 @@ const Employees = () => {
 
   // Fetch data when component loads
   useEffect(() => {
-    dispatch(fetchStaff(AUTHENTICATION_TOKEN, STAFF_FETCH_URL));
+    dispatch(fetchStaff(getAuthenticationToken(), STAFF_FETCH_URL));
   }, [dispatch]);
 
   return (

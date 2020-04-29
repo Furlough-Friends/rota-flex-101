@@ -1,13 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { StaffData } from '../constants/employees';
 import { RootState, AppThunk } from '../app/store';
-
-export interface StaffData {
-  id: number;
-  firstName: string;
-  surname: string;
-  jobTitle: string;
-  contractedHours: number;
-}
 
 interface StaffState {
   value: StaffData[];
