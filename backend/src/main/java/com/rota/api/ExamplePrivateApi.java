@@ -1,6 +1,5 @@
 package com.rota.api;
 
-import com.rota.api.dto.HelloWorld;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExamplePrivateApi {
 
   @GetMapping(value = "/public")
-  public HelloWorld publicEndpoint() {
-    return new HelloWorld(1, "hello");
+  public String publicEndpoint() {
+    return "hello";
   }
 
   @GetMapping(value = "/private")
-  public HelloWorld privateEndpoint() {
-    return new HelloWorld(1, "hello, this is private");
+  public String privateEndpoint() {
+    return "hello, this is private";
   }
 }
