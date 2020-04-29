@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import Sidebar from '../sidebar';
 import Employees from '../employees';
 import Rota from '../rota';
@@ -14,9 +14,6 @@ const Home = () => (
       <Route path="/summary" component={Summary} />
       <Route path="/" component={Sidebar} />
     </div>
-    <Route exact path="/">
-      <Redirect to="/employees" />
-    </Route>
   </Router>
 );
 
