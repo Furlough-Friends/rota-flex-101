@@ -6,9 +6,11 @@ import com.rota.database.orm.engagement.EngagementRepository;
 import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -28,8 +30,8 @@ public class StaffService {
    * Both start and end dates are optional and can be left as null.
    *
    * @param staffId Staff member's ID
-   * @param start start date or null to get from the beginning
-   * @param end end date
+   * @param start   start date or null to get from the beginning
+   * @param end     end date
    * @return A list of member's engagements
    */
   public List<EngagementDto> getStaffEngagementsBetween(int staffId, Instant start, Instant end) {
@@ -37,10 +39,8 @@ public class StaffService {
     Instant endTime = end == null ? Instant.MAX : end;
     return engagementRepository.findByStaffId(staffId).stream()
         .filter(engagement ->
-            (engagement.getStart().equals(start)
-                || !engagement.getStart().isBefore(startTime))
-          && (engagement.getEnd().equals(endTime)
-                || engagement.getEnd().isBefore(endTime)))
+            !engagement.getStart().isBefore(startTime)
+                && !engagement.getEnd().isAfter(endTime))
         .map(EngagementDto::fromEngagement)
         .collect(Collectors.toList());
   }
