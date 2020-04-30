@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import toastr from 'toastr';
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
@@ -7,16 +9,18 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import toastr from 'toastr';
+
+import Clear from '@material-ui/icons/Clear';
+import EditOutlined from '@material-ui/icons/EditOutlined';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
-import employeesStyle from './employees.module.scss';
 import {
   STAFF_FETCH_URL,
   FULLTIME_HOURS,
   StaffData,
   TableColumn,
 } from '../../constants/employees';
+import employeesStyle from './employees.module.scss';
 
 // A placeholder for authentication token
 const getAuthenticationToken = (): string => 'xx';
@@ -53,7 +57,7 @@ const editUserButton = (editFunction: (o: number) => () => any) => ({
     type="button"
     className={employeesStyle.editButton}
     onClick={editFunction(id)}>
-    &#x1F589;
+    <EditOutlined />
   </button>
 );
 
@@ -64,7 +68,7 @@ const removeUserButton = (removeFunction: (o: number) => () => any) => ({
     type="button"
     className={employeesStyle.removeButton}
     onClick={removeFunction(id)}>
-    X
+    <Clear />
   </button>
 );
 
