@@ -3,6 +3,7 @@ package com.rota.api;
 import com.rota.api.dto.EngagementDto;
 import com.rota.api.dto.StaffDto;
 import com.rota.auth.AuthenticationUtils;
+import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

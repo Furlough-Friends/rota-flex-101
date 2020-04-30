@@ -69,7 +69,8 @@ public class StaffService {
         );
     return role == Role.MANAGER;
   }
-  
+
+  /**
    * Returns the list of all active staff members.
    *
    * @return A list of all active staff members.
