@@ -48,6 +48,10 @@ response.
 
 An example request can be seen through the [swagger endpoint](#server-endpoints).
 
+A minimal request can look as follows:
+
+`curl "http://localhost:8080/staff/create" -H 'Authorization: xx' -X 'POST' -H 'Content-Type:application/json' -d '{"firstName":"a", "surname":"b", "role":"MANAGER"}'`
+
 ## Database
 
 Spring currently sets up an in-memory H2 database with dummy entries.
