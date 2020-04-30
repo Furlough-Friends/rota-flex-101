@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -12,14 +11,15 @@ import TableCell from '@material-ui/core/TableCell';
 
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
+
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import {
   STAFF_FETCH_URL,
-  FULLTIME_HOURS,
   StaffData,
   TableColumn,
 } from '../../constants/employees';
+import { FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
 
 // A placeholder for authentication token
@@ -124,7 +124,7 @@ const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
 );
 
 const addButton = (
-  <Box display="flex" justifyContent="flex-end" alignItems="center">
+  <div className={employeesStyle.addButtonContainer}>
     <Button
       className={employeesStyle.addButton}
       color="primary"
@@ -133,7 +133,7 @@ const addButton = (
       onClick={addUser}>
       Add
     </Button>
-  </Box>
+  </div>
 );
 
 const Employees = () => {

@@ -1,6 +1,6 @@
-export const URL = 'http://localhost:8080';
+import { URL } from './global';
+
 export const STAFF_FETCH_URL = `${URL}/staff/get`;
-export const FULLTIME_HOURS = 37.5;
 
 export interface StaffData {
   id: number;
