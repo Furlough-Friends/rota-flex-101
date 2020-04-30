@@ -69,4 +69,14 @@ public class StaffService {
         );
     return role == Role.MANAGER;
   }
+  
+   * Returns the list of all active staff members.
+   *
+   * @return A list of all active staff members.
+   */
+  public List<Staff> getActiveStaff() {
+    return staffRepository.findAll().stream()
+        .filter(staff -> !staff.isInactive())
+        .collect(Collectors.toList());
+  }
 }

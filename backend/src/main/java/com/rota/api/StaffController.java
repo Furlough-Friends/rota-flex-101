@@ -29,6 +29,8 @@ public class StaffController {
   @Autowired
   StaffService staffService;
 
+  static final String AUTHORIZATION_HEADER = "Authorization";
+
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
@@ -40,7 +42,7 @@ public class StaffController {
   @ApiOperation(value = "Returns shifts of an authenticated user. User is inferred from the "
       + "authentication token passed in a header", response = EngagementDto[].class)
   public List<EngagementDto> getMyShifts(
-      @RequestHeader("Authorization")
+      @RequestHeader(AUTHORIZATION_HEADER)
       @ApiParam(value = "Authentication token", required = true)
           String authString,
 
@@ -66,32 +68,41 @@ public class StaffController {
     return staffService.getStaffEngagementsBetween(user, start, end);
   }
 
+  private void verifyManagementRole(String authString) {
+    final Role role = AuthenticationUtils
+        .getUserRoleFromToken(authString)
+        .orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
+        );
+
+    if (role != Role.MANAGER) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
+    }
+  }
+
   /**
    * Endpoint to create and enter a new staff record into the system.
    * Staff ID and role is inferred from the token passed in the header's Authorization field.
-   *
-   * @param authString      Authentication token.
-   * @param createStaffForm Staff details.
-   * @return {@link Staff} the created staff object.
+   * @param authString Authentication token.
+   * @param staffDto Staff details.
+   * @return The created staff object as a JsonResponse.
    */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
       consumes = "application/json")
   public ResponseEntity<Staff> createStaff(
-      @RequestHeader("Authorization")
+      @RequestHeader(AUTHORIZATION_HEADER)
       @ApiParam(value = "Authentication token")
           String authString,
 
       @Valid
       @RequestBody
       @ApiParam("Staff details for the new user")
-          StaffDto createStaffForm
+          StaffDto staffDto
   ) {
-    if (!staffService.hasManagerPermissions(authString)) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
-    }
+    verifyManagementRole(authString);
     // Assuming in general staff entered will be active ones
-    Staff createdStaff = staffService.createStaff(createStaffForm.toStaff());
+    Staff createdStaff = staffService.createStaff(staffDto.toStaff());
 
     return ResponseEntity.ok().body(createdStaff);
   }
