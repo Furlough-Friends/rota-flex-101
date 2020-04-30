@@ -106,33 +106,6 @@ public class StaffController {
   }
 
   /**
-   * Endpoint to create and enter a new staff record into the system.
-   * Staff ID and role is inferred from the token passed in the header's Authorization field.
-   * @param authString Authentication token.
-   * @param staffDto Staff details.
-   * @return
-   */
-  @PostMapping("/staff/create")
-  @ApiOperation(value = "Lets an authenticated manager create a new staff user",
-      consumes = "application/json")
-  public ResponseEntity createStaff(
-      @RequestHeader(AUTHORIZATION_HEADER)
-      @ApiParam(value = "Authentication token")
-          String authString,
-
-      @Valid
-      @RequestBody
-      @ApiParam("Staff details for the new user")
-          StaffDto staffDto
-  ) {
-    verifyManagementRole(authString);
-    // Assuming in general staff entered will be active ones
-    Staff createdStaff = staffService.createStaff(staffDto.toStaff());
-
-    return ResponseEntity.ok().body(createdStaff);
-  }
-
-  /**
    * Get endpoint for all active staff members.
    * @param authString Authentication token.
    * @return List of all active staff members.
