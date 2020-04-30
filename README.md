@@ -19,3 +19,15 @@ Alternatively, git could be set up to recognise the `.githooks` directory using:
 ```
 git config --local core.hooksPath .githooks/
 ```
+
+## Test
+
+#### JSON server
+JSON-Server is a dev-dependency and has a .json file named "data.json" in ./frontend/test/data/data.son
+
+The server can be started using the following command:
+
+```
+json-server --watch ./frontend/test/data/data.json
+```
+It can be reached with endpoint localhost:3000/test and should give a JSON object called "test".
