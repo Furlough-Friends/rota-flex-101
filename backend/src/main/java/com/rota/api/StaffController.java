@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import io.swagger.annotations.Authorization;
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
@@ -28,8 +29,12 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @Api(value = "Manages the responses to staff-related queries")
 public class StaffController {
+
   @Autowired
   StaffService staffService;
+
+  @Autowired
+  AuthenticationUtils authenticationUtils;
 
   static final String AUTHORIZATION_HEADER = "Authorization";
 
@@ -56,12 +61,12 @@ public class StaffController {
       @ApiParam(value = "end time")
           Instant end
   ) {
-    if (!AuthenticationUtils.validateToken(authString)) {
+    if (!authenticationUtils.validateToken(authString)) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.");
     }
 
     final Integer user =
-        AuthenticationUtils.getUserFromToken(authString)
+        authenticationUtils.getUserFromToken(authString)
             .orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "Invalid user ID format in the token.")
@@ -71,7 +76,7 @@ public class StaffController {
   }
 
   private void verifyManagementRole(String authString) {
-    final Role role = AuthenticationUtils
+    final Role role = authenticationUtils
         .getUserRoleFromToken(authString)
         .orElseThrow(() ->
             new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
