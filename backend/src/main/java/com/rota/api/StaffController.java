@@ -85,9 +85,10 @@ public class StaffController {
   /**
    * Endpoint to create and enter a new staff record into the system.
    * Staff ID and role is inferred from the token passed in the header's Authorization field.
+   *
    * @param authString Authentication token.
-   * @param staffDto Staff details.
-   * @return The created staff object as a JsonResponse.
+   * @param staffDto   Staff details.
+   * @return A Response entity of a {@link Staff} object
    */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
