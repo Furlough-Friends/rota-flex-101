@@ -24,8 +24,8 @@ public class StaffService {
    * Both start and end dates are optional and can be left as null.
    *
    * @param staffId Staff member's ID
-   * @param start start date or null to get from the beginning
-   * @param end end date
+   * @param start   start date or null to get from the beginning
+   * @param end     end date
    * @return A list of member's engagements
    */
   public List<EngagementDto> getStaffEngagementsBetween(int staffId, Instant start, Instant end) {
@@ -35,7 +35,7 @@ public class StaffService {
         .filter(engagement ->
             (engagement.getStart().equals(start)
                 || engagement.getStart().isAfter(startTime))
-          && (engagement.getEnd().equals(endTime)
+                && (engagement.getEnd().equals(endTime)
                 || engagement.getEnd().isBefore(endTime)))
         .map(EngagementDto::fromEngagement)
         .collect(Collectors.toList());
@@ -60,5 +60,20 @@ public class StaffService {
     return staffRepository.findAll().stream()
         .filter(staff -> !staff.isInactive())
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Get a user object from database via email.
+   *
+   * @param email the user email
+   * @return the {@link Staff} member
+   */
+  public Staff findStaffByEmail(String email) {
+    return staffRepository.findAll().stream()
+        .filter(staff -> staff
+            .getEmail()
+            .equalsIgnoreCase(email))
+        .findFirst()
+        .orElse(null);
   }
 }

@@ -40,4 +40,6 @@ public class Staff {
   private String preferredDates;
 
   private String jobTitle;
+
+  private String email;
 }
