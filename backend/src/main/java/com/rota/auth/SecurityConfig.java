@@ -1,4 +1,4 @@
-package com.rota.security;
+package com.rota.auth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
