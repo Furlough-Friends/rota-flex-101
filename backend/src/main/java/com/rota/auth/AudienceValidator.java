@@ -1,4 +1,4 @@
-package com.rota.security;
+package com.rota.auth;
 
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
