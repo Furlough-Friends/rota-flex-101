@@ -8,9 +8,11 @@ import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,7 @@ public class StaffController {
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
+   *
    * @param authString Authentication token.
    * @return List of all available shifts.
    */
@@ -83,12 +86,12 @@ public class StaffController {
    * Staff ID and role is inferred from the token passed in the header's Authorization field.
    * @param authString Authentication token.
    * @param staffDto Staff details.
-   * @return
+   * @return The created staff object as a JsonResponse.
    */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
       consumes = "application/json")
-  public ResponseEntity createStaff(
+  public ResponseEntity<Staff> createStaff(
       @RequestHeader(AUTHORIZATION_HEADER)
       @ApiParam(value = "Authentication token")
           String authString,
