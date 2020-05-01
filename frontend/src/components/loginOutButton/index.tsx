@@ -11,6 +11,7 @@ const LoginOutButton = () => {
     loginWithRedirect,
     logout,
     user,
+    getTokenSilently,
   } = useAuth0();
 
   const handleLoginOutButtonClick = () => {
@@ -28,6 +29,14 @@ const LoginOutButton = () => {
         disabled={loading}
         onClick={handleLoginOutButtonClick}>
         {isAuthenticated && !loading ? `Log out ${user.name}` : 'Log in'}
+      </button>
+      <button
+        type="button"
+        onClick={async () => {
+          const token = await getTokenSilently();
+          console.log(token);
+        }}>
+        Get Token
       </button>
     </div>
   );
