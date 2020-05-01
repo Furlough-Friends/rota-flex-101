@@ -8,12 +8,9 @@ import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
-import io.swagger.annotations.Authorization;
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,12 +62,8 @@ public class StaffController {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.");
     }
 
-    final Integer user =
-        authenticationUtils.getUserFromToken(authString)
-            .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "Invalid user ID format in the token.")
-            );
+    final int user =
+        authenticationUtils.getUserFromToken(authString).getId();
 
     return staffService.getStaffEngagementsBetween(user, start, end);
   }

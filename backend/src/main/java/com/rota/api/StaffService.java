@@ -93,5 +93,19 @@ public class StaffService {
       staff.setInactive(true);
       staffRepository.save(staff);
     });
+
+  /**
+   * Get a user object from database via email.
+   *
+   * @param email the user email
+   * @return the {@link Staff} member
+   */
+  public Staff findStaffByEmail(String email) {
+    return staffRepository.findAll().stream()
+        .filter(staff -> staff
+            .getEmail()
+            .equalsIgnoreCase(email))
+        .findFirst()
+        .orElse(null);
   }
 }

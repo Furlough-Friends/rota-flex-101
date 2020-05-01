@@ -3,7 +3,9 @@ package com.rota.auth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rota.api.StaffService;
 import com.rota.database.orm.staff.Role;
+import com.rota.database.orm.staff.Staff;
 import com.rota.exceptions.AuthenticationHttpException;
 import java.io.IOException;
 import java.net.URI;
@@ -13,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,8 +36,10 @@ public class AuthenticationUtils {
   @Value("${auth0.managementapi.audience}")
   private String audience;
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
+  @Autowired
+  StaffService staffService;
 
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   private final HttpClient httpClient = HttpClient.newBuilder()
       .version(HttpClient.Version.HTTP_2)
@@ -65,30 +70,14 @@ public class AuthenticationUtils {
   }
 
   /**
-   * TODO This method should return a user object from database using access token info.
-   * Uses the provided access token to get user information from Auth0.
+   * Finds the user in the database using their email.
    *
    * @param token Valid authentication token.
-   * @return User information if token is valid and if present.
+   * @return {@link Staff} member with that email.
    */
-  public Optional<Integer> getUserFromToken(String token) {
-    HttpRequest request = HttpRequest.newBuilder()
-        .GET()
-        .uri(URI.create("https://rota-flex-101.eu.auth0.com/userinfo"))
-        .setHeader("Authorization", "Bearer " + token)
-        .build();
-
-    HttpResponse<String> response;
-    try {
-      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    } catch (IOException | InterruptedException e) {
-      // This should hopefully never happen
-      throw new AuthenticationHttpException(e);
-    }
-    
-    // TODO: Use the email address from body to find userID/ user ID in local database
-    response.body();
-    return Optional.empty();
+  public Staff getUserFromToken(String token) {
+    JsonNode userInfo = getUserJsonFromToken(token);
+    return staffService.findStaffByEmail(userInfo.get("email").asText());
   }
 
   /**
@@ -128,7 +117,6 @@ public class AuthenticationUtils {
       // This should hopefully never happen
       throw new AuthenticationHttpException(e);
     }
-    //TODO Use the email address from body to find userID/ user in local database
     try {
       return objectMapper.readTree(response.body());
     } catch (JsonProcessingException e) {
