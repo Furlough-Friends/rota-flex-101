@@ -1,51 +1,88 @@
 package com.rota.auth;
 
 import com.rota.database.orm.staff.Role;
+import com.rota.exceptions.AuthenticationHttpException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Optional;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * Dummy class which represents user authentication.
+ * Utils for handling authorisation tokens and general authentication related methods.
  */
 public class AuthenticationUtils {
+
+  private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+      .version(HttpClient.Version.HTTP_2)
+      .build();
+
   /**
-   * Checks if the provided token is valid.
-   * Only returns false if token is "false" (case insensitive).
-   * @param token Authentication token.
-   * @return Whether authentication was successful.
+   * TODO decide if it is definitely necessary to check with Auth0. Another method for that perhaps?
+   * Checks if the current token is valid locally and via Auth0
+   *
+   * @return Whether the current token is valid.
    */
   public static boolean validateToken(String token) {
-    // This will only return false if the token is "false" (case insensitive)
-    return !token.toLowerCase().equals("false");
+    HttpRequest request = HttpRequest.newBuilder()
+        .GET()
+        .uri(URI.create("https://rota-flex-101.eu.auth0.com/userinfo"))
+        .setHeader("Authorization", "Bearer " + token)
+        .build();
+
+    HttpResponse<String> response;
+    try {
+      response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      // This should hopefully never happen
+      throw new AuthenticationHttpException(e);
+    }
+    return SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
+        && response.statusCode() == 200;
   }
 
   /**
-   * Extracts user information from the provided token.
-   * @param token Authentication token.
+   * TODO Need to decide what this method returns... currently the response is JSON with userinfo
+   * Uses the provided access token to get user information from Auth0
+   *
+   * @param token Valid authentication token.
    * @return User information if token is valid and if present.
    */
   public static Optional<Integer> getUserFromToken(String token) {
-    Integer parsedToken;
+    HttpRequest request = HttpRequest.newBuilder()
+        .GET()
+        .uri(URI.create("https://rota-flex-101.eu.auth0.com/userinfo"))
+        .setHeader("Authorization", "Bearer " + token)
+        .build();
+
+    HttpResponse<String> response;
     try {
-      parsedToken = Integer.parseInt(token);
-    } catch (NumberFormatException e) {
-      return Optional.empty();
+      response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      // This should hopefully never happen
+      throw new AuthenticationHttpException(e);
     }
-    return Optional.of(parsedToken);
+    //TODO Use the email address from body to find userID/ user in local database
+    response.body();
+    return Optional.empty();
   }
 
   /**
    * TODO Temp solution needs to be changed to be more appropriate when auth is added to backend.
    * Get user role from token.
+   *
    * @param token Authentication token
    * @return {@link Role} of the user or <code>null</code> if token is not valid.
    */
   public static Optional<Role> getUserRoleFromToken(String token) {
     return validateToken(token)
         ? Optional.of(
-          (token.length() % 2 == 0)
+        (token.length() % 2 == 0)
             ? Role.MANAGER
             : Role.USER
-          )
+    )
         : Optional.empty();
   }
 }
