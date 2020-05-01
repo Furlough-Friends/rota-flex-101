@@ -110,13 +110,8 @@ public class AuthenticationUtils {
         .setHeader("Authorization", "Bearer " + token)
         .build();
 
-    HttpResponse<String> response;
-    try {
-      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    } catch (IOException | InterruptedException e) {
-      // This should hopefully never happen
-      throw new AuthenticationHttpException(e);
-    }
+    HttpResponse<String> response = sendRequest(request);
+
     try {
       return objectMapper.readTree(response.body());
     } catch (JsonProcessingException e) {
@@ -164,11 +159,7 @@ public class AuthenticationUtils {
             .create("https://rota-flex-101.eu.auth0.com/api/v2/users/" + encodedUserId + "/roles"))
         .build();
 
-    try {
-      return httpClient.send(request, HttpResponse.BodyHandlers.ofString()).body();
-    } catch (IOException | InterruptedException e) {
-      throw new AuthenticationHttpException(e);
-    }
+    return sendRequest(request).body();
   }
 
   /**
@@ -190,18 +181,27 @@ public class AuthenticationUtils {
         .header("content-type", "application/x-www-form-urlencoded")
         .build();
 
-    HttpResponse<String> response;
-    try {
-      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    } catch (IOException | InterruptedException e) {
-      // This should never happen
-      throw new AuthenticationHttpException(e);
-    }
+    HttpResponse<String> response = sendRequest(request);
 
     try {
       return objectMapper.readTree(response.body()).get("access_token").asText();
     } catch (JsonProcessingException e) {
       throw new JsonParseException(e);
+    }
+  }
+
+  /**
+   * Sends a HttpRequest.
+   *
+   * @param request the request
+   * @return the HttpResponse object
+   */
+  private HttpResponse<String> sendRequest(HttpRequest request) {
+    try {
+      return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      // THis should never happen
+      throw new AuthenticationHttpException(e);
     }
   }
 }
