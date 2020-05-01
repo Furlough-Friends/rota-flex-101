@@ -1,31 +1,52 @@
 package com.rota.auth;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rota.database.orm.staff.Role;
 import com.rota.exceptions.AuthenticationHttpException;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 /**
  * Utils for handling authorisation tokens and general authentication related methods.
  */
+@Service
 public class AuthenticationUtils {
 
-  private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+  @Value("${auth0.managementapi.client_secret}")
+  private String clientSecret;
+
+  @Value("${auth0.managementapi.client_id}")
+  private String clientId;
+
+  @Value("${auth0.managementapi.audience}")
+  private String audience;
+
+  private final ObjectMapper objectMapper = new ObjectMapper();
+
+
+  private final HttpClient httpClient = HttpClient.newBuilder()
       .version(HttpClient.Version.HTTP_2)
       .build();
 
   /**
    * TODO decide if it is definitely necessary to check with Auth0. Another method for that perhaps?
-   * Checks if the current token is valid locally and via Auth0
+   * Checks if the current token is valid locally and via Auth0.
    *
    * @return Whether the current token is valid.
    */
-  public static boolean validateToken(String token) {
+  public boolean validateToken(String token) {
     HttpRequest request = HttpRequest.newBuilder()
         .GET()
         .uri(URI.create("https://rota-flex-101.eu.auth0.com/userinfo"))
@@ -34,7 +55,7 @@ public class AuthenticationUtils {
 
     HttpResponse<String> response;
     try {
-      response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     } catch (IOException | InterruptedException e) {
       // This should hopefully never happen
       throw new AuthenticationHttpException(e);
@@ -44,13 +65,13 @@ public class AuthenticationUtils {
   }
 
   /**
-   * TODO Need to decide what this method returns... currently the response is JSON with userinfo
-   * Uses the provided access token to get user information from Auth0
+   * TODO This method should return a user object from database using access token info.
+   * Uses the provided access token to get user information from Auth0.
    *
    * @param token Valid authentication token.
    * @return User information if token is valid and if present.
    */
-  public static Optional<Integer> getUserFromToken(String token) {
+  public Optional<Integer> getUserFromToken(String token) {
     HttpRequest request = HttpRequest.newBuilder()
         .GET()
         .uri(URI.create("https://rota-flex-101.eu.auth0.com/userinfo"))
@@ -59,12 +80,13 @@ public class AuthenticationUtils {
 
     HttpResponse<String> response;
     try {
-      response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     } catch (IOException | InterruptedException e) {
       // This should hopefully never happen
       throw new AuthenticationHttpException(e);
     }
-    //TODO Use the email address from body to find userID/ user in local database
+    
+    // TODO: Use the email address from body to find userID/ user ID in local database
     response.body();
     return Optional.empty();
   }
@@ -76,7 +98,7 @@ public class AuthenticationUtils {
    * @param token Authentication token
    * @return {@link Role} of the user or <code>null</code> if token is not valid.
    */
-  public static Optional<Role> getUserRoleFromToken(String token) {
+  public Optional<Role> getUserRoleFromToken(String token) {
     return validateToken(token)
         ? Optional.of(
         (token.length() % 2 == 0)
@@ -84,5 +106,114 @@ public class AuthenticationUtils {
             : Role.USER
     )
         : Optional.empty();
+  }
+
+  /**
+   * Uses the provided access token to get user information from Auth0.
+   *
+   * @param token Valid authentication token.
+   * @return JsonNode of Auth0 information
+   */
+  public JsonNode getUserJsonFromToken(String token) {
+    HttpRequest request = HttpRequest.newBuilder()
+        .GET()
+        .uri(URI.create("https://rota-flex-101.eu.auth0.com/userinfo"))
+        .setHeader("Authorization", "Bearer " + token)
+        .build();
+
+    HttpResponse<String> response;
+    try {
+      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      // This should hopefully never happen
+      throw new AuthenticationHttpException(e);
+    }
+    //TODO Use the email address from body to find userID/ user in local database
+    try {
+      return objectMapper.readTree(response.body());
+    } catch (JsonProcessingException e) {
+      throw new JsonParseException(e);
+    }
+  }
+
+  /**
+   * Get the user email from an access token.
+   *
+   * @param token the users access_token.
+   * @return the users email address.
+   */
+  public String getUserEmailFromToken(String token) {
+    JsonNode userInfo = getUserJsonFromToken(token);
+    return userInfo.get("email").asText();
+  }
+
+  /**
+   * Get the user ID from an access token.
+   *
+   * @param token the users access_token.
+   * @return the users auth0 ID.
+   */
+  public String getUserIdFromToken(String token) {
+    JsonNode userInfo = getUserJsonFromToken(token);
+    return userInfo.get("sub").asText();
+  }
+
+  /**
+   * Return the users roles from the Auth0 Management API.
+   *
+   * @param token the users access token
+   * @return An array of user roles
+   */
+  public String getUserRolesFromToken(String token) {
+    String userId = getUserIdFromToken(token);
+    String encodedUserId = URLEncoder
+        .encode(userId, Charset.defaultCharset());
+
+    HttpRequest request = HttpRequest.newBuilder()
+        .GET()
+        .header("Authorization", "Bearer " + getAuth0ManagementToken())
+        .uri(URI
+            .create("https://rota-flex-101.eu.auth0.com/api/v2/users/" + encodedUserId + "/roles"))
+        .build();
+
+    try {
+      return httpClient.send(request, HttpResponse.BodyHandlers.ofString()).body();
+    } catch (IOException | InterruptedException e) {
+      throw new AuthenticationHttpException(e);
+    }
+  }
+
+  /**
+   * Get the Auth0 Management API access token - this is needed to get users information, set and
+   * get roles. For this to work, the client_secret must be available.
+   *
+   * @return Auth0 Management API access token.
+   */
+  public String getAuth0ManagementToken() {
+    String dataBody =
+        "grant_type=client_credentials"
+            + "&client_id=" + clientId
+            + "&client_secret=" + clientSecret
+            + "&audience=" + audience;
+
+    HttpRequest request = HttpRequest.newBuilder()
+        .POST(HttpRequest.BodyPublishers.ofString(dataBody))
+        .uri(URI.create("https://rota-flex-101.eu.auth0.com/oauth/token"))
+        .header("content-type", "application/x-www-form-urlencoded")
+        .build();
+
+    HttpResponse<String> response;
+    try {
+      response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      // This should never happen
+      throw new AuthenticationHttpException(e);
+    }
+
+    try {
+      return objectMapper.readTree(response.body()).get("access_token").asText();
+    } catch (JsonProcessingException e) {
+      throw new JsonParseException(e);
+    }
   }
 }
