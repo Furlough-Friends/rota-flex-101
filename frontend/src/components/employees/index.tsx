@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
@@ -25,6 +26,9 @@ import employeesStyle from './employees.module.scss';
 // A placeholder for authentication token
 const getAuthenticationToken = (): string => 'xx';
 
+interface CallbackFunction {
+  (data: StaffData) : () => void;
+}
 /**
  * Functions which are called when add/edit/delete buttons are pressed.
  * Note that the signature of addUser is different from editUser/deleteUser.
@@ -32,9 +36,9 @@ const getAuthenticationToken = (): string => 'xx';
 
 const addUser = () => toastr.info('Add user');
 
-const editUser = (id: number) => () => toastr.info(`User ${id} edited`);
+const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
 
-const deleteUser = (id: number) => () => toastr.info(`User ${id} deleted`);
+const deleteUser = ({ id }: StaffData) => () => toastr.info(`User ${id} deleted`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
@@ -50,24 +54,20 @@ const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
 }: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
 
-const editUserButton = (editFunction: (o: number) => () => void) => ({
-  id,
-}: StaffData) => (
+const editUserButton = (editFunction: CallbackFunction) => (staff: StaffData) => (
   <button
     type="button"
     className={employeesStyle.editButton}
-    onClick={editFunction(id)}>
+    onClick={editFunction(staff)}>
     <EditOutlined />
   </button>
 );
 
-const removeUserButton = (removeFunction: (o: number) => () => void) => ({
-  id,
-}: StaffData) => (
+const removeUserButton = (removeFunction: CallbackFunction) => (staff: StaffData) => (
   <button
     type="button"
     className={employeesStyle.removeButton}
-    onClick={removeFunction(id)}>
+    onClick={removeFunction(staff)}>
     <Clear />
   </button>
 );
@@ -82,7 +82,7 @@ const removeUserButton = (removeFunction: (o: number) => () => void) => ({
  *    cell
  */
 
-const TABLE_COLUMNS = [
+const makeTableTolumns = (editCallback: CallbackFunction, deleteCallback: CallbackFunction) => [
   { id: 'name', name: 'Name', content: getName },
   { id: 'job', name: 'Job title', content: getJobTitle },
   {
@@ -90,8 +90,8 @@ const TABLE_COLUMNS = [
     name: 'Part/Full Time',
     content: partFullTime(FULLTIME_HOURS),
   },
-  { id: 'editbtn', name: '', content: editUserButton(editUser) },
-  { id: 'removebtn', name: '', content: removeUserButton(deleteUser) },
+  { id: 'editbtn', name: '', content: editUserButton(editCallback) },
+  { id: 'removebtn', name: '', content: removeUserButton(deleteCallback) },
 ];
 
 const renderTableHeaders = (tableColumns: TableColumn[]) => (
@@ -136,9 +136,52 @@ const addButton = (
   </div>
 );
 
+const deleteModalBody = (
+  staff: StaffData,
+  closeModalFunction: () => void,
+  deleteCallback: CallbackFunction
+) => (
+  <div className={employeesStyle.modalDeleteContent}>
+    <div className={employeesStyle.modalDeleteHeader}>
+      <h4>Delete</h4>
+      <button
+        type="button"
+        aria-label="closeButton"
+        className={employeesStyle.xButton}
+        onClick={closeModalFunction}>
+        <Clear />
+      </button>
+    </div>
+    <hr />
+    <span>
+      Are you sure you want to delete {staff.firstName} {staff.surname}?
+    </span>
+    <div className={employeesStyle.modalDeleteButtons}>
+      <Button variant="contained" onClick={closeModalFunction}>
+        Cancel
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={deleteCallback(staff)}>
+        DELETE
+      </Button>
+    </div>
+  </div>
+);
+
 const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
+  const [isModalOpen, setModalState] = useState(false);
+  const [modalBody, setModalBody] = useState(<div/>);
+
+  const closeModal = () => {setModalState(false)}
+  const openDeleteModal = (staff: StaffData) => () => {
+    setModalState(true);
+    setModalBody(deleteModalBody(staff, closeModal, deleteUser));
+  }
+  const tableColumns = makeTableTolumns(editUser, openDeleteModal);
 
   // Fetch data when component loads
   useEffect(() => {
@@ -149,7 +192,10 @@ const Employees = () => {
     <div className={employeesStyle.employees}>
       <h1> Employees </h1>
       {addButton}
-      {renderTable(TABLE_COLUMNS)(staffList)}
+      {renderTable(tableColumns)(staffList)}
+      <Modal open={isModalOpen} onClose={closeModal} >
+        {modalBody}
+      </Modal>
     </div>
   );
 };
