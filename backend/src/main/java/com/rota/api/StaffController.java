@@ -123,4 +123,27 @@ public class StaffController {
     verifyManagementRole(authString);
     return staffService.getActiveStaff();
   }
+
+  /**
+   * Endpoint for the manager to remove a staff member by a given id.
+   * 
+   * @param authString manager's authentication token.
+   * @param id staff id to remove.
+   * @return An updated list of active staff members.
+   */
+  @GetMapping("/staff/remove")
+  @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
+      + "an updated list of active users")
+  public List<Staff> removeStaffMember(
+      @RequestHeader(AUTHORIZATION_HEADER) 
+      @ApiParam(value = "Authentication token") 
+      String authString,
+
+      @RequestParam(name = "id", required = true) 
+      int id
+  ) {
+    verifyManagementRole(authString);
+    staffService.removeStaff(id);
+    return staffService.getActiveStaff();
+  }
 }
