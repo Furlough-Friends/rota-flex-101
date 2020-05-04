@@ -4,6 +4,7 @@
 // https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
 
 import React, { useState, useEffect, useContext } from 'react';
+import toastr from 'toastr';
 import createAuth0Client, {
   PopupLoginOptions,
   RedirectLoginResult,
@@ -16,6 +17,7 @@ import createAuth0Client, {
   Auth0ClientOptions,
   Auth0Client,
 } from '@auth0/auth0-spa-js';
+import 'toastr/build/toastr.min.css';
 
 interface Auth0Context {
   isAuthenticated: boolean;
@@ -81,7 +83,7 @@ export const Auth0Provider = ({
     try {
       await auth0Client!.loginWithPopup(o);
     } catch (error) {
-      console.error(error);
+      toastr.error(error);
     } finally {
       setPopupOpen(false);
     }

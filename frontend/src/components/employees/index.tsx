@@ -20,7 +20,7 @@ import {
   StaffData,
   TableColumn,
 } from '../../constants/employees';
-import { FULLTIME_HOURS } from '../../constants/global';
+import { URL, FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
 
 // A placeholder for authentication token
@@ -37,9 +37,6 @@ interface CallbackFunction {
 const addUser = () => toastr.info('Add user');
 
 const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
-
-const deleteUser = ({ id }: StaffData) => () =>
-  toastr.info(`User ${id} deleted`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
@@ -187,10 +184,20 @@ const Employees = () => {
   const closeModal = () => {
     setModalState(false);
   };
+
+  const deleteUser = ({ id, firstName, surname }: StaffData) => () => {
+    dispatch(
+      fetchStaff(getAuthenticationToken(), `${URL}/staff/remove?id=${id}`)
+    );
+    setModalState(false);
+    toastr.info(`User ${firstName} ${surname} deleted`);
+  };
+
   const openDeleteModal = (staff: StaffData) => () => {
     setModalState(true);
     setModalBody(deleteModalBody(staff, closeModal, deleteUser));
   };
+
   const tableColumns = makeTableTolumns(editUser, openDeleteModal);
 
   // Fetch data when component loads
