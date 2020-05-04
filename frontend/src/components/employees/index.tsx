@@ -27,7 +27,7 @@ import employeesStyle from './employees.module.scss';
 const getAuthenticationToken = (): string => 'xx';
 
 interface CallbackFunction {
-  (data: StaffData) : () => void;
+  (data: StaffData): () => void;
 }
 /**
  * Functions which are called when add/edit/delete buttons are pressed.
@@ -38,7 +38,8 @@ const addUser = () => toastr.info('Add user');
 
 const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
 
-const deleteUser = ({ id }: StaffData) => () => toastr.info(`User ${id} deleted`);
+const deleteUser = ({ id }: StaffData) => () =>
+  toastr.info(`User ${id} deleted`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
@@ -54,7 +55,9 @@ const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
 }: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
 
-const editUserButton = (editFunction: CallbackFunction) => (staff: StaffData) => (
+const editUserButton = (editFunction: CallbackFunction) => (
+  staff: StaffData
+) => (
   <button
     type="button"
     className={employeesStyle.editButton}
@@ -63,7 +66,9 @@ const editUserButton = (editFunction: CallbackFunction) => (staff: StaffData) =>
   </button>
 );
 
-const removeUserButton = (removeFunction: CallbackFunction) => (staff: StaffData) => (
+const removeUserButton = (removeFunction: CallbackFunction) => (
+  staff: StaffData
+) => (
   <button
     type="button"
     className={employeesStyle.removeButton}
@@ -82,7 +87,10 @@ const removeUserButton = (removeFunction: CallbackFunction) => (staff: StaffData
  *    cell
  */
 
-const makeTableTolumns = (editCallback: CallbackFunction, deleteCallback: CallbackFunction) => [
+const makeTableTolumns = (
+  editCallback: CallbackFunction,
+  deleteCallback: CallbackFunction
+) => [
   { id: 'name', name: 'Name', content: getName },
   { id: 'job', name: 'Job title', content: getJobTitle },
   {
@@ -174,13 +182,15 @@ const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
   const [isModalOpen, setModalState] = useState(false);
-  const [modalBody, setModalBody] = useState(<div/>);
+  const [modalBody, setModalBody] = useState(<div />);
 
-  const closeModal = () => {setModalState(false)}
+  const closeModal = () => {
+    setModalState(false);
+  };
   const openDeleteModal = (staff: StaffData) => () => {
     setModalState(true);
     setModalBody(deleteModalBody(staff, closeModal, deleteUser));
-  }
+  };
   const tableColumns = makeTableTolumns(editUser, openDeleteModal);
 
   // Fetch data when component loads
@@ -193,7 +203,7 @@ const Employees = () => {
       <h1> Employees </h1>
       {addButton}
       {renderTable(tableColumns)(staffList)}
-      <Modal open={isModalOpen} onClose={closeModal} >
+      <Modal open={isModalOpen} onClose={closeModal}>
         {modalBody}
       </Modal>
     </div>
