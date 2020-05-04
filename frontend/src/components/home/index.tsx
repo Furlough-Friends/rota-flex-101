@@ -18,6 +18,7 @@ const Home = () => (
         <Route exact path="/">
           <Redirect to="/employees" />
         </Route>
+        <Route path="/callback" />
         <Route component={PageNotFound} />
       </Switch>
     </div>
