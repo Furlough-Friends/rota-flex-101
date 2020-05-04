@@ -190,6 +190,7 @@ const Employees = () => {
       fetchStaff(getAuthenticationToken(), `${URL}/staff/remove?id=${id}`)
     );
     setModalState(false);
+    new Audio('http://nooooooooooooooo.com/nooo.mp4').play();
     toastr.info(`User ${firstName} ${surname} deleted`);
   };
 
