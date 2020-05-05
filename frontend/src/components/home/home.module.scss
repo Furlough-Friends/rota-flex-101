@@ -2,5 +2,5 @@
   display: grid;
   grid-template:
     'sidebar main'
-    /auto minmax(75%, calc(100% - 200px));
+    / auto minmax(75%, calc(100% - 200px));
 }
