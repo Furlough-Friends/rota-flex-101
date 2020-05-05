@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
 import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,6 +12,7 @@ import TableCell from '@material-ui/core/TableCell';
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 
+import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import {
@@ -20,11 +20,8 @@ import {
   StaffData,
   TableColumn,
 } from '../../constants/employees';
-import { URL, FULLTIME_HOURS } from '../../constants/global';
+import { FULLTIME_HOURS, getAuthenticationToken } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
-
-// A placeholder for authentication token
-const getAuthenticationToken = (): string => 'xx';
 
 interface CallbackFunction {
   (data: StaffData): () => void;
@@ -141,62 +138,25 @@ const addButton = (
   </div>
 );
 
-const deleteModalBody = (
-  staff: StaffData,
-  closeModalFunction: () => void,
-  deleteCallback: CallbackFunction
-) => (
-  <div className={employeesStyle.modalDeleteContent}>
-    <div className={employeesStyle.modalDeleteHeader}>
-      <h4>Delete</h4>
-      <button
-        type="button"
-        aria-label="closeButton"
-        className={employeesStyle.xButton}
-        onClick={closeModalFunction}>
-        <Clear />
-      </button>
-    </div>
-    <hr />
-    <span>
-      Are you sure you want to delete {staff.firstName} {staff.surname}?
-    </span>
-    <div className={employeesStyle.modalDeleteButtons}>
-      <Button variant="contained" onClick={closeModalFunction}>
-        Cancel
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={deleteCallback(staff)}>
-        DELETE
-      </Button>
-    </div>
-  </div>
-);
-
 const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
-  const [isModalOpen, setModalState] = useState(false);
-  const [modalBody, setModalBody] = useState(<div />);
+  const [isDeleteModalOpen, setDeleteModalState] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState({
+    id: 0,
+    firstName: '',
+    surname: '',
+    jobTitle: '',
+    contractedHours: 0,
+  });
 
   const closeModal = () => {
-    setModalState(false);
-  };
-
-  const deleteUser = ({ id, firstName, surname }: StaffData) => () => {
-    dispatch(
-      fetchStaff(getAuthenticationToken(), `${URL}/staff/remove?id=${id}`)
-    );
-    setModalState(false);
-    new Audio('http://nooooooooooooooo.com/nooo.mp4').play();
-    toastr.info(`User ${firstName} ${surname} deleted`);
+    setDeleteModalState(false);
   };
 
   const openDeleteModal = (staff: StaffData) => () => {
-    setModalState(true);
-    setModalBody(deleteModalBody(staff, closeModal, deleteUser));
+    setDeleteModalState(true);
+    setSelectedStaff(staff);
   };
 
   const tableColumns = makeTableTolumns(editUser, openDeleteModal);
@@ -211,9 +171,11 @@ const Employees = () => {
       <h1> Employees </h1>
       {addButton}
       {renderTable(tableColumns)(staffList)}
-      <Modal open={isModalOpen} onClose={closeModal}>
-        {modalBody}
-      </Modal>
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        staff={selectedStaff}
+        closeModalFunction={closeModal}
+      />
     </div>
   );
 };
