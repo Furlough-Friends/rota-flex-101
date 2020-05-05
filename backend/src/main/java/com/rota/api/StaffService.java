@@ -98,14 +98,13 @@ public class StaffService {
    * Get a user object from database via email.
    *
    * @param email the user email
-   * @return the {@link Staff} member
+   * @return {@link Staff} optional
    */
-  public Staff findStaffByEmail(String email) {
+  public Optional<Staff> findStaffByEmail(String email) {
     return staffRepository.findAll().stream()
         .filter(staff -> staff
             .getEmail()
             .equalsIgnoreCase(email))
-        .findFirst()
-        .orElse(null);
+        .findFirst();
   }
 }
