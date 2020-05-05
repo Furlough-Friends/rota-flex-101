@@ -13,10 +13,9 @@ const SidebarButton = ({
 }) => (
   <NavLink
     key={name}
-    to={`/${endpoint}`} 
+    to={`/${endpoint}`}
     className={`${sidebarStyles.menuOption}`}
-    activeClassName={`${sidebarStyles.selectedMenuOption}`}
-    >
+    activeClassName={`${sidebarStyles.selectedMenuOption}`}>
     {name}
   </NavLink>
 );
