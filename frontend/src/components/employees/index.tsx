@@ -81,7 +81,7 @@ const removeUserButton = (removeFunction: CallbackFunction) => (
  *    cell
  */
 
-const makeTableTolumns = (
+const makeTableColumns = (
   editCallback: CallbackFunction,
   deleteCallback: CallbackFunction
 ) => [
@@ -159,7 +159,7 @@ const Employees = () => {
     setSelectedStaff(staff);
   };
 
-  const tableColumns = makeTableTolumns(editUser, openDeleteModal);
+  const tableColumns = makeTableColumns(editUser, openDeleteModal);
 
   // Fetch data when component loads
   useEffect(() => {
