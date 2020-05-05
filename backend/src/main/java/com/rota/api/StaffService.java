@@ -6,6 +6,7 @@ import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,14 +67,13 @@ public class StaffService {
    * Get a user object from database via email.
    *
    * @param email the user email
-   * @return the {@link Staff} member
+   * @return {@link Staff} optional
    */
-  public Staff findStaffByEmail(String email) {
+  public Optional<Staff> findStaffByEmail(String email) {
     return staffRepository.findAll().stream()
         .filter(staff -> staff
             .getEmail()
             .equalsIgnoreCase(email))
-        .findFirst()
-        .orElse(null);
+        .findFirst();
   }
 }
