@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -131,7 +132,7 @@ public class StaffController {
    * @param id staff id to remove.
    * @return An updated list of active staff members.
    */
-  @GetMapping("/staff/remove")
+  @PutMapping("/staff/remove")
   @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
       + "an updated list of active users")
   public List<Staff> removeStaffMember(

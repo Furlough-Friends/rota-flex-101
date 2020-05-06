@@ -27,15 +27,16 @@ export const staffSlice = createSlice({
 
 export const { set } = staffSlice.actions;
 
-const fetchWithAuth = (url: string) => (token: string): AppThunk => (
-  dispatch
-) =>
-  fetch(url, { headers: { Authorization: token } })
+const fetchWithAuth = (url: string, method: string) => (
+  token: string
+): AppThunk => (dispatch) =>
+  fetch(url, { method, headers: { Authorization: token } })
     .then((response) => response.json())
     .then((response) => dispatch(set(response)));
 
-export const fetchStaff = fetchWithAuth(STAFF_FETCH_URL);
-export const deleteStaff = (id: string) => fetchWithAuth(STAFF_DELETE_URL + id);
+export const fetchStaff = fetchWithAuth(STAFF_FETCH_URL, 'GET');
+export const deleteStaff = (id: string) =>
+  fetchWithAuth(STAFF_DELETE_URL + id, 'PUT');
 
 export const selectStaff = (state: RootState) => state.staff.value;
 
