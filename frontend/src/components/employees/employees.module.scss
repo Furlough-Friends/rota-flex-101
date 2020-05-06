@@ -62,7 +62,7 @@ Table {
 .modalDeleteButtons {
   display: flex;
   justify-content: flex-end;
-  & Button {
+  Button {
     margin: 1em 0 1em 1em;
   }
 }
@@ -70,7 +70,7 @@ Table {
 .modalDeleteHeader {
   display: flex;
   justify-content: space-between;
-  & .xButton {
+  .xButton {
     background-color: transparent;
     border: none;
     outline: none;
