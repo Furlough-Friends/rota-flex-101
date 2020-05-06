@@ -107,4 +107,20 @@ public class StaffController {
 
     return ResponseEntity.ok().body(createdStaff);
   }
+
+  /**
+   * Get endpoint for all active staff members.
+   * @param authString Authentication token.
+   * @return List of all active staff members.
+   */
+  @GetMapping("/staff/get")
+  @ApiOperation(value = "Lets an authenticated manager view list of all active staff")
+  public List<Staff> getActiveStaff(
+      @RequestHeader(AUTHORIZATION_HEADER)
+      @ApiParam(value = "Authentication token")
+          String authString
+  ) {
+    verifyManagementRole(authString);
+    return staffService.getActiveStaff();
+  }
 }
