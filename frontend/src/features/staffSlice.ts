@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StaffData } from '../constants/employees';
+import {
+  StaffData,
+  STAFF_FETCH_URL,
+  STAFF_DELETE_URL,
+} from '../constants/employees';
+import { getAuthenticationToken } from '../constants/global';
 import { RootState, AppThunk } from '../app/store';
 
 interface StaffState {
@@ -23,12 +28,22 @@ export const staffSlice = createSlice({
 
 export const { set } = staffSlice.actions;
 
-export const fetchStaff = (token: string, url: string): AppThunk => (
-  dispatch
-) =>
-  fetch(url, { headers: { Authorization: token } })
+const fetchWithAuth = (
+  url: string,
+  method: string,
+  getToken: () => string
+): AppThunk => (dispatch) =>
+  fetch(url, { method, headers: { Authorization: getToken() } })
     .then((response) => response.json())
     .then((response) => dispatch(set(response)));
+
+export const fetchStaff = fetchWithAuth(
+  STAFF_FETCH_URL,
+  'GET',
+  getAuthenticationToken
+);
+export const deleteStaff = (id: string) =>
+  fetchWithAuth(STAFF_DELETE_URL + id, 'PUT', getAuthenticationToken);
 
 export const selectStaff = (state: RootState) => state.staff.value;
 

@@ -14,7 +14,8 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.cors().and();
+    http.cors().and()
+      .csrf().disable();
   }
 
   /**
@@ -29,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     config.addAllowedHeader("*");
     config.addAllowedMethod("GET");
     config.addAllowedMethod("POST");
+    config.addAllowedMethod("PUT");
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);

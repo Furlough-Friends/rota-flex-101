@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
@@ -12,19 +12,16 @@ import TableCell from '@material-ui/core/TableCell';
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 
+import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
-import {
-  STAFF_FETCH_URL,
-  StaffData,
-  TableColumn,
-} from '../../constants/employees';
+import { StaffData, TableColumn } from '../../constants/employees';
 import { FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
 
-// A placeholder for authentication token
-const getAuthenticationToken = (): string => 'xx';
-
+interface CallbackFunction {
+  (data: StaffData): () => void;
+}
 /**
  * Functions which are called when add/edit/delete buttons are pressed.
  * Note that the signature of addUser is different from editUser/deleteUser.
@@ -32,9 +29,7 @@ const getAuthenticationToken = (): string => 'xx';
 
 const addUser = () => toastr.info('Add user');
 
-const editUser = (id: number) => () => toastr.info(`User ${id} edited`);
-
-const deleteUser = (id: number) => () => toastr.info(`User ${id} deleted`);
+const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
@@ -50,24 +45,24 @@ const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
 }: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
 
-const editUserButton = (editFunction: (o: number) => () => void) => ({
-  id,
-}: StaffData) => (
+const editUserButton = (editFunction: CallbackFunction) => (
+  staff: StaffData
+) => (
   <button
     type="button"
     className={employeesStyle.editButton}
-    onClick={editFunction(id)}>
+    onClick={editFunction(staff)}>
     <EditOutlined />
   </button>
 );
 
-const removeUserButton = (removeFunction: (o: number) => () => void) => ({
-  id,
-}: StaffData) => (
+const removeUserButton = (removeFunction: CallbackFunction) => (
+  staff: StaffData
+) => (
   <button
     type="button"
     className={employeesStyle.removeButton}
-    onClick={removeFunction(id)}>
+    onClick={removeFunction(staff)}>
     <Clear />
   </button>
 );
@@ -82,7 +77,10 @@ const removeUserButton = (removeFunction: (o: number) => () => void) => ({
  *    cell
  */
 
-const TABLE_COLUMNS = [
+const makeTableColumns = (
+  editCallback: CallbackFunction,
+  deleteCallback: CallbackFunction
+) => [
   { id: 'name', name: 'Name', content: getName },
   { id: 'job', name: 'Job title', content: getJobTitle },
   {
@@ -90,8 +88,8 @@ const TABLE_COLUMNS = [
     name: 'Part/Full Time',
     content: partFullTime(FULLTIME_HOURS),
   },
-  { id: 'editbtn', name: '', content: editUserButton(editUser) },
-  { id: 'removebtn', name: '', content: removeUserButton(deleteUser) },
+  { id: 'editbtn', name: '', content: editUserButton(editCallback) },
+  { id: 'removebtn', name: '', content: removeUserButton(deleteCallback) },
 ];
 
 const renderTableHeaders = (tableColumns: TableColumn[]) => (
@@ -139,17 +137,41 @@ const addButton = (
 const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
+  const [isDeleteModalOpen, setDeleteModalState] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState({
+    id: 0,
+    firstName: '',
+    surname: '',
+    jobTitle: '',
+    contractedHours: 0,
+  });
+
+  const closeModal = () => {
+    setDeleteModalState(false);
+  };
+
+  const openDeleteModal = (staff: StaffData) => () => {
+    setDeleteModalState(true);
+    setSelectedStaff(staff);
+  };
+
+  const tableColumns = makeTableColumns(editUser, openDeleteModal);
 
   // Fetch data when component loads
   useEffect(() => {
-    dispatch(fetchStaff(getAuthenticationToken(), STAFF_FETCH_URL));
+    dispatch(fetchStaff);
   }, [dispatch]);
 
   return (
     <div className={employeesStyle.employees}>
       <h1> Employees </h1>
       {addButton}
-      {renderTable(TABLE_COLUMNS)(staffList)}
+      {renderTable(tableColumns)(staffList)}
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        staff={selectedStaff}
+        closeModalFunction={closeModal}
+      />
     </div>
   );
 };

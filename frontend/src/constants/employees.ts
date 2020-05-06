@@ -1,6 +1,7 @@
 import { URL } from './global';
 
 export const STAFF_FETCH_URL = `${URL}/staff/get`;
+export const STAFF_DELETE_URL = `${URL}/staff/remove?id=`;
 
 export interface StaffData {
   id: number;
