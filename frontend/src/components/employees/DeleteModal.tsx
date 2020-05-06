@@ -9,7 +9,6 @@ import Clear from '@material-ui/icons/Clear';
 import { StaffData } from '../../constants/employees';
 
 import { deleteStaff } from '../../features/staffSlice';
-import { getAuthenticationToken } from '../../constants/global';
 import 'toastr/build/toastr.min.css';
 import employeesStyle from './employees.module.scss';
 
@@ -23,7 +22,7 @@ const DeleteModal = ({ isOpen, staff, closeModalFunction }: Props) => {
   const dispatch = useDispatch();
 
   const deleteUser = ({ id, firstName, surname }: StaffData) => () => {
-    dispatch(deleteStaff(id.toString())(getAuthenticationToken()));
+    dispatch(deleteStaff(id.toString()));
     closeModalFunction();
     new Audio('http://nooooooooooooooo.com/nooo.mp4').play();
     toastr.info(`User ${firstName} ${surname} deleted`);

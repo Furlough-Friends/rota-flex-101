@@ -16,7 +16,7 @@ import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import { StaffData, TableColumn } from '../../constants/employees';
-import { FULLTIME_HOURS, getAuthenticationToken } from '../../constants/global';
+import { FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
 
 interface CallbackFunction {
@@ -159,7 +159,7 @@ const Employees = () => {
 
   // Fetch data when component loads
   useEffect(() => {
-    dispatch(fetchStaff(getAuthenticationToken()));
+    dispatch(fetchStaff);
   }, [dispatch]);
 
   return (
