@@ -15,11 +15,7 @@ import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
-import {
-  STAFF_FETCH_URL,
-  StaffData,
-  TableColumn,
-} from '../../constants/employees';
+import { StaffData, TableColumn } from '../../constants/employees';
 import { FULLTIME_HOURS, getAuthenticationToken } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
 
@@ -163,7 +159,7 @@ const Employees = () => {
 
   // Fetch data when component loads
   useEffect(() => {
-    dispatch(fetchStaff(getAuthenticationToken(), STAFF_FETCH_URL));
+    dispatch(fetchStaff(getAuthenticationToken()));
   }, [dispatch]);
 
   return (
