@@ -50,7 +50,7 @@ const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
 }: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
 
-const editUserButton = (editFunction: (o: number) => () => any) => ({
+const editUserButton = (editFunction: (o: number) => () => void) => ({
   id,
 }: StaffData) => (
   <button
@@ -61,7 +61,7 @@ const editUserButton = (editFunction: (o: number) => () => any) => ({
   </button>
 );
 
-const removeUserButton = (removeFunction: (o: number) => () => any) => ({
+const removeUserButton = (removeFunction: (o: number) => () => void) => ({
   id,
 }: StaffData) => (
   <button

@@ -12,5 +12,5 @@ export interface StaffData {
 export interface TableColumn {
   id: string;
   name: string;
-  content: (o: StaffData) => any;
+  content: (o: StaffData) => (JSX.Element | string);
 }
