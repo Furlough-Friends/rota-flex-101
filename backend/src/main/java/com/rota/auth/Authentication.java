@@ -30,7 +30,7 @@ public class Authentication {
   @Value("${auth0.baseurl}")
   private String baseUrl;
 
-  @Value("${auth0.managementapi.client_secret}")
+  @Value("${AUTH_CLIENT_SECRET}")
   private String clientSecret;
 
   @Value("${auth0.managementapi.client_id}")
@@ -76,6 +76,7 @@ public class Authentication {
    * @throws InterruptedException from HttpClient when getting user info.
    */
   public JsonNode getUserInfoFromToken() throws IOException, InterruptedException {
+
     HttpRequest request = HttpRequest.newBuilder()
         .GET()
         .uri(URI.create(baseUrl + "userinfo"))

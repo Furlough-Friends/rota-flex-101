@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "api")
-@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "true")
 public class ExamplePrivateApi {
 
   @GetMapping(value = "/public")

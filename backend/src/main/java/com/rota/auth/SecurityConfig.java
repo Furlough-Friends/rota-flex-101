@@ -41,9 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and()
         .authorizeRequests()
-        .mvcMatchers("/api/private").authenticated()
-        .mvcMatchers("/myShifts").authenticated()
-        .mvcMatchers("/staff/create").authenticated()
+        .anyRequest().authenticated()
         .and()
         .oauth2ResourceServer().jwt();
   }

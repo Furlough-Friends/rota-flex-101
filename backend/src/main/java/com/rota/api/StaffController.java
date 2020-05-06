@@ -60,6 +60,8 @@ public class StaffController {
     final JsonNode userInfo = authentication.getUserInfoFromToken();
     final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow();
 
+    // if Staff does not exist, we should return a meaningful error message
+
     return staffService.getStaffEngagementsBetween(staff.getId(), start, end);
   }
 
