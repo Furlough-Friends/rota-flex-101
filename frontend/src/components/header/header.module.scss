@@ -1,0 +1,26 @@
+.header {
+  display: grid;
+}
+
+.sidebarHeader {
+  grid-area: header1;
+  background-color: blue;
+}
+
+.headerContent {
+  grid-area: header2;
+  background-color: red;
+  display: grid;
+  grid-template-areas: '. title account';
+  grid-template-columns: 1fr 8fr 1fr;
+}
+
+.headerTitle {
+  grid-area: title;
+  margin: auto;
+}
+
+.headerAccount {
+  grid-area: account;
+  margin: auto;
+}

@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
-import LoginOutButton from '../loginOutButton';
 
 const SidebarButton = ({
   name,
@@ -28,7 +27,6 @@ const getButtons = (options: SidebarOption[]) =>
 const Sidebar = () => (
   <nav className={sidebarStyles.container}>
     {getButtons(sidebarOptions)}
-    <LoginOutButton />
   </nav>
 );
 

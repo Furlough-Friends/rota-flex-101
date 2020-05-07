@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import Header from '../header';
 import Sidebar from '../sidebar';
 import Employees from '../employees';
 import Rota from '../rota';
@@ -9,7 +10,10 @@ import homeStyles from './home.module.scss';
 const Home = () => (
   <>
     <div className={homeStyles.home}>
-      <Route path="/" component={Sidebar} />
+      <Route path="/">
+        <Header />
+        <Sidebar />
+      </Route>
       <main className={homeStyles.main}>
         <Route path="/employees" component={Employees} />
         <Route path="/rota" component={Rota} />
