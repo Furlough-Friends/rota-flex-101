@@ -25,9 +25,7 @@ const getButtons = (options: SidebarOption[]) =>
   ));
 
 const Sidebar = () => (
-  <nav className={sidebarStyles.container}>
-    {getButtons(sidebarOptions)}
-  </nav>
+  <nav className={sidebarStyles.container}>{getButtons(sidebarOptions)}</nav>
 );
 
 export default Sidebar;

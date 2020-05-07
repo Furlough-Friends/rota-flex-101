@@ -1,6 +1,6 @@
 .home {
   display: grid;
-  grid-template-areas: 
+  grid-template-areas:
     'header1 header2'
     'sidebar main';
   grid-template-columns: auto 1fr;
