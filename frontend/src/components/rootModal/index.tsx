@@ -27,6 +27,7 @@ const ModalRoot = () => {
   const closeModalFunction = () => dispatch(hideModal());
   const SpecificModal = MODAL_COMPONENTS[modalType];
   return (
+    /* eslint-disable react/jsx-props-no-spreading */
     <SpecificModal {...modalProps} closeModalFunction={closeModalFunction} />
   );
 };
