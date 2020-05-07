@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -132,10 +133,10 @@ public class StaffController {
    * @param updatedStaff Updated staff information.
    * @return The updated {@link Staff} member.
    */
-  @PutMapping("/staff/$id")
+  @PutMapping("/staff/{id}")
   @ApiOperation(value = "Lets an authenticated manager update a staff member")
   public Staff updateStaff(
-      @RequestParam
+      @PathVariable
       @ApiParam(value = "Staff ID")
           int id,
       @RequestBody
