@@ -1,7 +1,7 @@
 package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
-import com.rota.auth.AuthenticationUtils;
+import com.rota.auth.Authentication;
 import com.rota.database.orm.engagement.EngagementRepository;
 import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
@@ -62,14 +62,14 @@ public class StaffService {
    * @param authString the current threads authentication token.
    * @return true if user has manager permissions.
    */
-  public boolean hasManagerPermissions(String authString) {
-    final Role role = AuthenticationUtils
-        .getUserRoleFromToken(authString)
-        .orElseThrow(() ->
-            new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
-        );
-    return role == Role.MANAGER;
-  }
+//  public boolean hasManagerPermissions(String authString) {
+//    final Role role = Authentication
+//        .getUserRoleFromToken(authString)
+//        .orElseThrow(() ->
+//            new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
+//        );
+//    return role == Role.MANAGER;
+//  }
 
   /**
    * Returns the list of all active staff members.
@@ -93,6 +93,7 @@ public class StaffService {
       staff.setInactive(true);
       staffRepository.save(staff);
     });
+  }
 
   /**
    * Get a user object from database via email.

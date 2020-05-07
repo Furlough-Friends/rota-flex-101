@@ -1,5 +1,6 @@
 package com.rota.auth;
 
+import com.rota.database.orm.staff.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and()
         .authorizeRequests()
+            .antMatchers("/**/admin/**").hasAuthority(Role.MANAGER.toString())
         .anyRequest().authenticated()
         .and()
         .oauth2ResourceServer().jwt();
