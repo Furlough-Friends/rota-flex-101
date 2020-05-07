@@ -15,7 +15,7 @@ const Home = () => (
       <Route path="/" component={Sidebar} />
     </div>
     <Route exact path="/">
-      <Redirect to="/employees" />
+      <Redirect to="/summary" />
     </Route>
   </>
 );
