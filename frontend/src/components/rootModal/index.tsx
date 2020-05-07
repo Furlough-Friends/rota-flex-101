@@ -9,7 +9,7 @@ import {
 } from '../../features/modalSlice';
 
 interface ModalHash {
-  [key: string]: any;
+  [key: string]: (arg0: any) => JSX.Element;
 }
 
 const MODAL_COMPONENTS: ModalHash = {
