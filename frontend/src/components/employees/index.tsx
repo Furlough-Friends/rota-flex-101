@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
@@ -12,8 +12,9 @@ import TableCell from '@material-ui/core/TableCell';
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 
-import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
+import { showModal } from '../../features/modalSlice';
+
 import 'toastr/build/toastr.min.css';
 import { StaffData, TableColumn } from '../../constants/employees';
 import { FULLTIME_HOURS } from '../../constants/global';
@@ -137,22 +138,9 @@ const addButton = (
 const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
-  const [isDeleteModalOpen, setDeleteModalState] = useState(false);
-  const [selectedStaff, setSelectedStaff] = useState({
-    id: 0,
-    firstName: '',
-    surname: '',
-    jobTitle: '',
-    contractedHours: 0,
-  });
-
-  const closeModal = () => {
-    setDeleteModalState(false);
-  };
 
   const openDeleteModal = (staff: StaffData) => () => {
-    setDeleteModalState(true);
-    setSelectedStaff(staff);
+    dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { staff } }));
   };
 
   const tableColumns = makeTableColumns(editUser, openDeleteModal);
@@ -167,11 +155,6 @@ const Employees = () => {
       <h1> Employees </h1>
       {addButton}
       {renderTable(tableColumns)(staffList)}
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        staff={selectedStaff}
-        closeModalFunction={closeModal}
-      />
     </div>
   );
 };
