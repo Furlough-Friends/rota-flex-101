@@ -9,6 +9,8 @@ import com.rota.database.orm.staff.StaffRepository;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +64,7 @@ class DbHandlerTests {
     staffRepository.save(STAFF_MEMBER);
     Assertions.assertEquals(
         STAFF_MEMBER,
-        staffRepository.findById(STAFF_ID)
+        staffRepository.findById(STAFF_ID).get()
     );
   }
 
@@ -86,13 +88,13 @@ class DbHandlerTests {
         .contractedHours(newHours)
         .build();
     staffRepository.save(STAFF_MEMBER);
-    Staff savedStaff = staffRepository.findById(STAFF_ID);
+    Staff savedStaff = staffRepository.findById(STAFF_ID).get();
     savedStaff.setFirstName(newName);
     savedStaff.setContractedHours(newHours);
 
     Assertions.assertEquals(
         updatedStaff,
-        staffRepository.findById(STAFF_ID)
+        staffRepository.findById(STAFF_ID).get()
     );
   }
 
@@ -119,7 +121,8 @@ class DbHandlerTests {
   void removeStaff() {
     staffRepository.save(STAFF_MEMBER);
     staffRepository.delete(STAFF_MEMBER);
-    Assertions.assertNull(
+    Assertions.assertEquals(
+        Optional.empty(),
         staffRepository.findById(STAFF_ID)
     );
   }

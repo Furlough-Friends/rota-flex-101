@@ -9,6 +9,7 @@ import com.rota.database.orm.staff.StaffRepository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +80,18 @@ public class StaffService {
     return staffRepository.findAll().stream()
         .filter(staff -> !staff.isInactive())
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Deactivates staff member with given id.
+   * 
+   * @param id ID of staff member to deactivate
+   */
+  public void removeStaff(int id) {
+    Optional<Staff> staffMember = staffRepository.findById(id);
+    staffMember.ifPresent(staff -> {
+      staff.setInactive(true);
+      staffRepository.save(staff);
+    });
   }
 }
