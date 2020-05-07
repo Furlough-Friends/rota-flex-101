@@ -8,10 +8,11 @@ $boxShadowEnd: rgba(0, 0, 0, 0.19);
   grid-area: sidebar;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   max-width: 200px;
   width: calc(100vw / 4);
+  overflow-y: auto;
   min-width: max-content;
+  z-index: 1;
 }
 
 .menuOption {

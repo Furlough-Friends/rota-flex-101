@@ -9,10 +9,12 @@ import homeStyles from './home.module.scss';
 const Home = () => (
   <>
     <div className={homeStyles.home}>
-      <Route path="/employees" component={Employees} />
-      <Route path="/rota" component={Rota} />
-      <Route path="/summary" component={Summary} />
       <Route path="/" component={Sidebar} />
+      <main className={homeStyles.main}>
+        <Route path="/employees" component={Employees} />
+        <Route path="/rota" component={Rota} />
+        <Route path="/summary" component={Summary} />
+      </main>
     </div>
     <Route exact path="/">
       <Redirect to="/employees" />

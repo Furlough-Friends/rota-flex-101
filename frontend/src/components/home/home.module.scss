@@ -1,5 +1,13 @@
 .home {
   display: grid;
-  grid-template-areas: 'sidebar main';
-  grid-template-columns: auto 1fr;
+  grid-template-areas: 
+    'header header'
+    'sidebar main';
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: max-content 1fr;
+  height: 100vh;
+}
+
+.main {
+  grid-area: main;
 }
