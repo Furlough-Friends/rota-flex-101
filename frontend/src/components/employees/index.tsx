@@ -117,7 +117,7 @@ const renderTableRow = (tableColumns: TableColumn[]) => (row: StaffData) => (
 const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
   <Table size="small">
     {renderTableHeaders(tableColumns)}
-    <TableBody>{data.map(renderTableRow(tableColumns))}</TableBody>
+    <TableBody>{data.length > 0 && data.map(renderTableRow(tableColumns))}</TableBody>
   </Table>
 );
 
