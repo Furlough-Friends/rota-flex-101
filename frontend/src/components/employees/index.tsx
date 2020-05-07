@@ -24,11 +24,8 @@ interface CallbackFunction {
   (data: StaffData): () => void;
 }
 /**
- * Functions which are called when add/edit/delete buttons are pressed.
- * Note that the signature of addUser is different from editUser/deleteUser.
+ * Function which is called when edit buttons are pressed.
  */
-
-const addUser = () => toastr.info('Add user');
 
 const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
 
@@ -122,18 +119,25 @@ const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
   </Table>
 );
 
-const addButton = (
-  <div className={employeesStyle.addButtonContainer}>
-    <Button
-      className={employeesStyle.addButton}
-      color="primary"
-      variant="contained"
-      size="small"
-      onClick={addUser}>
-      Add
-    </Button>
-  </div>
-);
+const AddButton = () => {
+  const dispatch = useDispatch();
+
+  const createAddModal = () => {
+    dispatch(showModal({ modalType: 'CREATE_USER' }));
+  };
+  return (
+    <div className={employeesStyle.addButtonContainer}>
+      <Button
+        className={employeesStyle.addButton}
+        color="primary"
+        variant="contained"
+        size="small"
+        onClick={createAddModal}>
+        Add
+      </Button>
+    </div>
+  );
+};
 
 const Employees = () => {
   const staffList = useSelector(selectStaff);
@@ -153,7 +157,7 @@ const Employees = () => {
   return (
     <div className={employeesStyle.employees}>
       <h1> Employees </h1>
-      {addButton}
+      <AddButton />
       {renderTable(tableColumns)(staffList)}
     </div>
   );
