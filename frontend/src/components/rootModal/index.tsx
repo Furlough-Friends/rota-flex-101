@@ -1,5 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Modal from '@material-ui/core/Modal';
+
+import rootModalSyles from './rootModal.module.scss'
 
 import DeleteUserModal from '../deleteUserModal';
 import {
@@ -28,7 +31,11 @@ const ModalRoot = () => {
   const SpecificModal = MODAL_COMPONENTS[modalType];
   return (
     /* eslint-disable react/jsx-props-no-spreading */
-    <SpecificModal {...modalProps} closeModalFunction={closeModalFunction} />
+    <Modal open onClose={closeModalFunction}>
+      <div className={rootModalSyles.content}>
+        <SpecificModal {...modalProps} closeModalFunction={closeModalFunction} />
+      </div>
+    </Modal>
   );
 };
 
