@@ -5,7 +5,7 @@ VALUES
     ('Mary', 'McGee', '2017-08-12', 40, 999.99, 'MANAGER', 'supervisor', false, 'mary@email.email'),
     ('Json', 'Server', '2015-01-12', 40, 0.01, 'USER', 'floor', false, 'json@email.email'),
     ('Arthur', 'Guinness', '2019-12-12', 40, 2.99, 'USER', 'chef', false, 'arthur@email.email'),
-    ('Iain', 'Floyd', '2020-01-01', 40, 50.99, 'USER', 'chef', false, 'iain.floyd3@gmail.com');
+    ('Iain', 'Floyd', '2020-01-01', 40, 50.99, 'MANAGER', 'chef', false, 'iain.floyd3@gmail.com');
 
 INSERT INTO ENGAGEMENT(start, end, type, hours_worked, staff_id)
 VALUES

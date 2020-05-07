@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,8 @@ public class StaffController {
   Authentication authentication;
 
   static final String AUTHORIZATION_HEADER = "Authorization";
+
+  static final String STAFF_NOT_FOUND_MESSAGE = "No member of staff exists for your credentials. Please log in again";
 
   /**
    * Returns all shifts of a given staff member.
@@ -53,8 +56,8 @@ public class StaffController {
   ) throws IOException, InterruptedException {
 
     final JsonNode userInfo = authentication.getUserInfoFromToken();
-    final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(); // TODO something here!
-
+    final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
+    // put the above 2 lines in a new method?
 
     return staffService.getStaffEngagementsBetween(staff.getId(), start, end);
   }
@@ -63,13 +66,17 @@ public class StaffController {
    * Checks if the currently authenticated user has manager permissions.
    *
    */
+  private void verifyManagementRole() throws IOException, InterruptedException {
 
-  // WE SHOULD DO ALL THIS BY THE SECURITY CONFIG
-//  private void verifyManagementRole() throws IOException, InterruptedException {
-//    if (authentication.getUserRolesFromToken().contains(Role.MANAGER)) {
-//      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
-//    }
-//  }
+    final JsonNode userInfo = authentication.getUserInfoFromToken();
+    final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
+    // put the above 2 lines in a new method?
+
+    if (staff.getRole() != Role.MANAGER) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
+    }
+
+  }
 
   /**
    * Endpoint to create and enter a new staff record into the system.
@@ -80,7 +87,7 @@ public class StaffController {
    * @throws IOException from HttpClient when getting user info.
    * @throws InterruptedException from HttpClient when getting user info.
    */
-  @PostMapping("/admin/staff/create")
+  @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
       consumes = "application/json")
   public ResponseEntity<Staff> createStaff(
@@ -89,7 +96,7 @@ public class StaffController {
       @ApiParam("Staff details for the new user")
           StaffDto staffDto
   ) throws IOException, InterruptedException {
-//    verifyManagementRole();
+    verifyManagementRole();
     // Assuming in general staff entered will be active ones
     Staff createdStaff = staffService.createStaff(staffDto.toStaff());
 
@@ -98,39 +105,44 @@ public class StaffController {
 
   /**
    * Get endpoint for all active staff members.
-//   * removed param
    * @return List of all active staff members.
    */
-  @GetMapping("/admin/staff/get")
+  @GetMapping("/staff/get")
   @ApiOperation(value = "Lets an authenticated manager view list of all active staff")
   public List<Staff> getActiveStaff(
-//      @RequestHeader(AUTHORIZATION_HEADER)
-//      @ApiParam(value = "Authentication token")
-          String authString
   ) {
-//    verifyManagementRole(authString);
+    try {
+      verifyManagementRole();
+    } catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
+    }
+
     return staffService.getActiveStaff();
   }
 
   /**
    * Endpoint for the manager to remove a staff member by a given id.
    *
-   * // removed param 
+   * @param authString manager's authentication token.
    * @param id staff id to remove.
    * @return An updated list of active staff members.
    */
-  @PutMapping("/admin/staff/remove")
+  @PutMapping("/staff/remove")
   @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
       + "an updated list of active users")
   public List<Staff> removeStaffMember(
-//      @RequestHeader(AUTHORIZATION_HEADER)
-//      @ApiParam(value = "Authentication token")
-//      String authString,
+      @RequestHeader(AUTHORIZATION_HEADER)
+      @ApiParam(value = "Authentication token")
+      String authString,
 
       @RequestParam(name = "id", required = true) 
       int id
   ) {
-//    verifyManagementRole(authString);
+    try {
+      verifyManagementRole();
+    } catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
+    }
     staffService.removeStaff(id);
     return staffService.getActiveStaff();
   }
