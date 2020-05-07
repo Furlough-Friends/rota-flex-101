@@ -1,7 +1,7 @@
 package com.rota.exceptions;
 
 public class StaffNotFoundException extends RuntimeException {
-  public StaffNotFoundException() {
-    super();
+  public StaffNotFoundException(int id) {
+    super("Unable to find staff member with ID: " + id);
   }
 }

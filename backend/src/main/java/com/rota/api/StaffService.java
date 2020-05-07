@@ -104,7 +104,7 @@ public class StaffService {
    */
   public Staff updateStaff(int id, StaffDto updatedStaff) {
     // Check to see if that staff member exists, throw exception if not.
-    staffRepository.findById(id).orElseThrow(StaffNotFoundException::new);
+    staffRepository.findById(id).orElseThrow(() -> new StaffNotFoundException(id));
     // If it exists, safe new staff information to that ID.
     Staff staffToSave = updatedStaff.toStaff();
     staffToSave.setId(id);

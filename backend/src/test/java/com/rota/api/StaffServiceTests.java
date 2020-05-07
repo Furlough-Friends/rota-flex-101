@@ -39,7 +39,8 @@ public class StaffServiceTests {
   @Test
   public void updateStaffInvalidUserId() {
     final int invalidUserId = 12301;
-    when(staffRepository.findById(invalidUserId)).thenThrow(new StaffNotFoundException());
+    when(staffRepository.findById(invalidUserId))
+        .thenThrow(new StaffNotFoundException(invalidUserId));
 
     assertThrows(
         StaffNotFoundException.class, () -> staffService.updateStaff(invalidUserId, validStaffDto));
