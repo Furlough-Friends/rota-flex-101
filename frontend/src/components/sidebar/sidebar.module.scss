@@ -12,6 +12,11 @@ $sidebar-width: 200px;
   flex-direction: column;
   overflow-y: auto;
   z-index: 1;
+  align-items: stretch;
+
+  @media (max-width: $small-screen-threshold) {
+    overflow: hidden;
+  }
 }
 
 .menuOption {
@@ -31,6 +36,10 @@ $sidebar-width: 200px;
   &:hover,
   &:focus {
     background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  @media (max-width: $small-screen-threshold) {
+    min-width: $small-screen-min-width;
   }
 }
 
@@ -60,6 +69,17 @@ $sidebar-width: 200px;
   & svg {
     @extend %svgIcon;
   }
+
+  @media (max-width: $small-screen-threshold) {
+    justify-content: center;
+
+    & svg {
+      box-sizing: border-box;
+      height: inherit;
+      width: 100vw;
+      padding: 0.15 * $header-height calc(40vw - 30px);
+    }
+  }
 }
 
 .margin {
@@ -72,9 +92,14 @@ $sidebar-width: 200px;
 }
 
 .sidebar {
-  background-color: red;
   & :global(.MuiPaper-root) {
     background-color: $colour-darkBlue;
     overflow-y: unset;
+
+    @media (max-width: $small-screen-threshold) {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
   }
 }

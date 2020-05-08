@@ -4,6 +4,11 @@
   display: flex;
   flex-direction: row;
   height: 100vh;
+
+  @media (max-width: $small-screen-threshold) {
+    flex-direction: column;
+    min-width: $small-screen-min-width;
+  }
 }
 
 .right {
@@ -17,6 +22,10 @@
     'header' $header-height
     'content' 1fr
     / minmax(0, 1fr);
+
+  @media (max-width: $small-screen-threshold) {
+    min-width: $small-screen-min-width;
+  }
 }
 
 .main {

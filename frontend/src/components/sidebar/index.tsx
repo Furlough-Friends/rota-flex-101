@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { useWindowWidth } from '@react-hook/window-size/throttled';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
+import { WINDOW_WIDTH_THRESHOLD } from '../../constants/global';
 
 const sidebarWidth = 200;
 
@@ -31,15 +34,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SidebarButton = ({ name, endpoint }: SidebarOption) => (
-  <NavLink
-    key={name}
-    to={`/${endpoint}`}
-    className={clsx(sidebarStyles.menuOption, useStyles().sizeSidebar)}
-    activeClassName={sidebarStyles.selectedMenuOption}>
-    {name}
-  </NavLink>
-);
+const windowSizeHookOptions = { fps: 45, leading: true };
+
+const SidebarButton = ({ name, endpoint }: SidebarOption) => {
+  const isWindowBig =
+    useWindowWidth(windowSizeHookOptions) >= WINDOW_WIDTH_THRESHOLD;
+
+  return (
+    <NavLink
+      key={name}
+      to={`/${endpoint}`}
+      className={clsx(sidebarStyles.menuOption, {
+        [useStyles().sizeSidebar]: isWindowBig,
+      })}
+      activeClassName={sidebarStyles.selectedMenuOption}>
+      {name}
+    </NavLink>
+  );
+};
 
 const getButtons = (options: SidebarOption[]) =>
   options.map(({ name, endpoint }) => (
@@ -57,6 +69,17 @@ const Sidebar = () => {
     setOpen(true);
   };
 
+  const isWindowBig =
+    useWindowWidth(windowSizeHookOptions) >= WINDOW_WIDTH_THRESHOLD;
+  const drawerAnchor = isWindowBig ? 'left' : 'top';
+  const drawerVariant = isWindowBig ? 'persistent' : 'temporary';
+  const openMenuButton = () =>
+    isWindowBig ? (
+      <KeyboardArrowLeft onClick={handleClose} />
+    ) : (
+      <KeyboardArrowUp onClick={handleClose} />
+    );
+
   return (
     <>
       <div
@@ -67,12 +90,11 @@ const Sidebar = () => {
       </div>
       <Drawer
         className={sidebarStyles.sidebar}
-        variant="persistent"
-        anchor="left"
-        open={open}>
-        <div className={sidebarStyles.sidebarHeader}>
-          <ChevronLeftIcon onClick={handleClose} />
-        </div>
+        variant={drawerVariant}
+        anchor={drawerAnchor}
+        open={open}
+        hideBackdrop>
+        <div className={sidebarStyles.sidebarHeader}>{openMenuButton()}</div>
         <Divider />
         <nav className={sidebarStyles.container}>
           {getButtons(sidebarOptions)}
