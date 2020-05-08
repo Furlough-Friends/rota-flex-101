@@ -25,19 +25,17 @@ const onRedirectCallback = (appState: appState) => {
 };
 
 ReactDOM.render(
-  <React.Fragment key="reactfragment">
-    <Provider store={store}>
-      <Auth0Provider
-        domain={config.domain}
-        client_id={config.clientId}
-        redirect_uri={config.callbackUri}
-        onRedirectCallback={onRedirectCallback}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </Auth0Provider>
-    </Provider>
-  </React.Fragment>,
+  <Provider store={store}>
+    <Auth0Provider
+      domain={config.domain}
+      client_id={config.clientId}
+      redirect_uri={config.callbackUri}
+      onRedirectCallback={onRedirectCallback}>
+      <Router history={history}>
+        <App />
+      </Router>
+    </Auth0Provider>
+  </Provider>,
   document.getElementById('root')
 );
 
