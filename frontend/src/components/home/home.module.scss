@@ -1,3 +1,5 @@
+@import '../../constants/styles.scss';
+
 .home {
   display: flex;
   flex-direction: row;
@@ -12,9 +14,9 @@
 .column {
   display: grid;
   grid-template:
-  "header" 2.5rem
-  "content" 1fr
-  /minmax(0, 1fr)
+    'header' $header-height
+    'content' 1fr
+    / minmax(0, 1fr);
 }
 
 .main {

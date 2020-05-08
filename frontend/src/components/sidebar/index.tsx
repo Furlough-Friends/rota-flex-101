@@ -1,23 +1,42 @@
-import React, { useState, CSSProperties } from 'react';
+import React, { useState } from 'react';
+import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-// import Drawer from '@material-ui/core/Drawer';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
 
-const SidebarButton = ({
-  name,
-  endpoint,
-}: {
-  name: string;
-  endpoint: string;
-}) => (
+const sidebarWidth = 200;
+
+const useStyles = makeStyles((theme: Theme) => ({
+  expandedMargin: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginRight: sidebarWidth,
+  },
+  contractedMargin: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginRight: 0,
+  },
+  sizeSidebar: {
+    width: sidebarWidth,
+  },
+}));
+
+const SidebarButton = ({ name, endpoint }: SidebarOption) => (
   <NavLink
     key={name}
     to={`/${endpoint}`}
-    className={`${sidebarStyles.menuOption}`}
-    activeClassName={`${sidebarStyles.selectedMenuOption}`}>
+    className={clsx(sidebarStyles.menuOption, useStyles().sizeSidebar)}
+    activeClassName={sidebarStyles.selectedMenuOption}>
     {name}
   </NavLink>
 );
@@ -28,55 +47,38 @@ const getButtons = (options: SidebarOption[]) =>
   ));
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [isChanging, setIsChanging] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const handleClose = () => {
-    setIsChanging(true);
-
-    setIsOpen(false);
-    setIsChanging(false);
+    setOpen(false);
   };
 
   const handleOpen = () => {
-    setIsChanging(true);
-
-    setIsOpen(true);
-    setIsChanging(false);
+    setOpen(true);
   };
 
-  const style: CSSProperties =
-    isOpen || isChanging
-      ? {}
-      : {
-          transition: '1s',
-          // transform: 'translateX(-200px)',
-          width: 1,
-        };
-
-  const openSidebarButtonStyle: CSSProperties =
-    isOpen || isChanging ? {} : { display: 'none' };
-
-  const closeSidebarButtonStyle: CSSProperties =
-    isOpen || isChanging
-      ? { display: 'none' }
-      : { transform: 'translate(2.5rem)' };
-
   return (
-    <div className={sidebarStyles.column} style={style}>
-      <div className={sidebarStyles.sidebarHeader}>
-        <div className={sidebarStyles.headerButtons}>
-          <ChevronLeftIcon
-            onClick={handleClose}
-            style={openSidebarButtonStyle}
-          />
-          <MenuIcon onClick={handleOpen} style={closeSidebarButtonStyle} />
-        </div>
+    <>
+      <div
+        className={clsx(sidebarStyles.margin, useStyles().expandedMargin, {
+          [useStyles().contractedMargin]: !open,
+        })}>
+        <MenuIcon onClick={handleOpen} />
       </div>
-      <nav className={sidebarStyles.container}>
-        {getButtons(sidebarOptions)}
-      </nav>
-    </div>
+      <Drawer
+        className={sidebarStyles.sidebar}
+        variant="persistent"
+        anchor="left"
+        open={open}>
+        <div className={sidebarStyles.sidebarHeader}>
+          <ChevronLeftIcon onClick={handleClose} />
+        </div>
+        <Divider />
+        <nav className={sidebarStyles.container}>
+          {getButtons(sidebarOptions)}
+        </nav>
+      </Drawer>
+    </>
   );
 };
 
