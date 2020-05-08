@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { NavLink } from 'react-router-dom';
 import sidebarStyles from './sidebar.module.scss';
-import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
+import sidebarOptions, { SidebarOption, SIDEBAR_STATES } from '../../constants/sidebarOptions';
+import { SidebarControls } from '../home';
 
 const SidebarButton = ({
   name,
@@ -24,8 +25,10 @@ const getButtons = (options: SidebarOption[]) =>
     <SidebarButton name={name} endpoint={endpoint} />
   ));
 
-const Sidebar = () => (
-  <nav className={sidebarStyles.container}>{getButtons(sidebarOptions)}</nav>
-);
+const Sidebar = ({ sidebarControls }: {sidebarControls: SidebarControls}) => {
+  const style: CSSProperties = (sidebarControls.state !== SIDEBAR_STATES.CLOSED) ? {} : {visibility: 'hidden'};
+  return (
+  <nav className={sidebarStyles.container} style={style}>{getButtons(sidebarOptions)}</nav>)
+};
 
 export default Sidebar;

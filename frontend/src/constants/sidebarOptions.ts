@@ -4,6 +4,13 @@ const sidebarOptions = [
   { name: 'Employees', endpoint: 'employees' },
 ];
 
+export const SIDEBAR_STATES = {
+  CLOSED: "closed",
+  CLOSING: "closing",
+  OPEN: "open",
+  OPENING: "opening"
+}
+
 export interface SidebarOption {
   name: string;
   endpoint: string;
