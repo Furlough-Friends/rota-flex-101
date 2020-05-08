@@ -5,11 +5,11 @@ const sidebarOptions = [
 ];
 
 export const SIDEBAR_STATES = {
-  CLOSED: "closed",
-  CLOSING: "closing",
-  OPEN: "open",
-  OPENING: "opening"
-}
+  CLOSED: 'closed',
+  CLOSING: 'closing',
+  OPEN: 'open',
+  OPENING: 'opening',
+};
 
 export interface SidebarOption {
   name: string;
