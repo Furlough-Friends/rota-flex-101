@@ -1,13 +1,22 @@
 .home {
-  display: grid;
-  grid-template-areas:
-    'header1 header2'
-    'sidebar main';
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 40px 1fr;
+  display: flex;
+  flex-direction: row;
   height: 100vh;
 }
 
+.right {
+  flex: 1;
+  display: grid;
+}
+
+.column {
+  display: grid;
+  grid-template:
+  "header" 2.5rem
+  "content" 1fr
+  /minmax(0, 1fr)
+}
+
 .main {
-  grid-area: main;
+  grid-area: content;
 }

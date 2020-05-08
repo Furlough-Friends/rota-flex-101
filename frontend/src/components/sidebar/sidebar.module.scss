@@ -1,14 +1,16 @@
 @import '../../constants/styles.scss';
+@import '../home/home.module.scss';
 
 $boxShadowStart: rgba(0, 0, 0, 0.2);
 $boxShadowEnd: rgba(0, 0, 0, 0.19);
 
+$sidebar-width: 200px;
+
 .container {
+  grid-area: content;
   background-color: $colour-darkBlue;
-  grid-area: sidebar;
   display: flex;
   flex-direction: column;
-  width: 200px;
   overflow-y: auto;
   z-index: 1;
 }
@@ -19,12 +21,12 @@ $boxShadowEnd: rgba(0, 0, 0, 0.19);
   padding: 10px 0px;
   border: 0px;
   align-self: center;
-  width: 100%;
+  width: $sidebar-width;
   background-color: $colour-darkBlue;
   height: 2.5rem;
   line-height: 2.5rem;
   text-align: center;
-  font-size: 15px;
+  font-size: 1rem;
   font-family: $font-primary;
   box-shadow: 0 4px 8px 0 $boxShadowStart, 0 6px 20px 0 $boxShadowEnd;
   cursor: pointer;
@@ -32,4 +34,33 @@ $boxShadowEnd: rgba(0, 0, 0, 0.19);
 
 .selectedMenuOption {
   background-color: $colour-lightBlue;
+}
+
+.sidebarHeader {
+  grid-area: header;
+  background-color: $colour-darkBlue;
+  display: flex;
+  justify-content: flex-end;
+
+  & svg {
+    box-sizing: border-box;
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 10%;
+    fill: $colour-text-primary;
+  }
+}
+
+.headerButtons {
+  // position: relative;
+  // transform: translate(2.5rem);
+}
+
+.left {
+  width: $sidebar-width;
+  display: grid;
+  & > div {
+    min-height: unset;
+    min-width: unset;
+  }
 }
