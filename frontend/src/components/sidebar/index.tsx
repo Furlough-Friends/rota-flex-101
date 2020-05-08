@@ -59,7 +59,10 @@ const getButtons = (options: SidebarOption[]) =>
   ));
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(true);
+  const isWindowBig =
+    useWindowWidth(windowSizeHookOptions) >= WINDOW_WIDTH_THRESHOLD;
+
+  const [open, setOpen] = useState(isWindowBig);
 
   const handleClose = () => {
     setOpen(false);
@@ -69,8 +72,6 @@ const Sidebar = () => {
     setOpen(true);
   };
 
-  const isWindowBig =
-    useWindowWidth(windowSizeHookOptions) >= WINDOW_WIDTH_THRESHOLD;
   const drawerAnchor = isWindowBig ? 'left' : 'top';
   const drawerVariant = isWindowBig ? 'persistent' : 'temporary';
   const openMenuButton = () =>
