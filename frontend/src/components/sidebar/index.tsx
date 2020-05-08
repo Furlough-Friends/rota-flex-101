@@ -33,7 +33,7 @@ const Sidebar = () => {
 
   const handleClose = () => {
     setIsChanging(true);
-      
+
     setIsOpen(false);
     setIsChanging(false);
   };
@@ -46,23 +46,30 @@ const Sidebar = () => {
   };
 
   const style: CSSProperties =
-    isOpen || isChanging ? {} : {
-      transition: '1s',
-      // transform: 'translateX(-200px)',
-      width: 1,
-    };
+    isOpen || isChanging
+      ? {}
+      : {
+          transition: '1s',
+          // transform: 'translateX(-200px)',
+          width: 1,
+        };
 
   const openSidebarButtonStyle: CSSProperties =
     isOpen || isChanging ? {} : { display: 'none' };
 
   const closeSidebarButtonStyle: CSSProperties =
-    isOpen || isChanging ? { display: 'none' } : {transform: 'translate(2.5rem)'};
+    isOpen || isChanging
+      ? { display: 'none' }
+      : { transform: 'translate(2.5rem)' };
 
   return (
     <div className={sidebarStyles.column} style={style}>
       <div className={sidebarStyles.sidebarHeader}>
         <div className={sidebarStyles.headerButtons}>
-          <ChevronLeftIcon onClick={handleClose} style={openSidebarButtonStyle} />
+          <ChevronLeftIcon
+            onClick={handleClose}
+            style={openSidebarButtonStyle}
+          />
           <MenuIcon onClick={handleOpen} style={closeSidebarButtonStyle} />
         </div>
       </div>
