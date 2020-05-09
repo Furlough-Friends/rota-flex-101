@@ -1,6 +1,5 @@
 .home {
   display: grid;
-  grid-template:
-    'sidebar main'
-    /25% auto;
+  grid-template-areas: 'sidebar main';
+  grid-template-columns: auto 1fr;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
 import LoginOutButton from '../loginOutButton';
@@ -11,23 +11,18 @@ const SidebarButton = ({
   name: string;
   endpoint: string;
 }) => (
-  <button
-    type="button"
-    className={`${sidebarStyles.menuOption} ${
-      `/${endpoint}` === useLocation().pathname
-        ? sidebarStyles.selectedMenuOption
-        : ''
-    }`}
-    key={name}>
+  <NavLink
+    key={name}
+    to={`/${endpoint}`}
+    className={`${sidebarStyles.menuOption}`}
+    activeClassName={`${sidebarStyles.selectedMenuOption}`}>
     {name}
-  </button>
+  </NavLink>
 );
 
 const getButtons = (options: SidebarOption[]) =>
   options.map(({ name, endpoint }) => (
-    <Link to={`/${endpoint}`} key={name}>
-      <SidebarButton name={name} endpoint={endpoint} />
-    </Link>
+    <SidebarButton name={name} endpoint={endpoint} />
   ));
 
 const Sidebar = () => (
