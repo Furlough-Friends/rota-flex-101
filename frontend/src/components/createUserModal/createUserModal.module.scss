@@ -15,3 +15,17 @@
     outline: none;
   }
 }
+
+.form {
+  display: flex;
+}
+
+.formLeft {
+  display: flex;
+  flex-direction: column;
+  padding-right: 5px;
+}
+
+.textField {
+  padding: 5px;
+}

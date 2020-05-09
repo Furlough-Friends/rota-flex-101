@@ -3,7 +3,7 @@ import { RootState } from '../app/store';
 
 export interface ModalState {
   modalType: string | null;
-  modalProps: Object;
+  modalProps?: Object;
 }
 
 const initialState: ModalState = {
@@ -18,7 +18,9 @@ export const modalSlice = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     showModal: (state, action: PayloadAction<ModalState>) => {
       state.modalType = action.payload.modalType;
-      state.modalProps = action.payload.modalProps;
+      state.modalProps = action.payload.modalProps
+        ? action.payload.modalProps
+        : {};
     },
 
     hideModal: (state) => {

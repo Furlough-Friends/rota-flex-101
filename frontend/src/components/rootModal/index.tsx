@@ -2,9 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from '@material-ui/core/Modal';
 
-import rootModalSyles from './rootModal.module.scss'
+import rootModalSyles from './rootModal.module.scss';
 
 import DeleteUserModal from '../deleteUserModal';
+import CreateUserModal from '../createUserModal';
 import {
   ModalState,
   selectModalDetails,
@@ -17,6 +18,7 @@ interface ModalHash {
 
 const MODAL_COMPONENTS: ModalHash = {
   DELETE_USER: DeleteUserModal,
+  CREATE_USER: CreateUserModal,
 };
 
 const ModalRoot = () => {
@@ -33,7 +35,10 @@ const ModalRoot = () => {
     /* eslint-disable react/jsx-props-no-spreading */
     <Modal open onClose={closeModalFunction}>
       <div className={rootModalSyles.content}>
-        <SpecificModal {...modalProps} closeModalFunction={closeModalFunction} />
+        <SpecificModal
+          {...modalProps}
+          closeModalFunction={closeModalFunction}
+        />
       </div>
     </Modal>
   );
