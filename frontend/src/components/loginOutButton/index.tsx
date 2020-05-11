@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { useAuth0 } from '../../react-auth0-spa';
 
 // Button to log in user via Auth0
