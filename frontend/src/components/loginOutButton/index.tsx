@@ -11,7 +11,6 @@ const LoginOutButton = () => {
     isAuthenticated,
     loginWithRedirect,
     logout,
-    user,
   } = useAuth0();
 
   const handleLoginOutButtonClick = () => {
@@ -29,7 +28,7 @@ const LoginOutButton = () => {
         color="primary"
         disabled={loading}
         onClick={handleLoginOutButtonClick}>
-        {isAuthenticated && !loading ? `Log out ${user.name}` : 'Log in'}
+        {isAuthenticated && !loading ? 'Log out' : 'Log in'}
       </Button>
     </div>
   );
