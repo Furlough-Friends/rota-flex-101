@@ -5,6 +5,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormLabel from '@material-ui/core/FormLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import toastr from 'toastr';
 
 import Button from '@material-ui/core/Button';
@@ -19,9 +21,9 @@ interface Props {
 }
 
 interface TextField {
-  id: string,
-  name: string,
-  type: string
+  id: string;
+  name: string;
+  type: string;
 }
 
 const textFields: TextField[] = [
@@ -34,7 +36,9 @@ const textFields: TextField[] = [
 
 const CreateUserModal = ({ closeModalFunction }: Props) => {
   const dispatch = useDispatch();
-  const [prefferedDays, setPrefferedDays] = useState({
+  const [preferredDays, setPreferredDays] = useState<{
+    [key: string]: boolean;
+  }>({
     Mon: false,
     Tue: false,
     Wed: false,
@@ -44,31 +48,41 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     Sun: false,
   });
 
-  const [userInfo, setUserInfo] = useState<{ [key: string]: any }>({
+  console.log(preferredDays);
+
+  const [userInfo, setUserInfo] = useState<{ [key: string]: string | number }>({
     firstName: '',
     surname: '',
     jobTitle: '',
-    contractedHhours: '',
-    pay: '',
+    role: 'user',
+    contractedHours: 0,
+    pay: 0,
   });
 
-  const handlePrefferredDaysChange = (
+  const handlePreferredDaysChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setPrefferedDays({
-      ...prefferedDays,
+    setPreferredDays({
+      ...preferredDays,
       [event.target.name]: event.target.checked,
     });
   };
 
-  const handleUserInfoChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleUserInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserInfo({
       ...userInfo,
       [event.target.name]: event.target.value,
     });
   };
+
+  const handleUserRoleChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>, child: React.ReactNode) => {
+    console.log(event)
+    
+    setUserInfo({
+      ...userInfo,
+      [event.target.name]: event.target.value,
+    });
+  }
 
   return (
     <>
@@ -86,7 +100,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
       <div className={createUserModalStyle.form}>
         <div className={createUserModalStyle.formLeft}>
           {textFields.map((field) => (
-            <span key={field.id} className={createUserModalStyle.textField}>
+            <span key={field.id} className={createUserModalStyle.field}>
               <TextField
                 id="outlined-basic"
                 label={field.name}
@@ -98,17 +112,30 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
               />
             </span>
           ))}
+          <span className={createUserModalStyle.field}>
+            <Select
+              id="demo-simple-select-outlined"
+              value={userInfo.role}
+              name="user"
+              onChange={handleUserRoleChange}
+              label="Role"
+              variant="outlined"
+              >
+              <MenuItem value="user">User</MenuItem>
+              <MenuItem value="manager">Manager</MenuItem>
+            </Select>
+          </span>
         </div>
         <div className={createUserModalStyle.formRight}>
           <FormGroup>
             <FormLabel component="legend">Preferred days</FormLabel>
-            {Object.entries(prefferedDays).map(([day, selected]) => (
+            {Object.entries(preferredDays).map(([day, selected]) => (
               <FormControlLabel
                 key={day}
                 control={
                   <Checkbox
                     checked={selected}
-                    onChange={handlePrefferredDaysChange}
+                    onChange={handlePreferredDaysChange}
                     name={day}
                   />
                 }
