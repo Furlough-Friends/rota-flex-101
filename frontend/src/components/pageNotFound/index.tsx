@@ -10,10 +10,7 @@ const PageNotFound = () => {
     <div className={errorPageStyle.errorPage}>
       <Box>
         <h1>
-          <CancelIcon
-            className={errorPageStyle.icon}
-            style={{ fontSize: '90px' }}
-          />
+          <CancelIcon className={errorPageStyle.icon} />
           SORRY
         </h1>
         <h2>We could not find that page</h2>
