@@ -1,8 +1,8 @@
 import React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Home from '../home';
 import Landing from '../landing';
 import { useAuth0 } from '../../react-auth0-spa';
-import { CircularProgress } from '@material-ui/core';
 import style from './index.module.scss';
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
         <CircularProgress className={style.loader} />
       </div>
     );
-  else return isAuthenticated ? <Home /> : <Landing />;
+  return isAuthenticated ? <Home /> : <Landing />;
 };
 
 export default App;
