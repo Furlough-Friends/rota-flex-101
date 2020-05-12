@@ -1,16 +1,17 @@
 package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
+import com.rota.api.dto.StaffDto;
 import com.rota.auth.AuthenticationUtils;
 import com.rota.database.orm.engagement.EngagementRepository;
 import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
-
+import com.rota.exceptions.StaffNotFoundException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -79,5 +80,34 @@ public class StaffService {
     return staffRepository.findAll().stream()
         .filter(staff -> !staff.isInactive())
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Deactivates staff member with given id.
+   *
+   * @param id ID of staff member to deactivate
+   */
+  public void removeStaff(int id) {
+    Optional<Staff> staffMember = staffRepository.findById(id);
+    staffMember.ifPresent(staff -> {
+      staff.setInactive(true);
+      staffRepository.save(staff);
+    });
+  }
+
+  /**
+   * Updates a staff member in the database.
+   *
+   * @param id           Of the staff member being updated.
+   * @param updatedStaff Updated staff details.
+   * @return The updated {@link Staff} member.
+   */
+  public Staff updateStaff(int id, StaffDto updatedStaff) {
+    // Check to see if that staff member exists, throw exception if not.
+    staffRepository.findById(id).orElseThrow(() -> new StaffNotFoundException(id));
+    // If it exists, safe new staff information to that ID.
+    Staff staffToSave = updatedStaff.toStaff();
+    staffToSave.setId(id);
+    return staffRepository.save(staffToSave);
   }
 }
