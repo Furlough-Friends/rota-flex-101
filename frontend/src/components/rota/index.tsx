@@ -44,6 +44,7 @@ const Rota = () => (
       <FullCalendar
         plugins={[timeGridPlugin]}
         height="parent"
+        locale={navigator.language}
         allDaySlot={false}
         slotLabelFormat={TIME_FORMAT}
         minTime="08:00:00"
