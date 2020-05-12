@@ -48,3 +48,24 @@ export const deleteStaff = (id: string) =>
 export const selectStaff = (state: RootState) => state.staff.value;
 
 export default staffSlice.reducer;
+
+// const myUrlWithParams = new URL(STAFF_CREATE_URL);
+
+// console.log(
+//   JSON.stringify({
+//     firstName: 'a',
+//     surname: 'a',
+//     ROLE: 'USER',
+//   })
+// );
+
+// myUrlWithParams.searchParams.append(
+//   'staffDto',
+//   JSON.stringify({
+//     firstName: 'a',
+//     surname: 'a',
+//     ROLE: 'USER',
+//   })
+// );
+
+// console.log(myUrlWithParams.href);

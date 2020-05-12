@@ -26,6 +26,9 @@ interface TextField {
   type: string;
 }
 
+type dropdownEvent = React.ChangeEvent<{ name?: string | undefined; value: unknown; }>;
+type textEvent = React.ChangeEvent<HTMLInputElement>;
+
 const textFields: TextField[] = [
   { id: 'firstName', name: 'First Name', type: 'text' },
   { id: 'surname', name: 'Surname', type: 'text' },
@@ -68,21 +71,12 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     });
   };
 
-  const handleUserInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUserInfoChange = (event: dropdownEvent | textEvent, child: React.ReactNode = null) => {
     setUserInfo({
       ...userInfo,
-      [event.target.name]: event.target.value,
+      [event.target.name as string]: event.target.value,
     });
   };
-
-  const handleUserRoleChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>, child: React.ReactNode) => {
-    console.log(event)
-    
-    setUserInfo({
-      ...userInfo,
-      [event.target.name]: event.target.value,
-    });
-  }
 
   return (
     <>
@@ -117,7 +111,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
               id="demo-simple-select-outlined"
               value={userInfo.role}
               name="user"
-              onChange={handleUserRoleChange}
+              onChange={handleUserInfoChange}
               label="Role"
               variant="outlined"
               >
