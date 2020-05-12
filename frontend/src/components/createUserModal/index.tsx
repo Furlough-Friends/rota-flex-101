@@ -51,15 +51,13 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     Sun: false,
   });
 
-  console.log(preferredDays);
-
-  const [userInfo, setUserInfo] = useState<{ [key: string]: string | number }>({
+  const [userInfo, setUserInfo] = useState<{ [key: string]: string }>({
     firstName: '',
     surname: '',
     jobTitle: '',
     role: 'user',
-    contractedHours: 0,
-    pay: 0,
+    contractedHours: '',
+    pay: '',
   });
 
   const handlePreferredDaysChange = (
@@ -72,9 +70,11 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
   };
 
   const handleUserInfoChange = (event: dropdownEvent | textEvent, child: React.ReactNode = null) => {
+    const userField = event.target.name as string;
+    const newValue = event.target.value as string;
     setUserInfo({
       ...userInfo,
-      [event.target.name as string]: event.target.value,
+      [userField]: newValue,
     });
   };
 
