@@ -8,4 +8,3 @@ build
 *.iml
 .vscode
 node_modules
-backend/src/main/resources/application-local.properties
