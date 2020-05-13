@@ -26,9 +26,6 @@ interface TextField {
   type: string;
 }
 
-type dropdownEvent = React.ChangeEvent<{ name?: string | undefined; value: unknown; }>;
-type textEvent = React.ChangeEvent<HTMLInputElement>;
-
 const textFields: TextField[] = [
   { id: 'firstName', name: 'First Name', type: 'text' },
   { id: 'surname', name: 'Surname', type: 'text' },
@@ -51,13 +48,13 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     Sun: false,
   });
 
-  const [userInfo, setUserInfo] = useState<{ [key: string]: string }>({
+  const [userInfo, setUserInfo] = useState<{ [key: string]: string | number }>({
     firstName: '',
     surname: '',
     jobTitle: '',
-    role: 'user',
-    contractedHours: '',
-    pay: '',
+    role: 'USER',
+    contractedHours: 0,
+    pay: 0,
   });
 
   const handlePreferredDaysChange = (
@@ -69,14 +66,34 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     });
   };
 
-  const handleUserInfoChange = (event: dropdownEvent | textEvent, child: React.ReactNode = null) => {
+  const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const userField = event.target.name as string;
-    const newValue = event.target.value as string;
+    const newValueString = event.target.value as string;
+    let newValue: string | number;
+
+    console.log(event.target.type);
+    if (event.target.type === 'number') {
+      console.log(event.target.type);
+      newValue = parseFloat(newValueString);
+    } else {
+      newValue = newValueString
+    }
+
+    updateUserInfo(userField, newValue);
+  };
+
+  const handleDropdownChange = (event:  React.ChangeEvent<{ name?: string | undefined; value: unknown; }>, child: React.ReactNode = null) => {
+    const userField = event.target.name as string;
+    const newValue = event.target.value as string | number;
+    updateUserInfo(userField, newValue);
+  };
+
+  const updateUserInfo = (userField: string, newValue: string | number) => {
     setUserInfo({
       ...userInfo,
       [userField]: newValue,
     });
-  };
+  }
 
   return (
     <>
@@ -102,7 +119,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
                 type={field.type}
                 value={userInfo[field.id]}
                 name={field.id}
-                onChange={handleUserInfoChange}
+                onChange={handleTextFieldChange}
               />
             </span>
           ))}
@@ -111,12 +128,12 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
               id="demo-simple-select-outlined"
               value={userInfo.role}
               name="user"
-              onChange={handleUserInfoChange}
+              onChange={handleDropdownChange}
               label="Role"
               variant="outlined"
               >
-              <MenuItem value="user">User</MenuItem>
-              <MenuItem value="manager">Manager</MenuItem>
+              <MenuItem value="USER">User</MenuItem>
+              <MenuItem value="MANAGER">Manager</MenuItem>
             </Select>
           </span>
         </div>
