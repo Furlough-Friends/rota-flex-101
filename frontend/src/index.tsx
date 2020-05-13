@@ -25,7 +25,7 @@ const onRedirectCallback = (appState: appState) => {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment key="reactfragment">
     <Provider store={store}>
       <Auth0Provider
         domain={config.domain}
@@ -37,7 +37,7 @@ ReactDOM.render(
         </Router>
       </Auth0Provider>
     </Provider>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root')
 );
 
