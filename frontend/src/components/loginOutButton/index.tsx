@@ -1,18 +1,13 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 import { useAuth0 } from '../../react-auth0-spa';
 
 // Button to log in user via Auth0
 // The button is disabled when Auth0 authentication is loading
 
 const LoginOutButton = () => {
-  const {
-    loading,
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
-    user,
-    getTokenSilently,
-  } = useAuth0();
+
+  const { loading, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   const handleLoginOutButtonClick = () => {
     if (isAuthenticated) {
@@ -24,20 +19,13 @@ const LoginOutButton = () => {
 
   return (
     <div className="login-out-button">
-      <button
-        type="button"
+      <Button
+        variant="contained"
+        color="primary"
         disabled={loading}
         onClick={handleLoginOutButtonClick}>
-        {isAuthenticated && !loading ? `Log out ${user.name}` : 'Log in'}
-      </button>
-      <button
-        type="button"
-        onClick={async () => {
-          const token = await getTokenSilently();
-          console.log(token);
-        }}>
-        Get Token
-      </button>
+        {isAuthenticated && !loading ? 'Log out' : 'Log in'}
+      </Button>
     </div>
   );
 };

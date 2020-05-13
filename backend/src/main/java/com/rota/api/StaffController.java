@@ -12,11 +12,11 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -101,6 +101,27 @@ public class StaffController {
   @ApiOperation(value = "Lets an authenticated manager view list of all active staff")
   public List<Staff> getActiveStaff() {
     return staffService.getActiveStaff();
+  }
+
+  /**
+   * Endpoint to update the information of a staff member.
+   *
+   * @param id           The ID of the staff member to be updated.
+   * @param updatedStaff Updated staff information.
+   * @return The updated {@link Staff} member.
+   */
+  @PutMapping("/staff/{id}")
+  @ApiOperation(value = "Lets an authenticated manager update a staff member")
+  public Staff updateStaff(
+      @PathVariable
+      @ApiParam(value = "Staff ID")
+          int id,
+      @RequestBody
+      @ApiParam(value = "Updated staff object")
+          StaffDto updatedStaff
+  ) {
+    verifyManagementRole("auth");
+    return staffService.updateStaff(id, updatedStaff);
   }
 
   /**
