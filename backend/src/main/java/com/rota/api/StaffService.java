@@ -1,11 +1,8 @@
 package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
-import com.rota.auth.Authentication;
 import com.rota.api.dto.StaffDto;
-import com.rota.auth.AuthenticationUtils;
 import com.rota.database.orm.engagement.EngagementRepository;
-import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
 import com.rota.exceptions.StaffNotFoundException;
@@ -14,9 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class StaffService {
@@ -93,7 +88,8 @@ public class StaffService {
             .getEmail()
             .equalsIgnoreCase(email))
         .findFirst();
-    
+  }
+
   /**
    * Updates a staff member in the database.
    *

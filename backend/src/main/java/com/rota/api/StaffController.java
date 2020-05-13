@@ -120,7 +120,6 @@ public class StaffController {
       @ApiParam(value = "Updated staff object")
           StaffDto updatedStaff
   ) {
-    verifyManagementRole("auth");
     return staffService.updateStaff(id, updatedStaff);
   }
 
