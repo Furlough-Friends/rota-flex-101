@@ -37,14 +37,15 @@ public class StaffController {
 
   static final String AUTHORIZATION_HEADER = "Authorization";
 
-  static final String STAFF_NOT_FOUND_MESSAGE = "No member of staff exists for your credentials. Please log in again";
+  static final String STAFF_NOT_FOUND_MESSAGE =
+      "No member of staff exists for your credentials. Please log in again";
 
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
    *
    * @return List of all available shifts.
-   * @throws IOException from HttpClient when getting user info.
+   * @throws IOException          from HttpClient when getting user info.
    * @throws InterruptedException from HttpClient when getting user info.
    */
   @GetMapping("/myShifts")
@@ -61,35 +62,20 @@ public class StaffController {
   ) throws IOException, InterruptedException {
 
     final JsonNode userInfo = authentication.getUserInfoFromToken();
-    final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
+    final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
     // put the above 2 lines in a new method?
 
     return staffService.getStaffEngagementsBetween(staff.getId(), start, end);
   }
 
   /**
-   * Checks if the currently authenticated user has manager permissions.
-   *
-   */
-  private void verifyManagementRole() throws IOException, InterruptedException {
-
-    final JsonNode userInfo = authentication.getUserInfoFromToken();
-    final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
-    // put the above 2 lines in a new method?
-
-    if (staff.getRole() != Role.MANAGER) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
-    }
-
-  }
-
-  /**
    * Endpoint to create and enter a new staff record into the system.
    * Staff ID and role is inferred from the token passed in the header's Authorization field.
    *
-   * @param staffDto   Staff details.
+   * @param staffDto Staff details.
    * @return A Response entity of a {@link Staff} object.
-   * @throws IOException from HttpClient when getting user info.
+   * @throws IOException          from HttpClient when getting user info.
    * @throws InterruptedException from HttpClient when getting user info.
    */
   @PostMapping("/staff/create")
@@ -100,8 +86,7 @@ public class StaffController {
       @RequestBody
       @ApiParam("Staff details for the new user")
           StaffDto staffDto
-  ) throws IOException, InterruptedException {
-    verifyManagementRole();
+  ) {
     // Assuming in general staff entered will be active ones
     Staff createdStaff = staffService.createStaff(staffDto.toStaff());
 
@@ -110,25 +95,19 @@ public class StaffController {
 
   /**
    * Get endpoint for all active staff members.
+   *
    * @return List of all active staff members.
    */
   @GetMapping("/staff/get")
   @ApiOperation(value = "Lets an authenticated manager view list of all active staff")
   public List<Staff> getActiveStaff(
   ) {
-    try {
-      verifyManagementRole();
-    } catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
-    }
-
     return staffService.getActiveStaff();
   }
 
   /**
    * Endpoint for the manager to remove a staff member by a given id.
    *
-   * @param authString manager's authentication token.
    * @param id staff id to remove.
    * @return An updated list of active staff members.
    */
@@ -136,18 +115,9 @@ public class StaffController {
   @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
       + "an updated list of active users")
   public List<Staff> removeStaffMember(
-      @RequestHeader(AUTHORIZATION_HEADER)
-      @ApiParam(value = "Authentication token")
-      String authString,
-
-      @RequestParam(name = "id", required = true) 
-      int id
+      @RequestParam(name = "id", required = true)
+          int id
   ) {
-    try {
-      verifyManagementRole();
-    } catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough permissions.");
-    }
     staffService.removeStaff(id);
     return staffService.getActiveStaff();
   }

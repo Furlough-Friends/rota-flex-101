@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
 
-
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -48,11 +48,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and()
             .csrf().disable()
+        .addFilterBefore(roleFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
-//            .antMatchers("/**/admin/**").hasAuthority(Role.MANAGER.toString())
+            .antMatchers("/**/myShifts/**").hasAuthority(Role.USER.toString())
+            .antMatchers("/**/staff/**").hasAuthority(Role.MANAGER.toString())
+        .antMatchers("/**/swagger-ui.html**").permitAll()
+        .antMatchers("/**/swagger-ui/**").permitAll()
+        .antMatchers("/**/swagger-resources/**").permitAll()
+        .antMatchers("/**/webjars/**").permitAll()
+        .antMatchers("/**/v2/**").permitAll()
         .anyRequest().authenticated()
         .and()
         .oauth2ResourceServer().jwt();
+  }
+
+  @Bean
+  public RoleFilter roleFilter() {
+    return new RoleFilter();
   }
 
   /**
