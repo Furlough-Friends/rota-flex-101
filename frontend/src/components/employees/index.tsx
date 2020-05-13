@@ -18,10 +18,12 @@ import 'toastr/build/toastr.min.css';
 import { StaffData, TableColumn } from '../../constants/employees';
 import { FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
+import { useAuth0 } from '../../react-auth0-spa';
 
 interface CallbackFunction {
   (data: StaffData): () => void;
 }
+
 /**
  * Functions which are called when add/edit/delete buttons are pressed.
  * Note that the signature of addUser is different from editUser/deleteUser.
@@ -117,7 +119,9 @@ const renderTableRow = (tableColumns: TableColumn[]) => (row: StaffData) => (
 const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
   <Table size="small">
     {renderTableHeaders(tableColumns)}
-    <TableBody>{data.length > 0 && data.map(renderTableRow(tableColumns))}</TableBody>
+    <TableBody>
+      {data.length > 0 && data.map(renderTableRow(tableColumns))}
+    </TableBody>
   </Table>
 );
 
@@ -137,6 +141,7 @@ const addButton = (
 const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
+  const { getTokenSilently } = useAuth0();
   const [isDeleteModalOpen, setDeleteModalState] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState({
     id: 0,
@@ -159,8 +164,12 @@ const Employees = () => {
 
   // Fetch data when component loads
   useEffect(() => {
-    dispatch(fetchStaff);
-  }, [dispatch]);
+    const getStaff = async () => {
+      const accessToken = await getTokenSilently();
+      dispatch(fetchStaff(accessToken));
+    };
+    getStaff();
+  }, [dispatch, getTokenSilently]);
 
   return (
     <div className={employeesStyle.employees}>
