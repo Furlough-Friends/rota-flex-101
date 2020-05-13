@@ -4,6 +4,7 @@
 // https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
 
 import React, { useState, useEffect, useContext } from 'react';
+import toastr from 'toastr';
 import createAuth0Client, {
   PopupLoginOptions,
   RedirectLoginResult,
@@ -81,7 +82,7 @@ export const Auth0Provider = ({
     try {
       await auth0Client!.loginWithPopup(o);
     } catch (error) {
-      console.error(error);
+      toastr.error(error);
     } finally {
       setPopupOpen(false);
     }

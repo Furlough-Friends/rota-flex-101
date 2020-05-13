@@ -1,15 +1,21 @@
 package com.rota.api;
 
 import com.rota.api.dto.EngagementDto;
+import com.rota.auth.Authentication;
 import com.rota.database.orm.engagement.EngagementRepository;
+import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class StaffService {
@@ -34,10 +40,8 @@ public class StaffService {
     Instant endTime = end == null ? Instant.MAX : end;
     return engagementRepository.findByStaffId(staffId).stream()
         .filter(engagement ->
-            (engagement.getStart().equals(start)
-                || engagement.getStart().isAfter(startTime))
-                && (engagement.getEnd().equals(endTime)
-                || engagement.getEnd().isBefore(endTime)))
+            !engagement.getStart().isBefore(startTime)
+                && !engagement.getEnd().isAfter(endTime))
         .map(EngagementDto::fromEngagement)
         .collect(Collectors.toList());
   }
@@ -53,6 +57,21 @@ public class StaffService {
   }
 
   /**
+   * Checks to see if the current user is a manager.
+   *
+   * @param authString the current threads authentication token.
+   * @return true if user has manager permissions.
+   */
+//  public boolean hasManagerPermissions(String authString) {
+//    final Role role = Authentication
+//        .getUserRoleFromToken(authString)
+//        .orElseThrow(() ->
+//            new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
+//        );
+//    return role == Role.MANAGER;
+//  }
+
+  /**
    * Returns the list of all active staff members.
    *
    * @return A list of all active staff members.
@@ -61,6 +80,19 @@ public class StaffService {
     return staffRepository.findAll().stream()
         .filter(staff -> !staff.isInactive())
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Deactivates staff member with given id.
+   * 
+   * @param id ID of staff member to deactivate
+   */
+  public void removeStaff(int id) {
+    Optional<Staff> staffMember = staffRepository.findById(id);
+    staffMember.ifPresent(staff -> {
+      staff.setInactive(true);
+      staffRepository.save(staff);
+    });
   }
 
   /**

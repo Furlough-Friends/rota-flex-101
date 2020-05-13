@@ -30,7 +30,7 @@ public class Authentication {
   @Value("${auth0.baseurl}")
   private String baseUrl;
 
-  @Value("${auth0.managementapi.client_secret}")
+  @Value("${AUTH_CLIENT_SECRET}")
   private String clientSecret;
 
   @Value("${auth0.managementapi.client_id}")

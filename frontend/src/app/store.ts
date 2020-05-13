@@ -7,12 +7,12 @@ import {
   ReducersMapObject,
 } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import counterReducer from '../features/counter/counterSlice';
+import staffReducer from '../features/staffSlice';
 
 const middleware: Middleware[] = [...getDefaultMiddleware(), logger];
 
 const reducer: ReducersMapObject = {
-  counter: counterReducer,
+  staff: staffReducer,
 };
 
 export const store = configureStore({

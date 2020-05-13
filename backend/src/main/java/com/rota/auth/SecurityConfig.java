@@ -1,5 +1,6 @@
 package com.rota.auth;
 
+import com.rota.database.orm.staff.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,12 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+
+
+
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -40,11 +47,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and()
+            .csrf().disable()
         .authorizeRequests()
-        .mvcMatchers("/api/private").authenticated()
-        .mvcMatchers("/myShifts").authenticated()
-        .mvcMatchers("/staff/create").authenticated()
+//            .antMatchers("/**/admin/**").hasAuthority(Role.MANAGER.toString())
+        .anyRequest().authenticated()
         .and()
         .oauth2ResourceServer().jwt();
+  }
+
+  /**
+   //   * CORS filter settings.
+   //   * @return Bean with CORS settings
+   //   */
+  @Bean
+  public CorsFilter corsFilter() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.addAllowedOrigin("*");
+    config.addAllowedHeader("*");
+    config.addAllowedMethod("GET");
+    config.addAllowedMethod("POST");
+    config.addAllowedMethod("PUT");
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
   }
 }
