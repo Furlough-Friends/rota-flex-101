@@ -57,7 +57,12 @@ const SidebarButton = ({
 
 const getButtons = (options: SidebarOption[], isWindowBig: boolean) =>
   options.map(({ name, endpoint }) => (
-    <SidebarButton key={name} name={name} endpoint={endpoint} isWindowBig={isWindowBig} />
+    <SidebarButton
+      key={name}
+      name={name}
+      endpoint={endpoint}
+      isWindowBig={isWindowBig}
+    />
   ));
 
 const Sidebar = () => {
