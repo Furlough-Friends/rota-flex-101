@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import Header from '../header';        
-import Sidebar from '../sidebar';
+import Header from '../header';    
 import Employees from '../employees';
 import Rota from '../rota';
 import Sidebar from '../sidebar';
