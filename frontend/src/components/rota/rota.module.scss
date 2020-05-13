@@ -4,10 +4,10 @@
   grid-area: main;
   display: grid;
   height: 100vh;
+  margin: 0 1em;
   grid-template:
     'header' min-content
     'calendar' 1fr;
-  flex-direction: column;
   h1 {
     grid-area: header;
   }
