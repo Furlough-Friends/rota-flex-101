@@ -8,15 +8,14 @@ import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,8 +84,9 @@ public class StaffController {
   /**
    * Endpoint to create and enter a new staff record into the system.
    * Staff ID and role is inferred from the token passed in the header's Authorization field.
+   *
    * @param authString Authentication token.
-   * @param staffDto Staff details.
+   * @param staffDto   Staff details.
    * @return The created staff object as a JsonResponse.
    */
   @PostMapping("/staff/create")
@@ -111,6 +111,7 @@ public class StaffController {
 
   /**
    * Get endpoint for all active staff members.
+   *
    * @param authString Authentication token.
    * @return List of all active staff members.
    */
@@ -126,22 +127,43 @@ public class StaffController {
   }
 
   /**
+   * Endpoint to update the information of a staff member.
+   *
+   * @param id           The ID of the staff member to be updated.
+   * @param updatedStaff Updated staff information.
+   * @return The updated {@link Staff} member.
+   */
+  @PutMapping("/staff/{id}")
+  @ApiOperation(value = "Lets an authenticated manager update a staff member")
+  public Staff updateStaff(
+      @PathVariable
+      @ApiParam(value = "Staff ID")
+          int id,
+      @RequestBody
+      @ApiParam(value = "Updated staff object")
+          StaffDto updatedStaff
+  ) {
+    verifyManagementRole("auth");
+    return staffService.updateStaff(id, updatedStaff);
+  }
+
+  /**
    * Endpoint for the manager to remove a staff member by a given id.
-   * 
+   *
    * @param authString manager's authentication token.
-   * @param id staff id to remove.
+   * @param id         staff id to remove.
    * @return An updated list of active staff members.
    */
   @PutMapping("/staff/remove")
   @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
       + "an updated list of active users")
   public List<Staff> removeStaffMember(
-      @RequestHeader(AUTHORIZATION_HEADER) 
-      @ApiParam(value = "Authentication token") 
-      String authString,
+      @RequestHeader(AUTHORIZATION_HEADER)
+      @ApiParam(value = "Authentication token")
+          String authString,
 
-      @RequestParam(name = "id", required = true) 
-      int id
+      @RequestParam(name = "id", required = true)
+          int id
   ) {
     verifyManagementRole(authString);
     staffService.removeStaff(id);
