@@ -57,21 +57,6 @@ public class StaffService {
   }
 
   /**
-   * Checks to see if the current user is a manager.
-   *
-   * @param authString the current threads authentication token.
-   * @return true if user has manager permissions.
-   */
-//  public boolean hasManagerPermissions(String authString) {
-//    final Role role = Authentication
-//        .getUserRoleFromToken(authString)
-//        .orElseThrow(() ->
-//            new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Failed to authorize.")
-//        );
-//    return role == Role.MANAGER;
-//  }
-
-  /**
    * Returns the list of all active staff members.
    *
    * @return A list of all active staff members.

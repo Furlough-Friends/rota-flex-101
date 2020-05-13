@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.rota.api.dto.EngagementDto;
 import com.rota.api.dto.StaffDto;
 import com.rota.auth.Authentication;
-import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,10 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -100,8 +99,7 @@ public class StaffController {
    */
   @GetMapping("/staff/get")
   @ApiOperation(value = "Lets an authenticated manager view list of all active staff")
-  public List<Staff> getActiveStaff(
-  ) {
+  public List<Staff> getActiveStaff() {
     return staffService.getActiveStaff();
   }
 

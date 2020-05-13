@@ -13,8 +13,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-
-
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -47,11 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and()
-            .csrf().disable()
+        .csrf().disable()
         .addFilterBefore(roleFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
-            .antMatchers("/**/myShifts/**").hasAuthority(Role.USER.toString())
-            .antMatchers("/**/staff/**").hasAuthority(Role.MANAGER.toString())
+        .antMatchers("/**/myShifts/**").hasAuthority(Role.USER.toString())
+        .antMatchers("/**/staff/**").hasAuthority(Role.MANAGER.toString())
         .antMatchers("/**/swagger-ui.html**").permitAll()
         .antMatchers("/**/swagger-ui/**").permitAll()
         .antMatchers("/**/swagger-resources/**").permitAll()
@@ -68,9 +66,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   //   * CORS filter settings.
-   //   * @return Bean with CORS settings
-   //   */
+   * CORS filter settings.
+   * @return Bean with CORS settings
+   */
   @Bean
   public CorsFilter corsFilter() {
     CorsConfiguration config = new CorsConfiguration();
