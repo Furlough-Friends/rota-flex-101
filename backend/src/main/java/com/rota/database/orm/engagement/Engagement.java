@@ -35,6 +35,5 @@ public class Engagement {
   private double hoursWorked;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Staff staff;
 }

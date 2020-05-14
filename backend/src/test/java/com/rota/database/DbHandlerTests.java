@@ -118,16 +118,6 @@ class DbHandlerTests {
   }
 
   @Test
-  void removeStaff() {
-    staffRepository.save(STAFF_MEMBER);
-    staffRepository.delete(STAFF_MEMBER);
-    Assertions.assertEquals(
-        Optional.empty(),
-        staffRepository.findById(STAFF_ID)
-    );
-  }
-
-  @Test
   void removeEngagement() {
     staffRepository.save(STAFF_MEMBER);
     engagementRepository.save(ENGAGEMENT_1);
