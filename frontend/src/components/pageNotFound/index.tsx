@@ -9,7 +9,7 @@ const PageNotFound = () => {
   return (
     <div className={errorPageStyle.errorPage}>
       <Box>
-        <h1>
+        <h1 className={errorPageStyle.sorryHeader}>
           <CancelIcon className={errorPageStyle.icon} />
           SORRY
         </h1>
