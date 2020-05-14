@@ -63,7 +63,6 @@ public class StaffController {
     final JsonNode userInfo = authentication.getUserInfoFromToken();
     final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
-    // put the above 2 lines in a new method?
 
     return staffService.getStaffEngagementsBetween(staff.getId(), start, end);
   }
