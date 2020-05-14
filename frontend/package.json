@@ -21,6 +21,7 @@
     "@types/redux-logger": "^3.0.7",
     "@types/toastr": "^2.1.37",
     "clsx": "^1.1.0",
+    "date-fns": "^2.13.0",
     "history": "^4.10.1",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
