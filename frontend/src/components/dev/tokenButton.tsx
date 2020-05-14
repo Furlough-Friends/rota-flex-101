@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth0 } from '../../react-auth0-spa';
 import Button from '@material-ui/core/Button';
+import { useAuth0 } from '../../react-auth0-spa';
 
 const TokenButton = () => {
   const { isAuthenticated, getTokenSilently } = useAuth0();

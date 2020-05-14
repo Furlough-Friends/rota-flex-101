@@ -11,7 +11,6 @@ const LoginOutButton = () => {
     isAuthenticated,
     loginWithRedirect,
     logout,
-    getTokenSilently,
   } = useAuth0();
 
   const handleLoginOutButtonClick = () => {
