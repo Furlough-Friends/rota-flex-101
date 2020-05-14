@@ -20,3 +20,7 @@
 .header {
   @include header;
 }
+
+:global(.fc-today) {
+  background-color: yellow;
+}
