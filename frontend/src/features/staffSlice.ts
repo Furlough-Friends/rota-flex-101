@@ -46,9 +46,13 @@ export const fetchStaff = fetchWithAuth(
 );
 
 export const createStaff = (staff: CreateStaffData): AppThunk => () =>
-  fetch(STAFF_CREATE_URL + JSON.stringify(staff), {
+  fetch(STAFF_CREATE_URL, {
     method: 'POST',
-    headers: { Authorization: getAuthenticationToken() },
+    headers: {
+      Authorization: getAuthenticationToken(),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(staff),
   });
 
 export const deleteStaff = (id: string) =>
