@@ -7,7 +7,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormLabel from '@material-ui/core/FormLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import toastr from 'toastr';
 
 import Button from '@material-ui/core/Button';
 
@@ -35,7 +34,6 @@ const textFields: TextField[] = [
 ];
 
 const CreateUserModal = ({ closeModalFunction }: Props) => {
-  const dispatch = useDispatch();
   const [preferredDays, setPreferredDays] = useState<{
     [key: string]: boolean;
   }>({
@@ -66,34 +64,36 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     });
   };
 
-  const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const userField = event.target.name as string;
-    const newValueString = event.target.value as string;
-    let newValue: string | number;
-
-    console.log(event.target.type);
-    if (event.target.type === 'number') {
-      console.log(event.target.type);
-      newValue = parseFloat(newValueString);
-    } else {
-      newValue = newValueString
-    }
-
-    updateUserInfo(userField, newValue);
-  };
-
-  const handleDropdownChange = (event:  React.ChangeEvent<{ name?: string | undefined; value: unknown; }>, child: React.ReactNode = null) => {
-    const userField = event.target.name as string;
-    const newValue = event.target.value as string | number;
-    updateUserInfo(userField, newValue);
-  };
-
   const updateUserInfo = (userField: string, newValue: string | number) => {
     setUserInfo({
       ...userInfo,
       [userField]: newValue,
     });
-  }
+  };
+
+  const handleTextFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const userField = event.target.name as string;
+    const newValueString = event.target.value as string;
+    let newValue: string | number;
+
+    if (event.target.type === 'number') {
+      newValue = parseFloat(newValueString);
+    } else {
+      newValue = newValueString;
+    }
+
+    updateUserInfo(userField, newValue);
+  };
+
+  const handleDropdownChange = (
+    event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
+  ) => {
+    const userField = event.target.name as string;
+    const newValue = event.target.value as string | number;
+    updateUserInfo(userField, newValue);
+  };
 
   return (
     <>
@@ -130,8 +130,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
               name="user"
               onChange={handleDropdownChange}
               label="Role"
-              variant="outlined"
-              >
+              variant="outlined">
               <MenuItem value="USER">User</MenuItem>
               <MenuItem value="MANAGER">Manager</MenuItem>
             </Select>
