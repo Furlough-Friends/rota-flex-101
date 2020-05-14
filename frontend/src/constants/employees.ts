@@ -1,8 +1,8 @@
-import { URL } from './global';
-import { DateStr, toDateStr } from './global'
+import { URL, DateStr } from './global';
 
 export const STAFF_FETCH_URL = `${URL}/staff/get`;
 export const STAFF_DELETE_URL = `${URL}/staff/remove?id=`;
+export const STAFF_CREATE_URL = `${URL}/staff/create?staffDto=`;
 
 interface BaseStaffData {
   firstName: string;
@@ -17,8 +17,9 @@ export interface StaffData extends BaseStaffData {
 
 export interface CreateStaffData extends BaseStaffData {
   startDate: DateStr;
-  role: "USER" | "MANAGER";
+  role: 'USER' | 'MANAGER';
   preferredDates: string;
+  pay: number;
 }
 
 export interface TableColumn {

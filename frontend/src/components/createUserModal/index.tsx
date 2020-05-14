@@ -7,10 +7,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormLabel from '@material-ui/core/FormLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import Button from '@material-ui/core/Button';
-
 import Clear from '@material-ui/icons/Clear';
+
+import { createStaff } from '../../features/staffSlice';
+import { toDateStr } from '../../constants/global';
 
 import 'toastr/build/toastr.min.css';
 import createUserModalStyle from './createUserModal.module.scss';
@@ -34,6 +35,7 @@ const textFields: TextField[] = [
 ];
 
 const CreateUserModal = ({ closeModalFunction }: Props) => {
+  const dispatch = useDispatch();
   const [preferredDays, setPreferredDays] = useState<{
     [key: string]: boolean;
   }>({
@@ -93,6 +95,25 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     const userField = event.target.name as string;
     const newValue = event.target.value as string | number;
     updateUserInfo(userField, newValue);
+  };
+
+  const handleCreateClick = () => {
+    const prefDaysString = Object.values(preferredDays)
+      .map((preferred) => +preferred)
+      .join('');
+    dispatch(
+      createStaff({
+        firstName: userInfo.firstName as string,
+        surname: userInfo.surname as string,
+        jobTitle: userInfo.jobTitle as string,
+        role: userInfo.role as 'USER' | 'MANAGER',
+        contractedHours: userInfo.contractedHours as number,
+        pay: userInfo.pay as number,
+        preferredDates: prefDaysString,
+        startDate: toDateStr(new Date()),
+      })
+    );
+    closeModalFunction();
   };
 
   return (
@@ -159,7 +180,10 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
         <Button variant="contained" onClick={closeModalFunction}>
           Cancel
         </Button>
-        <Button variant="contained" color="secondary">
+        <Button
+          variant="contained"
+          onClick={handleCreateClick}
+          color="secondary">
           CREATE
         </Button>
       </div>

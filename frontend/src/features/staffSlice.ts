@@ -4,7 +4,7 @@ import {
   CreateStaffData,
   STAFF_FETCH_URL,
   STAFF_DELETE_URL,
-  STAFF_CREATE_URL
+  STAFF_CREATE_URL,
 } from '../constants/employees';
 import { getAuthenticationToken } from '../constants/global';
 import { RootState, AppThunk } from '../app/store';
@@ -45,8 +45,11 @@ export const fetchStaff = fetchWithAuth(
   getAuthenticationToken
 );
 
-export const createStaff = (staff: CreateStaffData) : AppThunk => () =>
-  fetch(STAFF_CREATE_URL, {method: 'POST', headers: { Authorization: getAuthenticationToken() } })
+export const createStaff = (staff: CreateStaffData): AppThunk => () =>
+  fetch(STAFF_CREATE_URL + JSON.stringify(staff), {
+    method: 'POST',
+    headers: { Authorization: getAuthenticationToken() },
+  });
 
 export const deleteStaff = (id: string) =>
   fetchWithAuth(STAFF_DELETE_URL + id, 'PUT', getAuthenticationToken);
