@@ -1,11 +1,11 @@
-export const get = async (url: String, token: String | undefined) => {
+export const get = async (url: string, token: string | undefined) => {
   const response = await fetch(url as RequestInfo, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response;
 };
 
-export const put = async (url: String, token: String | undefined) => {
+export const put = async (url: string, token: string | undefined) => {
   const response = await fetch(url as RequestInfo, {
     method: 'PUT',
     headers: { Authorization: `Bearer ${token}` },
@@ -14,9 +14,9 @@ export const put = async (url: String, token: String | undefined) => {
 };
 
 export const post = async (
-  url: String,
-  token: String | undefined,
-  data: Object
+  url: string,
+  token: string | undefined,
+  data: object
 ) => {
   const response = await fetch(url as RequestInfo, {
     method: 'POST',

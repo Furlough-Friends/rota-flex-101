@@ -6,6 +6,7 @@ import {
 } from '../constants/employees';
 import { RootState, AppThunk } from '../app/store';
 import { get, put } from '../service/apiService';
+import toastr from 'toastr';
 
 interface StaffState {
   value: StaffData[];
@@ -28,15 +29,15 @@ export const staffSlice = createSlice({
 
 export const { set } = staffSlice.actions;
 
-export const fetchStaff = (token: String | undefined): AppThunk => (dispatch) =>
+export const fetchStaff = (token: string | undefined): AppThunk => (dispatch) =>
   get(STAFF_FETCH_URL, token)
     .then((response) => response.json())
     .then((response) => dispatch(set(response)))
-    .catch((err) => console.error(err));
+    .catch((err) => toastr.error(err));
 
 export const deleteStaff = (
   id: string,
-  token: String | undefined
+  token: string | undefined
 ): AppThunk => (dispatch) =>
   put(STAFF_DELETE_URL + id, token)
     .then((response) => response.json())
