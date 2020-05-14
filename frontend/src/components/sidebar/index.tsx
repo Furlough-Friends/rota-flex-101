@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import sidebarStyles from './sidebar.module.scss';
 import sidebarOptions, { SidebarOption } from '../../constants/sidebarOptions';
 import LoginOutButton from '../loginOutButton';
-import TokenButton from '../dev/tokenButton';
 
 const SidebarButton = ({
   name,
@@ -30,7 +29,7 @@ const Sidebar = () => (
   <div className={sidebarStyles.container}>
     {getButtons(sidebarOptions)}
     <LoginOutButton />
-    <TokenButton />
+    {/* Button to get authenticated users' access token <TokenButton /> */}
   </div>
 );
 

@@ -6,12 +6,7 @@ import { useAuth0 } from '../../react-auth0-spa';
 // The button is disabled when Auth0 authentication is loading
 
 const LoginOutButton = () => {
-  const {
-    loading,
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
-  } = useAuth0();
+  const { loading, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   const handleLoginOutButtonClick = () => {
     if (isAuthenticated) {
