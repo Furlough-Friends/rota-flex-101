@@ -11,9 +11,8 @@
     /1fr min-content;
 }
 
-h1 {
-  grid-area: header;
-  font-family: $header-font;
+.header {
+  @include header;
 }
 
 .addButtonContainer {

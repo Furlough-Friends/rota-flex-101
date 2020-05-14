@@ -4,3 +4,8 @@ $colour-lightBlue: #3e7dbd;
 $font-primary: 'Rubik', sans-serif;
 
 $header-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+
+@mixin header {
+  grid-area: header;
+  font-family: $header-font;
+}
