@@ -31,14 +31,15 @@ const LoginOutButton = () => {
         onClick={handleLoginOutButtonClick}>
         {isAuthenticated && !loading ? 'Log out' : 'Log in'}
       </Button>
-      <Button
+      {/* HERE FOR DEVELOPMENT PURPOSES ONLY */}
+      {isAuthenticated && <Button
         variant="contained"
         onClick={async () => {
           const token = await getTokenSilently();
           console.log(token);
         }}>
         Get Token
-      </Button>
+      </Button>}
     </div>
   );
 };
