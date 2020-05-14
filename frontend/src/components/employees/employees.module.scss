@@ -4,10 +4,11 @@
   grid-area: main;
   display: grid;
   margin: 0 1em;
+  height: 100vh;
   grid-template:
-    'header addbutton' 5em
-    'table table' auto
-    / auto 10em;
+    'header addbutton' min-content
+    'table table' 1fr
+    /1fr min-content;
 }
 
 h1 {
@@ -25,8 +26,9 @@ h1 {
   grid-area: addbutton;
 }
 
-Table {
+.tableContainer {
   grid-area: table;
+  overflow: auto;
 }
 
 .editbtn,
