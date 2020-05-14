@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .addFilterBefore(roleFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
-        .antMatchers("/**/myShifts/**").hasAuthority(Role.USER.toString())
+        .antMatchers("/**/myShifts/**")
+        .hasAnyAuthority(Role.USER.toString(), Role.MANAGER.toString())
         .antMatchers("/**/staff/**").hasAuthority(Role.MANAGER.toString())
         .antMatchers("/**/swagger-ui.html**").permitAll()
         .antMatchers("/**/swagger-ui/**").permitAll()
@@ -67,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   /**
    * CORS filter settings.
+   *
    * @return Bean with CORS settings
    */
   @Bean
