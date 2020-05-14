@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import toastr from 'toastr';
 import {
   StaffData,
   STAFF_FETCH_URL,
@@ -6,7 +7,6 @@ import {
 } from '../constants/employees';
 import { RootState, AppThunk } from '../app/store';
 import { get, put } from '../service/apiService';
-import toastr from 'toastr';
 
 interface StaffState {
   value: StaffData[];
@@ -42,7 +42,7 @@ export const deleteStaff = (
   put(STAFF_DELETE_URL + id, token)
     .then((response) => response.json())
     .then((response) => dispatch(set(response)))
-    .catch((err) => console.error(err));
+    .catch((err) => toastr.error(err));
 
 export const selectStaff = (state: RootState) => state.staff.value;
 
