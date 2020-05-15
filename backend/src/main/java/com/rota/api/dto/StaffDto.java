@@ -45,7 +45,7 @@ public class StaffDto {
   @ApiModelProperty("Is the staff currently inactive")
   boolean inactive;
 
-  @ApiModelProperty("The users email address")
+  @ApiModelProperty("The user's email address")
   @NotNull
   @Email
   String email;
