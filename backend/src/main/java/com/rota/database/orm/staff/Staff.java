@@ -45,7 +45,7 @@ public class Staff {
   private String jobTitle;
 
   private String email;
-
+  
   @PrePersist
   private void onPrePersist() {
     this.setJobTitle(jobTitle.toLowerCase());
