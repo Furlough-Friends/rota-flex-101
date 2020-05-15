@@ -14,7 +14,7 @@ const Summary = () => {
 
   return (
     <div className={summaryStyle.summary}>
-      <h1> Summary </h1>
+      <h1 className={summaryStyle.header}> Summary </h1>
       <DatePicker callback={setTimes} />
       <p>
         {' '}

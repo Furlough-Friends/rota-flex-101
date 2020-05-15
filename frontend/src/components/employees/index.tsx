@@ -164,7 +164,7 @@ const Employees = () => {
 
   return (
     <div className={employeesStyle.employees}>
-      <h1> Employees </h1>
+      <h1 className={employeesStyle.header}> Employees </h1>
       {addButton}
       <div className={employeesStyle.tableContainer}>
         {renderTable(tableColumns)(staffList)}

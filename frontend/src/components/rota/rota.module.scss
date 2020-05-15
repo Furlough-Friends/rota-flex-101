@@ -1,4 +1,10 @@
+@import '../../constants/styles.scss';
+
 .rota {
   width: 100%;
   height: 100%;
+}
+
+.header {
+  @include header;
 }
