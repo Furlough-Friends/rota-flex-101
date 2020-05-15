@@ -7,14 +7,15 @@ import rootModalSyles from './rootModal.module.scss';
 import DeleteUserModal from '../deleteUserModal';
 import CreateUserModal from '../createUserModal';
 import {
+  ModalType,
   ModalState,
   selectModalDetails,
   hideModal,
 } from '../../features/modalSlice';
 
-interface ModalHash {
-  [key: string]: (arg0: any) => JSX.Element;
-}
+type ModalHash = {
+  [key in ModalType]: (arg0: any) => JSX.Element;
+};
 
 const MODAL_COMPONENTS: ModalHash = {
   DELETE_USER: DeleteUserModal,

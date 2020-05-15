@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
+export type ModalType = 'DELETE_USER' | 'CREATE_USER';
+
 export interface ModalState {
-  modalType: string | null;
+  modalType: ModalType | null;
   modalProps?: Object;
 }
 
