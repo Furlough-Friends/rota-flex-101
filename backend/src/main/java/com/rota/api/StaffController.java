@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,18 +37,19 @@ public class StaffController {
   @Autowired
   Authentication authentication;
 
-  static final String AUTHORIZATION_HEADER = "Authorization";
-
   static final String STAFF_NOT_FOUND_MESSAGE =
       "No member of staff exists for your credentials. Please log in again";
+
+  @GetMapping("/test")
+  public String test() {
+    return authentication.getEmailFromToken();
+  }
 
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
    *
    * @return List of all available shifts.
-   * @throws IOException          from HttpClient when getting user info.
-   * @throws InterruptedException from HttpClient when getting user info.
    */
   @GetMapping("/myShifts")
   @ApiOperation(value = "Returns shifts of an authenticated user.",
@@ -58,10 +62,9 @@ public class StaffController {
       @RequestParam(name = "end", required = false)
       @ApiParam(value = "end time")
           Instant end
-  ) throws IOException, InterruptedException {
+  ) {
 
-    final JsonNode userInfo = authentication.getUserInfoFromToken();
-    final Staff staff = authentication.getUserFromJson(userInfo).orElseThrow(
+    final Staff staff = authentication.getUserFromJson().orElseThrow(
         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
 
     return staffService.getStaffEngagementsBetween(staff.getId(), start, end);
@@ -73,8 +76,6 @@ public class StaffController {
    *
    * @param staffDto Staff details.
    * @return A Response entity of a {@link Staff} object.
-   * @throws IOException          from HttpClient when getting user info.
-   * @throws InterruptedException from HttpClient when getting user info.
    */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",

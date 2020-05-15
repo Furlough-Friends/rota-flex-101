@@ -39,8 +39,7 @@ public class RoleFilter extends OncePerRequestFilter {
                                   FilterChain filterChain) {
 
     try {
-      final String userEmail =
-          authentication.getUserEmailFromJson(authentication.getUserInfoFromToken());
+      final String userEmail = authentication.getEmailFromToken();
       this.setUserContext(userEmail);
       filterChain.doFilter(request, response);
     } catch (SecurityException e) {

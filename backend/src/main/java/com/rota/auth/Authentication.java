@@ -27,78 +27,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class Authentication {
 
-  @Value("${auth0.baseurl}")
-  private String baseUrl;
-
   @Autowired
   StaffService staffService;
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
-
-  private final HttpClient httpClient = HttpClient.newBuilder()
-      .version(HttpClient.Version.HTTP_2)
-      .build();
-
   /**
-   * Uses the provided access token to get user information from Auth0.
+   * Gets the user email included with Auth0 access token via a custom claim.
+   * TODO we may want to check if the email is verified in the future
    *
-   * @return JsonNode of Auth0 information
-   * @throws IOException          from HttpClient when getting user info.
-   * @throws InterruptedException from HttpClient when getting user info.
-   */
-  public JsonNode getUserInfoFromToken() throws IOException, InterruptedException {
-    HttpRequest request = HttpRequest.newBuilder()
-        .GET()
-        .uri(URI.create(baseUrl + "userinfo"))
-        .setHeader("Authorization", "Bearer " + getTokenValue())
-        .build();
-
-    HttpResponse<String> response = sendRequest(request);
-
-    return objectMapper.readTree(response.body());
-  }
-
-  /**
-   * Finds the user in the database using their email. The email is obtained via
-   * userInfo Json.
-   *
-   * @param userInfo Valid authentication token.
-   * @return {@link Staff} optional with that email.
-   */
-  public Optional<Staff> getUserFromJson(JsonNode userInfo) {
-    return staffService.findStaffByEmail(getUserEmailFromJson(userInfo));
-  }
-
-  /**
-   * Get the user email from Auth0 userInfo Json.
-   *
-   * @param userInfo the userInfo provided by Auth0.
    * @return the users email address.
    */
-  public String getUserEmailFromJson(JsonNode userInfo) {
-    return userInfo.get("email").asText();
-  }
-
-  /**
-   * Gets the string value of the current authenticated token.
-   *
-   * @return the token as a string.
-   */
-  private String getTokenValue() {
+  public String getEmailFromToken() {
     return ((JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
-        .getToken().getTokenValue();
+        .getTokenAttributes().get("https://rota-flex-101.com/claims/email").toString();
   }
 
   /**
-   * Sends a HttpRequest.
+   * Finds the user in the database using the email provided by access token.
    *
-   * @param request the request
-   * @return the HttpResponse object
-   * @throws IOException          from HttpClient send.
-   * @throws InterruptedException from HttpClient send.
+   * @return {@link Staff} optional with that email.
    */
-  private HttpResponse<String> sendRequest(HttpRequest request)
-      throws IOException, InterruptedException {
-    return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+  public Optional<Staff> getUserFromJson() {
+    return staffService.findStaffByEmail(getEmailFromToken());
   }
 }

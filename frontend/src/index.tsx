@@ -37,7 +37,8 @@ ReactDOM.render(
         client_id={config.clientId}
         redirect_uri={config.callbackUri}
         audience={config.audience}
-        onRedirectCallback={onRedirectCallback}>
+        onRedirectCallback={onRedirectCallback}
+        scope="openid profile email https://rota-flex-101.com/claims/email">
         <Router history={history}>
           <App />
         </Router>
