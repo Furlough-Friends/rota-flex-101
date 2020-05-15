@@ -38,7 +38,7 @@ class DbHandlerTests {
       .contractedHours(10.0)
       .hourlyRate(40.0)
       .role(Role.USER)
-      .jobTitle("Sprzatacz");
+      .jobTitle("sprzatacz");
 
   static final Staff STAFF_MEMBER = STAFF_BUILDER.build();
 
@@ -140,10 +140,11 @@ class DbHandlerTests {
 
   @Test
   void newStaffJobTitleIsLowerCase() {
-    staffRepository.save(STAFF_MEMBER);
+    Staff staff = STAFF_BUILDER.jobTitle("Server").build();
+    staffRepository.save(staff);
     Assertions.assertEquals(
-            STAFF_MEMBER.getJobTitle().toLowerCase(),
-            staffRepository.findById(STAFF_ID).get().getJobTitle()
+            staff.getJobTitle().toLowerCase(),
+            staffRepository.findById(staff.getId()).get().getJobTitle()
     );
   }
 
