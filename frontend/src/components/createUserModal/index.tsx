@@ -13,6 +13,8 @@ import Clear from '@material-ui/icons/Clear';
 import { createStaff } from '../../features/staffSlice';
 import { toDateStr } from '../../constants/global';
 
+import { Role } from '../../constants/employees';
+
 import 'toastr/build/toastr.min.css';
 import createUserModalStyle from './createUserModal.module.scss';
 
@@ -24,6 +26,16 @@ interface TextField {
   id: string;
   name: string;
   type: string;
+}
+
+interface UserInfo {
+  firstName: string;
+  surname: string;
+  jobTitle: string;
+  role: Role.USER;
+  contractedHours: number;
+  pay: number;
+  [key: string]: any;
 }
 
 const textFields: TextField[] = [
@@ -48,11 +60,11 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     Sun: false,
   });
 
-  const [userInfo, setUserInfo] = useState<{ [key: string]: string | number }>({
+  const [userInfo, setUserInfo] = useState<UserInfo>({
     firstName: '',
     surname: '',
     jobTitle: '',
-    role: 'USER',
+    role: Role.USER,
     contractedHours: 0,
     pay: 0,
   });
@@ -103,12 +115,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
       .join('');
     dispatch(
       createStaff({
-        firstName: userInfo.firstName as string,
-        surname: userInfo.surname as string,
-        jobTitle: userInfo.jobTitle as string,
-        role: userInfo.role as 'USER' | 'MANAGER',
-        contractedHours: userInfo.contractedHours as number,
-        pay: userInfo.pay as number,
+        ...userInfo,
         preferredDates: prefDaysString,
         startDate: toDateStr(new Date()),
       })
@@ -138,7 +145,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
                 label={field.name}
                 variant="outlined"
                 type={field.type}
-                value={userInfo[field.id]}
+                value={userInfo[field.id as string]}
                 name={field.id}
                 onChange={handleTextFieldChange}
               />
@@ -152,8 +159,8 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
               onChange={handleDropdownChange}
               label="Role"
               variant="outlined">
-              <MenuItem value="USER">User</MenuItem>
-              <MenuItem value="MANAGER">Manager</MenuItem>
+              <MenuItem value={Role.USER}>User</MenuItem>
+              <MenuItem value={Role.MANAGER}>Manager</MenuItem>
             </Select>
           </span>
         </div>
