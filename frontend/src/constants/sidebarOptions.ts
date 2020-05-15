@@ -9,4 +9,10 @@ export interface SidebarOption {
   endpoint: string;
 }
 
+export interface SideberButtonConfig {
+  name: string;
+  endpoint: string;
+  isWindowBig: boolean;
+}
+
 export default sidebarOptions;
