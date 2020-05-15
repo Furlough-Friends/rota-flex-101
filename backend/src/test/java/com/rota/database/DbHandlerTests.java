@@ -137,4 +137,26 @@ class DbHandlerTests {
         engagementRepository.findByStaffId(STAFF_ID)
     );
   }
+
+  @Test
+  void newStaffJobTitleIsLowerCase() {
+    staffRepository.save(STAFF_MEMBER);
+    Assertions.assertEquals(
+            STAFF_MEMBER.getJobTitle().toLowerCase(),
+            staffRepository.findById(STAFF_ID).get().getJobTitle()
+    );
+  }
+
+  @Test
+  void updatedStaffJobTitleIsLowerCase() {
+    String newJobTitle = "CHEF";
+    staffRepository.save(STAFF_MEMBER);
+    Staff staff = staffRepository.findById(STAFF_ID).get();
+    staff.setJobTitle(newJobTitle);
+    staffRepository.save(staff);
+    Assertions.assertEquals(
+            newJobTitle.toLowerCase(),
+            staffRepository.findById(STAFF_ID).get().getJobTitle()
+    );
+  }
 }

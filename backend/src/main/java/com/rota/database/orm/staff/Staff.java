@@ -1,12 +1,8 @@
 package com.rota.database.orm.staff;
 
 import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,4 +36,14 @@ public class Staff {
   private String preferredDates;
 
   private String jobTitle;
+
+  @PrePersist
+  private void onPrePersist() {
+    this.setJobTitle(jobTitle.toLowerCase());
+  }
+
+  @PreUpdate
+  private void onPreUpdate() {
+    this.setJobTitle(jobTitle.toLowerCase());
+  }
 }
