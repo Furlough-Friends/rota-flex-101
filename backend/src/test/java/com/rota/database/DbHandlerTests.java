@@ -38,7 +38,7 @@ class DbHandlerTests {
       .contractedHours(10.0)
       .hourlyRate(40.0)
       .role(Role.USER)
-      .jobTitle("Sprzatacz");
+      .jobTitle("sprzatacz");
 
   static final Staff STAFF_MEMBER = STAFF_BUILDER.build();
 
@@ -135,6 +135,29 @@ class DbHandlerTests {
     Assertions.assertEquals(
         List.of(),
         engagementRepository.findByStaffId(STAFF_ID)
+    );
+  }
+
+  @Test
+  void newStaffJobTitleIsLowerCase() {
+    Staff staff = STAFF_BUILDER.jobTitle("Server").build();
+    staffRepository.save(staff);
+    Assertions.assertEquals(
+            staff.getJobTitle().toLowerCase(),
+            staffRepository.findById(staff.getId()).get().getJobTitle()
+    );
+  }
+
+  @Test
+  void updatedStaffJobTitleIsLowerCase() {
+    String newJobTitle = "CHEF";
+    staffRepository.save(STAFF_MEMBER);
+    Staff staff = staffRepository.findById(STAFF_ID).get();
+    staff.setJobTitle(newJobTitle);
+    staffRepository.save(staff);
+    Assertions.assertEquals(
+            newJobTitle.toLowerCase(),
+            staffRepository.findById(STAFF_ID).get().getJobTitle()
     );
   }
 }
