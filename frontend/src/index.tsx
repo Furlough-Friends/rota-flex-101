@@ -30,21 +30,19 @@ const onRedirectCallback = (appState: appState) => {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Auth0Provider
-        domain={config.domain}
-        client_id={config.clientId}
-        redirect_uri={config.callbackUri}
-        audience={config.audience}
-        onRedirectCallback={onRedirectCallback}
-        scope="openid profile email https://rota-flex-101.com/claims/email">
-        <Router history={history}>
-          <App />
-        </Router>
-      </Auth0Provider>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <Auth0Provider
+      domain={config.domain}
+      client_id={config.clientId}
+      redirect_uri={config.callbackUri}
+      audience={config.audience}
+      onRedirectCallback={onRedirectCallback}
+      scope="openid profile email https://rota-flex-101.com/claims/email">
+      <Router history={history}>
+        <App />
+      </Router>
+    </Auth0Provider>
+  </Provider>,
   document.getElementById('root')
 );
 

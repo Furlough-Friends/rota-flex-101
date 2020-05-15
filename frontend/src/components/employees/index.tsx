@@ -175,7 +175,9 @@ const Employees = () => {
     <div className={employeesStyle.employees}>
       <h1> Employees </h1>
       {addButton}
-      {renderTable(tableColumns)(staffList)}
+      <div className={employeesStyle.tableContainer}>
+        {renderTable(tableColumns)(staffList)}
+      </div>
       <DeleteModal
         isOpen={isDeleteModalOpen}
         staff={selectedStaff}
