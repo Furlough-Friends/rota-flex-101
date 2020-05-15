@@ -25,6 +25,7 @@ export interface CreateStaffData extends BaseStaffData {
   role: Role;
   preferredDates: string;
   pay: number;
+  email: string;
 }
 
 export interface TableColumn {

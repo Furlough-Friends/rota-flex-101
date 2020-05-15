@@ -32,6 +32,7 @@ interface UserInfo {
   firstName: string;
   surname: string;
   jobTitle: string;
+  email: string;
   role: Role.USER;
   contractedHours: number;
   pay: number;
@@ -42,6 +43,7 @@ const textFields: TextField[] = [
   { id: 'firstName', name: 'First Name', type: 'text' },
   { id: 'surname', name: 'Surname', type: 'text' },
   { id: 'jobTitle', name: 'Job title', type: 'text' },
+  { id: 'email', name: 'Email', type: 'text' },
   { id: 'contractedHours', name: 'Contracted hours', type: 'number' },
   { id: 'pay', name: 'Pay', type: 'number' },
 ];
@@ -64,6 +66,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     firstName: '',
     surname: '',
     jobTitle: '',
+    email: '',
     role: Role.USER,
     contractedHours: 0,
     pay: 0,
