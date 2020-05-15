@@ -4,6 +4,7 @@ import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,10 @@ public class StaffDto {
   @ApiModelProperty("Is the staff currently inactive")
   boolean inactive;
 
+  @ApiModelProperty("The users email address")
+  @Email
+  String email;
+
   /**
    * Converts this object to a {@link Staff}.
    * The <code>active</code> field is st as <code>true</code>
@@ -60,6 +65,7 @@ public class StaffDto {
         .hourlyRate(hourlyRate)
         .jobTitle(jobTitle)
         .preferredDates(preferredDates)
+        .email(email)
         .build();
   }
 }
