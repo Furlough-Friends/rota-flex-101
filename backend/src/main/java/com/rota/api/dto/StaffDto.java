@@ -46,6 +46,7 @@ public class StaffDto {
   boolean inactive;
 
   @ApiModelProperty("The users email address")
+  @NotNull
   @Email
   String email;
 
