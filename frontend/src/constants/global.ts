@@ -1,3 +1,5 @@
+import { formatISO, parseISO, isValid } from 'date-fns'
+
 export const URL = 'http://localhost:8080';
 export const FULLTIME_HOURS = 37.5;
 
@@ -9,7 +11,7 @@ enum DateStrBrand {}
 export type DateStr = string & DateStrBrand;
 
 function checkValidDateStr(str: string): str is DateStr {
-  return str.match(/^\d{4}-\d{2}-\d{2}$/) !== null;
+  return isValid(parseISO(str));
 }
 
 export function toDateStr(date: Date | string): DateStr {
@@ -19,7 +21,7 @@ export function toDateStr(date: Date | string): DateStr {
     }
     throw new Error(`Invalid date string: ${date}`);
   } else {
-    const dateString = date.toISOString().split('T')[0];
+    const dateString = formatISO(date, {representation: "date"});
     if (checkValidDateStr(dateString)) {
       return dateString;
     }
