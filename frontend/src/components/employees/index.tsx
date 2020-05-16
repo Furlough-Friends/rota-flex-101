@@ -39,7 +39,7 @@ const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
  */
 
 const getName = ({ firstName, surname }: StaffData) =>
-  `${capitalizeFirstLetter(firstName)} ${capitalizeFirstLetter(surname)}`;
+  `${firstName} ${surname}`;
 
 const getJobTitle = ({ jobTitle }: StaffData) =>
   capitalizeFirstLetter(jobTitle);
