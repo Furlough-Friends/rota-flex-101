@@ -1,7 +1,6 @@
 @import '../../constants/styles.scss';
 
 .employees {
-  grid-area: main;
   display: grid;
   margin: 0 1em;
   height: 100vh;
@@ -11,9 +10,8 @@
     /1fr min-content;
 }
 
-h1 {
-  grid-area: header;
-  font-family: $header-font;
+.header {
+  @include header;
 }
 
 .addButtonContainer {

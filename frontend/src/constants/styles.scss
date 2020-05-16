@@ -1,6 +1,16 @@
 $colour-darkBlue: #106cc8;
 $colour-lightBlue: #3e7dbd;
+$colour-text-primary: white;
 
 $font-primary: 'Rubik', sans-serif;
 
 $header-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+
+@mixin header {
+  grid-area: header;
+  font-family: $header-font;
+}
+$header-height: 2.5rem;
+
+$small-screen-threshold: 780px;
+$small-screen-min-width: 360px;

@@ -7,7 +7,7 @@ const Landing = () => (
   <div className={style.fullPage}>
     <div className={style.landing}>
       <div>
-        <h1>Welcome</h1>
+        <h1 className={style.header}>Welcome</h1>
         <p>to Rota Flex</p>
       </div>
       <Divider orientation="vertical" flexItem />

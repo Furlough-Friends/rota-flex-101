@@ -33,8 +33,9 @@ public class StaffServiceTests {
     MockitoAnnotations.initMocks(this);
   }
 
-  private final StaffDto validStaffDto = new StaffDto("Initial", "Test", Role.USER,
-      null, 0, 0, "", "", false);
+  private final StaffDto validStaffDto =
+      new StaffDto("Initial", "Test", Role.USER, null, 0,
+          0, "", "", false, "test@test.com");
 
   @Test
   public void updateStaffInvalidUserId() {
@@ -49,8 +50,9 @@ public class StaffServiceTests {
   @Test
   public void updateStaff() {
     Staff initialStaffObject = new Staff();
-    StaffDto updatedStaffDto = new StaffDto("Updated", "User", Role.USER,
-        null, 0, 0, "", "", false);
+    StaffDto updatedStaffDto =
+        new StaffDto("Updated", "User", Role.USER, null, 0,
+            0, "", "", false, "test@test.com");
     Staff updatedStaffObject = updatedStaffDto.toStaff();
 
     when(staffRepository.findById(1)).thenReturn(Optional.of(initialStaffObject));
