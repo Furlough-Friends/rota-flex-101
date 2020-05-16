@@ -1,25 +1,33 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { render } from '@testing-library/react';
+import * as windowSizeModule from '@react-hook/window-size/throttled';
 import Sidebar from './index';
 import { useAuth0 } from '../../react-auth0-spa';
 
 jest.mock('../../react-auth0-spa');
 
-const user = {
-  name: 'test@test.com',
-};
+let windowWidthSpy: jest.SpyInstance;
+// The test fails if window width is below the threshold.
+// This is a way to 'fake' what the react hook is reporting the width of the window is
 
 beforeEach(() => {
   (useAuth0 as jest.Mock).mockReturnValue({
     isAuthenticated: true,
-    user,
     logout: jest.fn(),
     loginWithRedirect: jest.fn(),
   });
+
+  windowWidthSpy = jest.spyOn(windowSizeModule, 'useWindowWidth');
 });
 
-test('renders the menu options', () => {
+afterEach(() => {
+  windowWidthSpy.mockRestore();
+});
+
+test('renders the menu options on big screen', () => {
+  windowWidthSpy.mockReturnValue(800);
+
   const { getByText } = render(
     <Router>
       <Sidebar />
@@ -29,5 +37,4 @@ test('renders the menu options', () => {
   expect(getByText(/Summary/i)).toBeInTheDocument();
   expect(getByText(/Rota/i)).toBeInTheDocument();
   expect(getByText(/Employees/i)).toBeInTheDocument();
-  expect(getByText(/Log out test@test.com/i)).toBeInTheDocument();
 });

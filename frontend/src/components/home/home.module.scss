@@ -1,6 +1,38 @@
+@import '../../constants/styles.scss';
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .home {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+
+  @media (max-width: $small-screen-threshold) {
+    flex-direction: column;
+    min-width: $small-screen-min-width;
+  }
+}
+
+.right {
+  flex: 1;
+  display: grid;
+}
+
+.column {
   display: grid;
   grid-template:
-    'sidebar main'
-    /25% auto;
+    'header' $header-height
+    'content' 1fr
+    / minmax(0, 1fr);
+
+  @media (max-width: $small-screen-threshold) {
+    min-width: $small-screen-min-width;
+  }
+}
+
+.main {
+  grid-area: content;
 }
