@@ -7,6 +7,7 @@ interface Props {
   size: number;
   animationTime: number;
   radiusRatio: number; // Determines the thickness of the pie chart ring - 0 gives full circle, 1 just the border
+  textSize: number; // Inner text size
 }
 
 const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
@@ -22,7 +23,7 @@ const drawArcs = (domElement: any, props: Props) => {
   const { size, data, radiusRatio, animationTime } = props;
   const outerRadius = size / 2;
   const innerRadius = radiusRatio * outerRadius;
-  const pie = d3.pie();
+  const pie = d3.pie().sort(null);
   const arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
   const pieSliceData = pie(data);
 
@@ -44,7 +45,7 @@ const drawArcs = (domElement: any, props: Props) => {
 };
 
 const drawCenterNumber = (domElement: any, props: Props) => {
-  const { size, data, radiusRatio, animationTime } = props;
+  const { data, textSize, animationTime } = props;
   const numberToShow = data.reduce((el: number, sum: number) => sum + el, 0);
 
   domElement
@@ -54,13 +55,13 @@ const drawCenterNumber = (domElement: any, props: Props) => {
     .attr('x', '50%')
     .attr('y', '50%')
     .attr('text-anchor', 'middle')
-    .attr('dominant-baseline', 'middle')
-    .attr('alignment-baseline', 'middle')
+    .attr('dominant-baseline', 'central')
+    .attr('alignment-baseline', 'central')
     .attr('font-size', 0)
     .text(numberToShow)
     .transition()
     .duration(animationTime)
-    .attr('font-size', size * radiusRatio);
+    .attr('font-size', textSize);
 };
 
 const drawChart = (props: Props, ref: any) => {

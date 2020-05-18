@@ -26,10 +26,11 @@ const Summary = () => {
       <p> and </p>
       <p> {endTime.toString()}</p>
       <PieChart
-        data={[1, 2, 4]}
+        data={[100, 20, 40, 10, 15, 30]}
         size={100}
         animationTime={1000}
         radiusRatio={0.75}
+        textSize={30}
       />
     </div>
   );
