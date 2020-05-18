@@ -11,6 +11,7 @@ import { StaffData } from '../../constants/employees';
 import { deleteStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import employeesStyle from './employees.module.scss';
+import { useAuth0 } from '../../react-auth0-spa';
 
 interface Props {
   isOpen: boolean;
@@ -20,9 +21,10 @@ interface Props {
 
 const DeleteModal = ({ isOpen, staff, closeModalFunction }: Props) => {
   const dispatch = useDispatch();
-
-  const deleteUser = ({ id, firstName, surname }: StaffData) => () => {
-    dispatch(deleteStaff(id.toString()));
+  const { getTokenSilently } = useAuth0();
+  const deleteUser = ({ id, firstName, surname }: StaffData) => async () => {
+    const accessToken = await getTokenSilently();
+    dispatch(deleteStaff(id.toString(), accessToken));
     closeModalFunction();
     new Audio('http://nooooooooooooooo.com/nooo.mp4').play();
     toastr.info(`User ${firstName} ${surname} deleted`);

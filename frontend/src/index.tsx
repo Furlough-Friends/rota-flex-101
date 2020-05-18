@@ -6,9 +6,14 @@ import { Router } from 'react-router-dom';
 import { Auth0Provider } from './react-auth0-spa';
 import App from './components/app';
 import config from './auth_config.json';
-import history from './utils/history';
+import history from './utils/browserHistory';
 import { store } from './app/store';
 import * as serviceWorker from './serviceWorker';
+
+interface appState {
+  appState: Promise<RedirectLoginResult>;
+  targetUrl: string;
+}
 
 interface appState {
   appState: Promise<RedirectLoginResult>;
@@ -30,7 +35,9 @@ ReactDOM.render(
       domain={config.domain}
       client_id={config.clientId}
       redirect_uri={config.callbackUri}
-      onRedirectCallback={onRedirectCallback}>
+      audience={config.audience}
+      onRedirectCallback={onRedirectCallback}
+      scope="openid profile email https://rota-flex-101.com/claims/email">
       <Router history={history}>
         <App />
       </Router>
