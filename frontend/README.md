@@ -40,3 +40,7 @@ The `.vscode/settings.json` should have contents similar to:
   }
 }
 ```
+
+## Access Token
+
+If you want to grab an access token for testing purposes, you can add a `<TokenButton />` component somewhere on a page, for example in the sidebar. This button will print your current access token to the console.
