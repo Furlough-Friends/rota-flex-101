@@ -34,7 +34,8 @@ You can get your access token by using the `<TokenButton />` component in the fr
 token to the console.
 
 As well as having an access token, you need to ensure that the database includes a row with your email address,
-as well as the desired permission role. 
+as well as the desired permission role. To do this, add another row to `data.sql` which can be found in 
+`/src/main/resources/`.
 
 ### myShifts endpoint
 
