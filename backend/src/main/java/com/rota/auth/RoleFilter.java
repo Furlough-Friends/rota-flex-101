@@ -2,11 +2,13 @@ package com.rota.auth;
 
 import com.rota.api.StaffService;
 import com.rota.database.orm.staff.Staff;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -23,7 +25,9 @@ public class RoleFilter extends OncePerRequestFilter {
   private static final List<String> SKIP_URLS = Arrays.asList(
       "/**/swagger-ui.html**",
       "/**/swagger-ui/**",
-      "/**/swagger-resources/**"
+      "/**/swagger-resources/**",
+      "/**/webjars/springfox-swagger-ui/**",
+      "/**/v2/api-docs"
   );
   private static final String INSUFFICIENT_ROLE_MESSAGE = "Insufficient privileges";
 
@@ -33,10 +37,9 @@ public class RoleFilter extends OncePerRequestFilter {
   @Autowired
   private Authentication authentication;
 
-  @SneakyThrows
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                  FilterChain filterChain) {
+                                  FilterChain filterChain) throws IOException, ServletException {
 
     try {
       final String userEmail = authentication.getEmailFromToken();
@@ -45,15 +48,12 @@ public class RoleFilter extends OncePerRequestFilter {
     } catch (SecurityException e) {
       SecurityContextHolder.clearContext();
       throw e;
-    } catch (Exception e) {
-      SecurityContextHolder.clearContext();
-      throw new SecurityException(INSUFFICIENT_ROLE_MESSAGE, e);
     }
   }
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) {
-    final String servletPath = request.getServletPath();
+    final String servletPath = request.getRequestURI();
     if (servletPath == null) {
       return false;
     } else {

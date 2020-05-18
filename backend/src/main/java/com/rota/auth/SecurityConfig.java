@@ -46,18 +46,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().and()
         .csrf().disable()
-        .addFilterBefore(roleFilter(), BasicAuthenticationFilter.class)
         .authorizeRequests()
+        .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
+            "/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html",
+            "/webjars/**")
+        .permitAll()
         .antMatchers("/**/myShifts/**")
         .hasAnyAuthority(Role.USER.toString(), Role.MANAGER.toString())
         .antMatchers("/**/staff/**").hasAuthority(Role.MANAGER.toString())
-        .antMatchers("/**/swagger-ui.html**").permitAll()
-        .antMatchers("/**/swagger-ui/**").permitAll()
-        .antMatchers("/**/swagger-resources/**").permitAll()
-        .antMatchers("/**/webjars/**").permitAll()
-        .antMatchers("/**/v2/**").permitAll()
         .anyRequest().authenticated()
-        .and()
+        .and().addFilterBefore(roleFilter(), BasicAuthenticationFilter.class)
         .oauth2ResourceServer().jwt();
   }
 
