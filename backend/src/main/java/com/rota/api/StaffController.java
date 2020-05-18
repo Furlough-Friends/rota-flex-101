@@ -1,6 +1,5 @@
 package com.rota.api;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.rota.api.dto.EngagementDto;
 import com.rota.api.dto.StaffDto;
 import com.rota.auth.Authentication;
@@ -9,16 +8,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.Authorization;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import javax.validation.Valid;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
