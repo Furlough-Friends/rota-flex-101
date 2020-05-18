@@ -16,6 +16,8 @@ import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import { StaffData, TableColumn } from '../../constants/employees';
+import capitalizeFirstLetter from '../../utils/string';
+
 import { FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
 import { useAuth0 } from '../../react-auth0-spa';
@@ -41,11 +43,12 @@ const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
 const getName = ({ firstName, surname }: StaffData) =>
   `${firstName} ${surname}`;
 
-const getJobTitle = ({ jobTitle }: StaffData) => jobTitle;
+const getJobTitle = ({ jobTitle }: StaffData) =>
+  capitalizeFirstLetter(jobTitle);
 
 const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
-}: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
+}: StaffData) => (contractedHours >= fullTimeHours ? 'Full' : 'Part');
 
 const editUserButton = (editFunction: CallbackFunction) => (
   staff: StaffData
@@ -173,7 +176,7 @@ const Employees = () => {
 
   return (
     <div className={employeesStyle.employees}>
-      <h1> Employees </h1>
+      <h1 className={employeesStyle.header}> Employees </h1>
       {addButton}
       <div className={employeesStyle.tableContainer}>
         {renderTable(tableColumns)(staffList)}
