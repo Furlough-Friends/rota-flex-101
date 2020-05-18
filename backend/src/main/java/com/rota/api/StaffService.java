@@ -5,6 +5,7 @@ import com.rota.api.dto.StaffDto;
 import com.rota.database.orm.engagement.EngagementRepository;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
+import com.rota.exceptions.DuplicateEmailException;
 import com.rota.exceptions.StaffNotFoundException;
 import java.time.Instant;
 import java.util.List;
@@ -49,6 +50,9 @@ public class StaffService {
    * @return {@link Staff} object which has just been created.
    */
   public Staff createStaff(Staff newStaff) {
+    if (findStaffByEmail(newStaff.getEmail()).isPresent()) {
+      throw new DuplicateEmailException(newStaff.getEmail());
+    }
     return staffRepository.save(newStaff);
   }
 
