@@ -9,12 +9,12 @@ const PageNotFound = () => {
   return (
     <div className={errorPageStyle.errorPage}>
       <Box>
-        <h1>
+        <h1 className={errorPageStyle.sorryHeader}>
           <CancelIcon className={errorPageStyle.icon} />
           SORRY
         </h1>
         <h2>We could not find that page</h2>
-        <h4>
+        <h4 className={errorPageStyle.message}>
           Error: page{' '}
           <span className={errorPageStyle.path}>{location.pathname}</span> was
           not found.
