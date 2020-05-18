@@ -72,9 +72,9 @@ const drawChart = (props: Props, ref: any) => {
 };
 
 const PieChart = (props: Props) => {
-  const { data, size } = props;
+  const { size } = props;
   const svgRef = useRef(null);
-  useEffect(() => drawChart(props, svgRef), [data]);
+  useEffect(() => drawChart(props, svgRef), [props]);
   return (
     <svg
       ref={svgRef}
