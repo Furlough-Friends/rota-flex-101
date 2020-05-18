@@ -26,7 +26,14 @@ const Summary = () => {
       <p> and </p>
       <p> {endTime.toString()}</p>
       <PieChart
-        data={[100, 20, 40, 10, 15, 30]}
+        data={{
+          Warrior: 100,
+          Scholar: 20,
+          Cleric: 40,
+          Dancer: 10,
+          Apothecary: 15,
+          Thief: 30,
+        }}
         size={100}
         animationTime={1000}
         radiusRatio={0.75}
