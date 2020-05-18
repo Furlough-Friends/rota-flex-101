@@ -8,6 +8,7 @@ import com.rota.database.orm.staff.Staff;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Authorization;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
@@ -40,11 +41,6 @@ public class StaffController {
   static final String STAFF_NOT_FOUND_MESSAGE =
       "No member of staff exists for your credentials. Please log in again";
 
-  @GetMapping("/test")
-  public String test() {
-    return authentication.getEmailFromToken();
-  }
-
   /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
@@ -53,7 +49,7 @@ public class StaffController {
    */
   @GetMapping("/myShifts")
   @ApiOperation(value = "Returns shifts of an authenticated user.",
-      response = EngagementDto[].class)
+      response = EngagementDto[].class, authorizations = {@Authorization(value = "Bearer")})
   public List<EngagementDto> getMyShifts(
       @RequestParam(name = "start", required = false)
       @ApiParam(value = "start time")
@@ -63,7 +59,6 @@ public class StaffController {
       @ApiParam(value = "end time")
           Instant end
   ) {
-
     final Staff staff = authentication.getUserFromJson().orElseThrow(
         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
 
@@ -79,7 +74,7 @@ public class StaffController {
    */
   @PostMapping("/staff/create")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
-      consumes = "application/json")
+      consumes = "application/json", authorizations = {@Authorization(value = "Bearer")})
   public ResponseEntity<Staff> createStaff(
       @Valid
       @RequestBody
@@ -98,7 +93,8 @@ public class StaffController {
    * @return List of all active staff members.
    */
   @GetMapping("/staff/get")
-  @ApiOperation(value = "Lets an authenticated manager view list of all active staff")
+  @ApiOperation(value = "Lets an authenticated manager view list of all active staff",
+      authorizations = {@Authorization(value = "Bearer")})
   public List<Staff> getActiveStaff() {
     return staffService.getActiveStaff();
   }
@@ -111,7 +107,8 @@ public class StaffController {
    * @return The updated {@link Staff} member.
    */
   @PutMapping("/staff/{id}")
-  @ApiOperation(value = "Lets an authenticated manager update a staff member")
+  @ApiOperation(value = "Lets an authenticated manager update a staff member", authorizations = {
+      @Authorization(value = "Bearer")})
   public Staff updateStaff(
       @PathVariable
       @ApiParam(value = "Staff ID")
@@ -131,7 +128,7 @@ public class StaffController {
    */
   @PutMapping("/staff/remove")
   @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
-      + "an updated list of active users")
+      + "an updated list of active users", authorizations = {@Authorization(value = "Bearer")})
   public List<Staff> removeStaffMember(
       @RequestParam(name = "id", required = true)
           int id
