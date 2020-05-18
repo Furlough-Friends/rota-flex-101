@@ -32,11 +32,15 @@ public class Authentication {
 
   /**
    * Gets the user email included with Auth0 access token via a custom claim.
+   * Throws a SecurityException if no authentication is provided (no auth header).
    * TODO we may want to check if the email is verified in the future
    *
    * @return the users email address.
    */
   public String getEmailFromToken() {
+    if (SecurityContextHolder.getContext().getAuthentication() == null) {
+      throw new SecurityException("No authorization provided");
+    }
     return ((JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication())
         .getTokenAttributes().get("https://rota-flex-101.com/claims/email").toString();
   }
