@@ -1,9 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import tippy from 'tippy.js';
 import piechartStyle from './piechart.module.scss';
 
+interface JobTimes {
+  [key: string]: number;
+}
+
 interface Props {
-  data: number[];
+  data: JobTimes;
   size: number;
   animationTime: number;
   radiusRatio: number; // Determines the thickness of the pie chart ring - 0 gives full circle, 1 just the border
@@ -12,7 +17,9 @@ interface Props {
 
 const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
 
-const dataTransition = (arc: any) => (data: any) => (t: number) =>
+const dataTransition = (arc: d3.Arc<void, any>) => (
+  data: d3.PieArcDatum<JobTimes>
+) => (t: number) =>
   arc({
     ...data,
     startAngle: t * data.startAngle,
@@ -23,9 +30,12 @@ const drawArcs = (domElement: any, props: Props) => {
   const { size, data, radiusRatio, animationTime } = props;
   const outerRadius = size / 2;
   const innerRadius = radiusRatio * outerRadius;
-  const pie = d3.pie().sort(null);
+  const pie = d3
+    .pie<{ value: number }>()
+    .sort(null)
+    .value(({ value }: { value: number }) => value);
   const arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
-  const pieSliceData = pie(data);
+  const pieSliceData = pie(d3.entries(data));
 
   const group = domElement
     .append('g')
@@ -37,8 +47,13 @@ const drawArcs = (domElement: any, props: Props) => {
     .data(pieSliceData)
     .enter()
     .append('path')
-    .attr('class', 'arc')
+    .attr('class', ({ index }: d3.PieArcDatum<JobTimes>) => `arc${index}`)
     .attr('fill', (_: any, i: number) => COLOUR_CYCLES[i])
+    .on('mouseover', (d: d3.PieArcDatum<JobTimes>) => {
+      tippy(`.arc${d.index}`, {
+        content: `${d.data.key} - ${d.data.value} hours`,
+      });
+    })
     .transition()
     .duration(animationTime)
     .attrTween('d', dataTransition(arc));
@@ -46,7 +61,10 @@ const drawArcs = (domElement: any, props: Props) => {
 
 const drawCenterNumber = (domElement: any, props: Props) => {
   const { data, textSize, animationTime } = props;
-  const numberToShow = data.reduce((el: number, sum: number) => sum + el, 0);
+  const numberToShow = Object.values(data).reduce(
+    (el: number, sum: number) => sum + el,
+    0
+  );
 
   domElement
     .append('g')
@@ -64,7 +82,7 @@ const drawCenterNumber = (domElement: any, props: Props) => {
     .attr('font-size', textSize);
 };
 
-const drawChart = (props: Props, ref: any) => {
+const drawChart = (props: Props, ref: React.RefObject<SVGElement>) => {
   const domElement = d3.select(ref.current);
 
   domElement.selectAll('*').remove();
