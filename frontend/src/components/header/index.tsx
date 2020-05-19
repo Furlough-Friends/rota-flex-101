@@ -8,7 +8,6 @@ const Header = () => {
 
   return (
     <header className={headerStyles.headerContent}>
-      <div className={headerStyles.headerMiddle}>{location.pathname}</div>
       <div className={headerStyles.headerRight}>
         <LoginOutButton />
       </div>
