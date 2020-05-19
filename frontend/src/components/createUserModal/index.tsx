@@ -93,13 +93,9 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
   ) => {
     const userField = event.target.name as string;
     const newValueString = event.target.value as string;
-    let newValue: string | number;
-
-    if (event.target.type === 'number') {
-      newValue = parseFloat(newValueString);
-    } else {
-      newValue = newValueString;
-    }
+    const newValue = event.target.type === 'number'
+                  ? parseFloat(newValueString)
+                  : newValueString;
 
     updateUserInfo(userField, newValue);
   };
