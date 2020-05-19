@@ -9,7 +9,6 @@ import com.rota.database.orm.staff.StaffRepository;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
