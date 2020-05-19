@@ -37,9 +37,11 @@ export const fetchStaff = (token: string | undefined): AppThunk => (dispatch) =>
     .then((response) => dispatch(set(response)))
     .catch((err) => toastr.error(err));
 
-export const createStaff = (staff: CreateStaffData, token: string | undefined): AppThunk => () =>
-post(STAFF_CREATE_URL, token, staff)
-.catch((err) => toastr.error(err));
+export const createStaff = (
+  staff: CreateStaffData,
+  token: string | undefined
+): AppThunk => () =>
+  post(STAFF_CREATE_URL, token, staff).catch((err) => toastr.error(err));
 
 export const deleteStaff = (
   id: string,

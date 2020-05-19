@@ -96,9 +96,10 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
   ) => {
     const userField = event.target.name as string;
     const newValueString = event.target.value as string;
-    const newValue = event.target.type === 'number'
-                  ? parseFloat(newValueString)
-                  : newValueString;
+    const newValue =
+      event.target.type === 'number'
+        ? parseFloat(newValueString)
+        : newValueString;
 
     updateUserInfo(userField, newValue);
   };
@@ -117,11 +118,14 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
       .map((preferred) => +preferred)
       .join('');
     dispatch(
-      createStaff({
-        ...userInfo,
-        preferredDates: prefDaysString,
-        startDate: toDateStr(new Date()),
-      }, token )
+      createStaff(
+        {
+          ...userInfo,
+          preferredDates: prefDaysString,
+          startDate: toDateStr(new Date()),
+        },
+        token
+      )
     );
     closeModalFunction();
   };
