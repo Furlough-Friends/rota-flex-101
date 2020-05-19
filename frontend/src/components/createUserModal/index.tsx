@@ -15,6 +15,8 @@ import { toDateStr } from '../../constants/global';
 
 import { Role } from '../../constants/employees';
 
+import { useAuth0 } from '../../react-auth0-spa';
+
 import 'toastr/build/toastr.min.css';
 import createUserModalStyle from './createUserModal.module.scss';
 
@@ -50,6 +52,7 @@ const textFields: TextField[] = [
 
 const CreateUserModal = ({ closeModalFunction }: Props) => {
   const dispatch = useDispatch();
+  const { getTokenSilently } = useAuth0();
   const [preferredDays, setPreferredDays] = useState<{
     [key: string]: boolean;
   }>({
@@ -108,7 +111,8 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     updateUserInfo(userField, newValue);
   };
 
-  const handleCreateClick = () => {
+  const handleCreateClick = async () => {
+    const token = await getTokenSilently();
     const prefDaysString = Object.values(preferredDays)
       .map((preferred) => +preferred)
       .join('');
@@ -117,7 +121,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
         ...userInfo,
         preferredDates: prefDaysString,
         startDate: toDateStr(new Date()),
-      })
+      }, token )
     );
     closeModalFunction();
   };
