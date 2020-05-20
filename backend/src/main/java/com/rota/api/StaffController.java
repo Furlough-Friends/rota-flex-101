@@ -39,7 +39,7 @@ public class StaffController {
       "No member of staff exists for your credentials. Please log in again";
 
   /**
-   * Returns the currently authenticated users role
+   * Returns the currently authenticated users role.
    *
    * @return the {@link Role}
    */
