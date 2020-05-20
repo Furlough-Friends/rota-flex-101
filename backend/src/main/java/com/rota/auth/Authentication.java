@@ -37,7 +37,7 @@ public class Authentication {
    *
    * @return {@link Staff} optional with that email.
    */
-  public Optional<Staff> getUserFromJson() {
+  public Optional<Staff> getUserFromEmail() {
     return staffService.findStaffByEmail(getEmailFromToken());
   }
 }
