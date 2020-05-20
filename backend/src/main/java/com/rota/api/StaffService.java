@@ -50,9 +50,10 @@ public class StaffService {
    * @return {@link Staff} object which has just been created.
    */
   public Staff createStaff(Staff newStaff) {
-    if (findStaffByEmail(newStaff.getEmail()).isPresent()) {
-      throw new DuplicateEmailException(newStaff.getEmail());
-    }
+    findStaffByEmail(newStaff.getEmail()).ifPresent(
+        (Staff staff) -> {
+          throw new DuplicateEmailException(newStaff.getEmail());
+        });
     return staffRepository.save(newStaff);
   }
 
