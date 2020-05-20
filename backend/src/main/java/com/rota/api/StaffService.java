@@ -36,7 +36,8 @@ public class StaffService {
     Instant startTime = start == null ? Instant.MIN : start;
     Instant endTime = end == null ? Instant.MAX : end;
 
-    return (Engagement engagement) -> !engagement.getEnd().isBefore(startTime)
+    return (Engagement engagement) -> !endTime.isBefore(startTime)
+        && !engagement.getEnd().isBefore(startTime)
         && !engagement.getStart().isAfter(endTime);
   }
 
@@ -61,7 +62,7 @@ public class StaffService {
 
   /**
    * Returns staff member's engagements between start and end dates (inclusive).
-   * Specifically engagements that start after the start date and end before the end date.
+   * Engagements that go through start or end times are truncated.
    * Both start and end dates are optional and can be left as null.
    *
    * @param staffId Staff member's ID
@@ -79,7 +80,7 @@ public class StaffService {
 
   /**
    * Returns all engagements between start and end dates (inclusive).
-   * Specifically engagements that start after the start date and end before the end date.
+   * Engagements that go through start or end times are truncated.
    * Both start and end dates are optional and can be left as null.
    * 
    * @param start start date or null to get from the beginning

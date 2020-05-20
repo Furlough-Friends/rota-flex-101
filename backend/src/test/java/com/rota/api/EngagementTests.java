@@ -85,4 +85,26 @@ public class EngagementTests {
         staffService.getAllEngagementsBetween(null, queryTime)
     );
   }
+
+  @Test
+  public void engagementOutsideOfQuery() {
+    when(engagementRepository.findAll())
+      .thenReturn(exampleEngagements);
+
+    assertEquals(
+        List.of(),
+        staffService.getAllEngagementsBetween(null, Instant.parse("2020-05-19T22:59:00Z"))
+    );
+  }
+
+  @Test
+  public void startDateAfterEndDate() { // Should return an empty list
+    when(engagementRepository.findAll())
+      .thenReturn(exampleEngagements);
+
+    assertEquals(
+        List.of(),
+        staffService.getAllEngagementsBetween(engagementEnd, engagementStart)
+    );
+  }
 }
