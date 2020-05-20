@@ -3,7 +3,9 @@ package com.rota.api;
 import com.rota.api.dto.EngagementDto;
 import com.rota.api.dto.StaffDto;
 import com.rota.auth.Authentication;
+import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
+import com.rota.exceptions.StaffNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,6 +39,18 @@ public class StaffController {
       "No member of staff exists for your credentials. Please log in again";
 
   /**
+   * Returns the currently authenticated users role
+   *
+   * @return the {@link Role}
+   */
+  @GetMapping("/role")
+  @ApiOperation(value = "Get the current user role.", response = Role.class, authorizations = {
+      @Authorization(value = "Bearer")})
+  public Role getRole() {
+    return authentication.getUserFromEmail().orElseThrow(StaffNotFoundException::new).getRole();
+  }
+
+  /**
    * Returns all shifts of a given staff member.
    * Staff ID is inferred from the token passed in the header's Authorization field.
    *
@@ -54,7 +68,7 @@ public class StaffController {
       @ApiParam(value = "end time")
           Instant end
   ) {
-    final Staff staff = authentication.getUserFromJson().orElseThrow(
+    final Staff staff = authentication.getUserFromEmail().orElseThrow(
         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, STAFF_NOT_FOUND_MESSAGE));
 
     return staffService.getStaffEngagementsBetween(staff.getId(), start, end);
