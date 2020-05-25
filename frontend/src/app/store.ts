@@ -9,12 +9,14 @@ import {
 import logger from 'redux-logger';
 import staffReducer from '../features/staffSlice';
 import modalReducer from '../features/modalSlice';
+import engagementReducer from '../features/engagementSlice';
 
 const middleware: Middleware[] = [...getDefaultMiddleware(), logger];
 
 const reducer: ReducersMapObject = {
   staff: staffReducer,
   modal: modalReducer,
+  engagement: engagementReducer,
 };
 
 export const store = configureStore({
