@@ -7,31 +7,32 @@ import Rota from '../rota';
 import Sidebar from '../sidebar';
 import Summary from '../summary';
 import homeStyles from './home.module.scss';
-import PageNotFound from '../pageNotFound';
-import { get } from '../../service/apiService';
+import PageNotFound from '../errorPage/notFound';
 import { useAuth0 } from '../../react-auth0-spa';
-import NotRegistered from '../notRegistered';
 import FullPageLoader from '../fullPageLoader';
+import ErrorPage from '../errorPage';
+import { getRole, hasViewPermissions } from '../../service/auth';
+import { Role } from '../../constants/employees';
 
 const Home = () => {
   const { getTokenSilently } = useAuth0();
-  const [role, setRole] = useState<null | string>(null);
+  const [role, setRole] = useState<Role>(Role.NONE);
+  const [roleChecked, setRoleChecked] = useState(false);
   useEffect(() => {
-    const getRole = async () => {
-      try {
-        const token = await getTokenSilently();
-        const response = await get('http://localhost:8080/role', token);
-        const json = await response.json();
-        setRole(json);
-      } catch (err) {
+    getTokenSilently()
+      .then((token) => getRole(token))
+      .then((role) => {
+        setRole(role);
+        setRoleChecked(true);
+      })
+      .catch((err) => {
+        toastr.error(err);
         toastr.error('User not found');
-        setRole('NONE');
-      }
-    };
-    getRole();
+        setRoleChecked(true);
+      });
   }, [getTokenSilently]);
 
-  if (role === 'MANAGER' || role === 'USER') {
+  if (hasViewPermissions(role) && roleChecked) {
     return (
       <div className={homeStyles.home}>
         <Sidebar />
@@ -54,11 +55,17 @@ const Home = () => {
         </div>
       </div>
     );
+  } else {
+    return roleChecked ? (
+      <ErrorPage
+        error="Not registered"
+        message="You need to be registered to use this application!"
+        extra="Please speak to your manager."
+      />
+    ) : (
+      <FullPageLoader />
+    );
   }
-  if (role === 'NONE') {
-    return <NotRegistered />;
-  }
-  return <FullPageLoader />;
 };
 
 export default Home;
