@@ -15,11 +15,6 @@ interface appState {
   targetUrl: string;
 }
 
-interface appState {
-  appState: Promise<RedirectLoginResult>;
-  targetUrl: string;
-}
-
 // Routes user to correct url after authenticating
 const onRedirectCallback = (appState: appState) => {
   history.push(
