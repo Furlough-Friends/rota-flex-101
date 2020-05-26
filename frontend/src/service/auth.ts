@@ -3,7 +3,7 @@ import { URL } from '../constants/global';
 import { Role } from '../constants/employees';
 
 export const getRole = async (token?: string) => {
-  const response = await get(URL + '/role', token);
+  const response = await get(`${URL}/role`, token);
   const json = await response.json();
 
   switch (json) {
@@ -12,7 +12,7 @@ export const getRole = async (token?: string) => {
     case 'MANAGER':
       return Role.MANAGER;
     default:
-        return Role.NONE;
+      return Role.NONE;
   }
 };
 

@@ -15,7 +15,7 @@ const PageNotFound = () => {
         </h1>
         <h2>We could not find that page</h2>
         <h4 className={errorPageStyle.message}>
-          Error: page 
+          Error: page
           <span className={errorPageStyle.path}>{location.pathname}</span> was
           not found.
         </h4>

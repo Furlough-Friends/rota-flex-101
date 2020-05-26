@@ -7,14 +7,14 @@ import style from './errorPage.module.scss';
  */
 interface Props {
   /** The error message. */
-  error: string,
+  error: string;
   /** Some more detail about the error. */
-  message: string,
+  message: string;
   /** OPTIONAL: Any extra information on a new line. */
-  extra?: string
+  extra?: string;
 }
 
-const ErrorPage = ({error, message, extra}: Props) => (
+const ErrorPage = ({ error, message, extra }: Props) => (
   <div className={style.fullPage}>
     <div className={style.centered}>
       <div>
@@ -24,7 +24,11 @@ const ErrorPage = ({error, message, extra}: Props) => (
       <Divider orientation="vertical" flexItem />
       <div>
         <p>{message}</p>
-        {extra && <p><i>{extra}</i></p>}
+        {extra && (
+          <p>
+            <i>{extra}</i>
+          </p>
+        )}
       </div>
     </div>
   </div>

@@ -21,8 +21,8 @@ const Home = () => {
   useEffect(() => {
     getTokenSilently()
       .then((token) => getRole(token))
-      .then((role) => {
-        setRole(role);
+      .then((fetchedRole) => {
+        setRole(fetchedRole);
         setRoleChecked(true);
       })
       .catch((err) => {
@@ -55,17 +55,16 @@ const Home = () => {
         </div>
       </div>
     );
-  } else {
-    return roleChecked ? (
-      <ErrorPage
-        error="Not registered"
-        message="You need to be registered to use this application!"
-        extra="Please speak to your manager."
-      />
-    ) : (
-      <FullPageLoader />
-    );
   }
+  return roleChecked ? (
+    <ErrorPage
+      error="Not registered"
+      message="You need to be registered to use this application!"
+      extra="Please speak to your manager."
+    />
+  ) : (
+    <FullPageLoader />
+  );
 };
 
 export default Home;
