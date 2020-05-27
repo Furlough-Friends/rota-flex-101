@@ -75,6 +75,28 @@ public class StaffController {
   }
 
   /**
+   * Returns shifts of all staff members.
+
+   * @param start Start time or null.
+   * @param end End time or null.
+   * @return List of all shifts between start and end times.
+   */
+  @GetMapping("/staff/shifts")
+  @ApiOperation(value = "Returns shifts of all users in a specified time frame.",
+        response = EngagementDto[].class, authorizations = {@Authorization(value = "Bearer")})
+  public List<EngagementDto> getAllShifts(
+      @RequestParam(name = "start", required = false)
+      @ApiParam(value = "start time")
+          Instant start,
+
+      @RequestParam(name = "end", required = false)
+      @ApiParam(value = "end time")
+          Instant end
+  ) {
+    return staffService.getAllEngagementsBetween(start, end);
+  }
+
+  /**
    * Endpoint to create and enter a new staff record into the system.
    * Staff ID and role is inferred from the token passed in the header's Authorization field.
    *
