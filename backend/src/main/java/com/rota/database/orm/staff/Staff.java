@@ -1,6 +1,7 @@
 package com.rota.database.orm.staff;
 
 import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -44,6 +45,9 @@ public class Staff {
 
   private String jobTitle;
 
+  @Column(unique = true)
+  private String email;
+  
   @PrePersist
   private void onPrePersist() {
     this.setJobTitle(jobTitle.toLowerCase());

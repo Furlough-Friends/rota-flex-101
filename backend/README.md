@@ -20,6 +20,23 @@ For example, when running locally, visit:
 http://localhost:8080/swagger-ui.html
 ```
 
+#### Protected endpoints
+
+All protected endpoints require an authentication header in this form:
+
+`Authorization: Bearer <token>`
+
+To access protected endpoints from Swagger UI, you will need to add your JWT token to Swagger in the form:
+ 
+ `Bearer: <your token here>` 
+ 
+You can get your access token by using the `<TokenButton />` component in the front-end to print your access 
+token to the console.
+
+As well as having an access token, you need to ensure that the database includes a row with your email address,
+as well as the desired permission role. To do this, add another row to `data.sql` which can be found in 
+`/src/main/resources/`.
+
 ### myShifts endpoint
 
 Returns shifts of a given user (inferred from the authentication token).

@@ -17,7 +17,6 @@ import createAuth0Client, {
   Auth0ClientOptions,
   Auth0Client,
 } from '@auth0/auth0-spa-js';
-import 'toastr/build/toastr.min.css';
 
 interface Auth0Context {
   isAuthenticated: boolean;

@@ -16,12 +16,16 @@ import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import 'toastr/build/toastr.min.css';
 import { StaffData, TableColumn } from '../../constants/employees';
+import capitalizeFirstLetter from '../../utils/string';
+
 import { FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
+import { useAuth0 } from '../../react-auth0-spa';
 
 interface CallbackFunction {
   (data: StaffData): () => void;
 }
+
 /**
  * Functions which are called when add/edit/delete buttons are pressed.
  * Note that the signature of addUser is different from editUser/deleteUser.
@@ -39,11 +43,12 @@ const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
 const getName = ({ firstName, surname }: StaffData) =>
   `${firstName} ${surname}`;
 
-const getJobTitle = ({ jobTitle }: StaffData) => jobTitle;
+const getJobTitle = ({ jobTitle }: StaffData) =>
+  capitalizeFirstLetter(jobTitle);
 
 const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
-}: StaffData) => (contractedHours >= fullTimeHours ? 'full' : 'part');
+}: StaffData) => (contractedHours >= fullTimeHours ? 'Full' : 'Part');
 
 const editUserButton = (editFunction: CallbackFunction) => (
   staff: StaffData
@@ -117,7 +122,9 @@ const renderTableRow = (tableColumns: TableColumn[]) => (row: StaffData) => (
 const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
   <Table size="small">
     {renderTableHeaders(tableColumns)}
-    <TableBody>{data.map(renderTableRow(tableColumns))}</TableBody>
+    <TableBody>
+      {data.length > 0 && data.map(renderTableRow(tableColumns))}
+    </TableBody>
   </Table>
 );
 
@@ -137,6 +144,7 @@ const addButton = (
 const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
+  const { getTokenSilently } = useAuth0();
   const [isDeleteModalOpen, setDeleteModalState] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState({
     id: 0,
@@ -159,12 +167,16 @@ const Employees = () => {
 
   // Fetch data when component loads
   useEffect(() => {
-    dispatch(fetchStaff);
-  }, [dispatch]);
+    const getStaff = async () => {
+      const accessToken = await getTokenSilently();
+      dispatch(fetchStaff(accessToken));
+    };
+    getStaff();
+  }, [dispatch, getTokenSilently]);
 
   return (
     <div className={employeesStyle.employees}>
-      <h1> Employees </h1>
+      <h1 className={employeesStyle.header}> Employees </h1>
       {addButton}
       <div className={employeesStyle.tableContainer}>
         {renderTable(tableColumns)(staffList)}

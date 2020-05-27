@@ -1,4 +1,26 @@
+@import '../../constants/styles.scss';
+
 .rota {
-  width: 100%;
-  height: 100%;
+  grid-area: main;
+  display: grid;
+  height: 100vh;
+  margin: 0 1em;
+  grid-template:
+    'header' min-content
+    'calendar' 1fr;
+  h1 {
+    grid-area: header;
+  }
+}
+
+.calendarContainer {
+  grid-area: calendar;
+}
+
+.header {
+  @include header;
+}
+
+:global(.fc-today) {
+  background-color: yellow;
 }

@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import toastr from 'toastr';
 import {
   StaffData,
   STAFF_FETCH_URL,
   STAFF_DELETE_URL,
 } from '../constants/employees';
-import { getAuthenticationToken } from '../constants/global';
 import { RootState, AppThunk } from '../app/store';
+import { get, put } from '../service/apiService';
 
 interface StaffState {
   value: StaffData[];
@@ -28,22 +29,20 @@ export const staffSlice = createSlice({
 
 export const { set } = staffSlice.actions;
 
-const fetchWithAuth = (
-  url: string,
-  method: string,
-  getToken: () => string
-): AppThunk => (dispatch) =>
-  fetch(url, { method, headers: { Authorization: getToken() } })
+export const fetchStaff = (token: string | undefined): AppThunk => (dispatch) =>
+  get(STAFF_FETCH_URL, token)
     .then((response) => response.json())
-    .then((response) => dispatch(set(response)));
+    .then((response) => dispatch(set(response)))
+    .catch((err) => toastr.error(err));
 
-export const fetchStaff = fetchWithAuth(
-  STAFF_FETCH_URL,
-  'GET',
-  getAuthenticationToken
-);
-export const deleteStaff = (id: string) =>
-  fetchWithAuth(STAFF_DELETE_URL + id, 'PUT', getAuthenticationToken);
+export const deleteStaff = (
+  id: string,
+  token: string | undefined
+): AppThunk => (dispatch) =>
+  put(STAFF_DELETE_URL + id, token)
+    .then((response) => response.json())
+    .then((response) => dispatch(set(response)))
+    .catch((err) => toastr.error(err));
 
 export const selectStaff = (state: RootState) => state.staff.value;
 
