@@ -69,7 +69,7 @@ interface SidebarProps {
   sidebarOptions: SidebarOption[];
 }
 
-const Sidebar = ({sidebarOptions}: SidebarProps) => {
+const Sidebar = ({ sidebarOptions }: SidebarProps) => {
   const widthHookReturnValue = useWindowWidth(windowSizeHookOptions);
 
   const isWindowBig =

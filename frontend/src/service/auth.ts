@@ -19,6 +19,4 @@ export const hasViewPermissions = (role?: Role) => {
   }
 };
 
-export const hasManagerPermissions = (role?: Role) => {
-  return role === Role.MANAGER;
-};
+export const hasManagerPermissions = (role?: Role) => role === Role.MANAGER;

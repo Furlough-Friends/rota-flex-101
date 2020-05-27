@@ -1,4 +1,4 @@
-import { Role } from "./employees";
+import { Role } from './employees';
 
 const sidebarOptionsDefault = [
   { name: 'Summary', endpoint: 'summary' },
@@ -21,7 +21,7 @@ export const getSidebarOptions = (role: Role) => {
       sidebarOptions = sidebarOptions.concat(sidebarOptionsDefault);
   }
   return sidebarOptions;
-}
+};
 
 export interface SidebarOption {
   name: string;

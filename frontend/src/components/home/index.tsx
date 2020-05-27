@@ -11,7 +11,11 @@ import PageNotFound from '../errorPage/notFound';
 import { useAuth0 } from '../../react-auth0-spa';
 import FullPageLoader from '../fullPageLoader';
 import ErrorPage from '../errorPage';
-import { getRole, hasViewPermissions, hasManagerPermissions } from '../../service/auth';
+import {
+  getRole,
+  hasViewPermissions,
+  hasManagerPermissions,
+} from '../../service/auth';
 import { Role } from '../../constants/employees';
 import { getSidebarOptions } from '../../constants/sidebarOptions';
 
@@ -19,7 +23,7 @@ const Home = () => {
   const { getTokenSilently } = useAuth0();
   const [role, setRole] = useState<Role>(Role.NONE);
   const [roleChecked, setRoleChecked] = useState(false);
-  useEffect(() => {    
+  useEffect(() => {
     getTokenSilently()
       .then((token) => getRole(token))
       .then((fetchedRole) => {
@@ -41,7 +45,7 @@ const Home = () => {
           <Header />
           <main className={homeStyles.main}>
             <Switch>
-            {hasManagerPermissions(role) && (
+              {hasManagerPermissions(role) && (
                 <Route path="/employees" component={Employees} />
               )}
               <Route path="/rota" component={Rota} />
