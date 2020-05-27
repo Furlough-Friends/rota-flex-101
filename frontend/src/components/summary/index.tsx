@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from './DatePicker';
+import PieChart from './PieChart';
 
 import summaryStyle from './summary.module.scss';
 
@@ -24,6 +25,20 @@ const Summary = () => {
       <p>{startTime.toString()}</p>
       <p> and </p>
       <p> {endTime.toString()}</p>
+      <PieChart
+        data={{
+          Warrior: 100,
+          Scholar: 20,
+          Cleric: 40,
+          Dancer: 10,
+          Apothecary: 15,
+          Thief: 30,
+        }}
+        size={100}
+        animationTime={1000}
+        radiusRatio={0.75}
+        textSize={30}
+      />
     </div>
   );
 };
