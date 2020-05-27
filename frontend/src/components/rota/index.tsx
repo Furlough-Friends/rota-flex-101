@@ -37,6 +37,14 @@ const TIME_FORMAT = {
   minute: '2-digit',
 };
 
+const BUTTON_TEXT = {
+  today: 'Today',
+  month: 'Month',
+  week: 'Week',
+  day: 'Day',
+  list: 'List',
+};
+
 const Rota = () => (
   <div className={rotaStyle.rota}>
     <h1 className={rotaStyle.header}> Rota </h1>
@@ -50,6 +58,7 @@ const Rota = () => (
         minTime="08:00:00"
         maxTime="21:00:00"
         events={DUMMY_EVENTS}
+        buttonText={BUTTON_TEXT}
         eventRender={tooltipFunction}
       />
     </div>
