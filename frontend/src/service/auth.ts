@@ -6,14 +6,7 @@ export const getRole = async (token?: string) => {
   const response = await get(`${URL}/role`, token);
   const json = await response.json();
 
-  switch (json) {
-    case 'USER':
-      return Role.USER;
-    case 'MANAGER':
-      return Role.MANAGER;
-    default:
-      return Role.NONE;
-  }
+  return Role[json as keyof typeof Role];
 };
 
 export const hasViewPermissions = (role?: Role) => {
@@ -24,4 +17,8 @@ export const hasViewPermissions = (role?: Role) => {
     default:
       return false;
   }
+};
+
+export const hasManagerPermissions = (role?: Role) => {
+  return role === Role.MANAGER;
 };
