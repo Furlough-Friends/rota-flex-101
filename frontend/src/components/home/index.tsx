@@ -49,9 +49,6 @@ const Home = () => {
               )}
               <Route path="/rota" component={Rota} />
               <Route path="/summary" component={Summary} />
-              <Route exact path="/">
-                <Redirect to="/summary" />
-              </Route>
               <Route path="/callback" />
               <Route>
                 <Redirect to="/summary" />
