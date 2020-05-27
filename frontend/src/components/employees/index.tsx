@@ -59,19 +59,23 @@ const RemoveUserButton = () => (
   </button>
 );
 
+enum ColumnNames {
+  NAME = 'name',
+  JOB = 'job',
+  PARTFULL = 'partfull',
+  EDIT = 'editbtn',
+  REMOVE = 'removebutton'
+}
+
 const COLUMN_DEFS = [
-  { field: 'name', headerName: 'Name', sortable: true },
-  { field: 'job', headerName: 'Job title', sortable: true },
+  { field: ColumnNames.NAME, headerName: 'Name', sortable: true },
+  { field: ColumnNames.JOB, headerName: 'Job title', sortable: true },
   {
-    field: 'partfull',
+    field: ColumnNames.PARTFULL,
     headerName: 'Part/Full Time',
   },
   {
-    field: 'empty',
-    headerName: '',
-  },
-  {
-    field: 'editbtn',
+    field: ColumnNames.EDIT,
     headerName: '',
     type: 'rightAligned',
     pinned: 'right',
@@ -79,7 +83,7 @@ const COLUMN_DEFS = [
     cellRenderer: () => ReactDOMServer.renderToStaticMarkup(<EditUserButton />),
   },
   {
-    field: 'removebtn',
+    field: ColumnNames.REMOVE,
     headerName: '',
     type: 'rightAligned',
     pinned: 'right',
@@ -121,30 +125,18 @@ const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
-  // const [isDeleteModalOpen, setDeleteModalState] = useState(false);
-  // const [selectedStaff, setSelectedStaff] = useState({
-  //   id: 0,
-  //   firstName: '',
-  //   surname: '',
-  //   jobTitle: '',
-  //   contractedHours: 0,
-  // });
 
-  // const closeModal = () => {
-  //   setDeleteModalState(false);
-  // };
-
-  const openDeleteModal = (staff: StaffData) => () => {
+  const openDeleteModal = (staff: StaffData) => {
     dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { staff } }));
   };
 
   const cellClicked = (event: any) => {
     switch (event.colDef.field) {
-      case 'editbtn':
-        editUser(event.data.rawData);
+      case ColumnNames.EDIT:
+        editUser(event.data.rawData as StaffData);
         break;
-      case 'removebtn':
-        openDeleteModal(event.data.rawData);
+      case ColumnNames.REMOVE:
+        openDeleteModal(event.data.rawData as StaffData);
         break;
       default:
     }
