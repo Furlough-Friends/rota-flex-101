@@ -1,0 +1,17 @@
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  Button {
+    margin: 1em 0 1em 1em;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  .xButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+}

@@ -20,7 +20,10 @@ export const post = async (
 ) => {
   const response = await fetch(url as RequestInfo, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(data),
   });
   return response;

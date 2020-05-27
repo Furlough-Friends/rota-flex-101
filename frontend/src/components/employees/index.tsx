@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
@@ -12,8 +12,9 @@ import TableCell from '@material-ui/core/TableCell';
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
 
-import DeleteModal from './DeleteModal';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
+import { showModal } from '../../features/modalSlice';
+
 import 'toastr/build/toastr.min.css';
 import { StaffData, TableColumn } from '../../constants/employees';
 import capitalizeFirstLetter from '../../utils/string';
@@ -27,11 +28,8 @@ interface CallbackFunction {
 }
 
 /**
- * Functions which are called when add/edit/delete buttons are pressed.
- * Note that the signature of addUser is different from editUser/deleteUser.
+ * Function which is called when edit buttons are pressed.
  */
-
-const addUser = () => toastr.info('Add user');
 
 const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
 
@@ -128,39 +126,45 @@ const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
   </Table>
 );
 
-const addButton = (
-  <div className={employeesStyle.addButtonContainer}>
-    <Button
-      className={employeesStyle.addButton}
-      color="primary"
-      variant="contained"
-      size="small"
-      onClick={addUser}>
-      Add
-    </Button>
-  </div>
-);
+const AddButton = () => {
+  const dispatch = useDispatch();
+
+  const createAddModal = () => {
+    dispatch(showModal({ modalType: 'CREATE_USER' }));
+  };
+  return (
+    <div className={employeesStyle.addButtonContainer}>
+      <Button
+        className={employeesStyle.addButton}
+        color="primary"
+        variant="contained"
+        size="small"
+        onClick={createAddModal}>
+        Add
+      </Button>
+    </div>
+  );
+};
 
 const Employees = () => {
   const staffList = useSelector(selectStaff);
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
-  const [isDeleteModalOpen, setDeleteModalState] = useState(false);
-  const [selectedStaff, setSelectedStaff] = useState({
-    id: 0,
-    firstName: '',
-    surname: '',
-    jobTitle: '',
-    contractedHours: 0,
-  });
+  // const [isDeleteModalOpen, setDeleteModalState] = useState(false);
+  // const [selectedStaff, setSelectedStaff] = useState({
+  //   id: 0,
+  //   firstName: '',
+  //   surname: '',
+  //   jobTitle: '',
+  //   contractedHours: 0,
+  // });
 
-  const closeModal = () => {
-    setDeleteModalState(false);
-  };
+  // const closeModal = () => {
+  //   setDeleteModalState(false);
+  // };
 
   const openDeleteModal = (staff: StaffData) => () => {
-    setDeleteModalState(true);
-    setSelectedStaff(staff);
+    dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { staff } }));
   };
 
   const tableColumns = makeTableColumns(editUser, openDeleteModal);
@@ -177,15 +181,10 @@ const Employees = () => {
   return (
     <div className={employeesStyle.employees}>
       <h1 className={employeesStyle.header}> Employees </h1>
-      {addButton}
+      <AddButton />
       <div className={employeesStyle.tableContainer}>
         {renderTable(tableColumns)(staffList)}
       </div>
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        staff={selectedStaff}
-        closeModalFunction={closeModal}
-      />
     </div>
   );
 };

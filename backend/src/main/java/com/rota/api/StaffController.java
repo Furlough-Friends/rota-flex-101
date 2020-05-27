@@ -122,6 +122,7 @@ public class StaffController {
       @PathVariable
       @ApiParam(value = "Staff ID")
           int id,
+      @Valid
       @RequestBody
       @ApiParam(value = "Updated staff object")
           StaffDto updatedStaff

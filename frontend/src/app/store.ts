@@ -8,11 +8,13 @@ import {
 } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import staffReducer from '../features/staffSlice';
+import modalReducer from '../features/modalSlice';
 
 const middleware: Middleware[] = [...getDefaultMiddleware(), logger];
 
 const reducer: ReducersMapObject = {
   staff: staffReducer,
+  modal: modalReducer,
 };
 
 export const store = configureStore({
