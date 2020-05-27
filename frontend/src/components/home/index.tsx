@@ -7,7 +7,6 @@ import Rota from '../rota';
 import Sidebar from '../sidebar';
 import Summary from '../summary';
 import homeStyles from './home.module.scss';
-import PageNotFound from '../errorPage/notFound';
 import { useAuth0 } from '../../react-auth0-spa';
 import FullPageLoader from '../fullPageLoader';
 import ErrorPage from '../errorPage';
@@ -54,7 +53,9 @@ const Home = () => {
                 <Redirect to="/summary" />
               </Route>
               <Route path="/callback" />
-              <Route component={PageNotFound} />
+              <Route>
+                <Redirect to="/summary" />
+              </Route>
             </Switch>
           </main>
         </div>
