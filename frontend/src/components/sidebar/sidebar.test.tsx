@@ -4,6 +4,8 @@ import { render } from '@testing-library/react';
 import * as windowSizeModule from '@react-hook/window-size/throttled';
 import Sidebar from './index';
 import { useAuth0 } from '../../react-auth0-spa';
+import { getSidebarOptions } from '../../constants/sidebarOptions';
+import { Role } from '../../constants/employees';
 
 jest.mock('../../react-auth0-spa');
 
@@ -30,11 +32,24 @@ test('renders the menu options on big screen', () => {
 
   const { getByText } = render(
     <Router>
-      <Sidebar />
+      <Sidebar sidebarOptions={getSidebarOptions(Role.MANAGER)} />
     </Router>
   );
 
   expect(getByText(/Summary/i)).toBeInTheDocument();
   expect(getByText(/Rota/i)).toBeInTheDocument();
   expect(getByText(/Employees/i)).toBeInTheDocument();
+});
+
+test('sidebar options correct for non-manager', () => {
+  windowWidthSpy.mockReturnValue(800);
+
+  const { getByText } = render(
+    <Router>
+      <Sidebar sidebarOptions={getSidebarOptions(Role.USER)} />
+    </Router>
+  );
+
+  expect(getByText(/Summary/i)).toBeInTheDocument();
+  expect(getByText(/Rota/i)).toBeInTheDocument();
 });
