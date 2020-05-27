@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import sidebarStyles from './sidebar.module.scss';
-import sidebarOptions, {
+import {
   SidebarOption,
   SideberButtonConfig,
 } from '../../constants/sidebarOptions';
@@ -65,7 +65,11 @@ const getButtons = (options: SidebarOption[], isWindowBig: boolean) =>
     />
   ));
 
-const Sidebar = () => {
+interface SidebarProps {
+  sidebarOptions: SidebarOption[];
+}
+
+const Sidebar = ({sidebarOptions}: SidebarProps) => {
   const widthHookReturnValue = useWindowWidth(windowSizeHookOptions);
 
   const isWindowBig =
