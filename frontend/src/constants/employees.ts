@@ -7,6 +7,7 @@ export const STAFF_CREATE_URL = `${URL}/staff/create`;
 export enum Role {
   USER = 'USER',
   MANAGER = 'MANAGER',
+  NONE = 'NONE',
 }
 
 interface BaseStaffData {
