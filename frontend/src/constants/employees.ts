@@ -10,10 +10,6 @@ export enum Role {
   NONE = 'NONE',
 }
 
-export interface StaffData {
-  id: number;
-}
-
 interface BaseStaffData {
   firstName: string;
   surname: string;
