@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
 
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
@@ -16,7 +15,7 @@ import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import { showModal } from '../../features/modalSlice';
 
 import 'toastr/build/toastr.min.css';
-import { StaffData, TableColumn } from '../../constants/employees';
+import { StaffData } from '../../constants/employees';
 import capitalizeFirstLetter from '../../utils/string';
 
 import { FULLTIME_HOURS } from '../../constants/global';
@@ -48,83 +47,55 @@ const partFullTime = (fullTimeHours: number) => ({
   contractedHours,
 }: StaffData) => (contractedHours >= fullTimeHours ? 'Full' : 'Part');
 
-const editUserButton = (editFunction: CallbackFunction) => (
-  staff: StaffData
-) => (
-  <button
-    type="button"
-    className={employeesStyle.editButton}
-    onClick={editFunction(staff)}>
+const EditUserButton = () => (
+  <button type="button" className={employeesStyle.editButton}>
     <EditOutlined />
   </button>
 );
 
-const removeUserButton = (removeFunction: CallbackFunction) => (
-  staff: StaffData
-) => (
-  <button
-    type="button"
-    className={employeesStyle.removeButton}
-    onClick={removeFunction(staff)}>
+const RemoveUserButton = () => (
+  <button type="button" className={employeesStyle.removeButton}>
     <Clear />
   </button>
 );
 
-/**
- * Specifies the list of table columns to be displayed.
- * Each  column has the following properties:
- * id - column's unique id (also its class name for css)
- * name - column name - the top row of the table
- * content - a function taking StaffData as an argument
- *    and returning the value of the corresponding table
- *    cell
- */
-
-const makeTableColumns = (
-  editCallback: CallbackFunction,
-  deleteCallback: CallbackFunction
-) => [
-  { id: 'name', name: 'Name', content: getName },
-  { id: 'job', name: 'Job title', content: getJobTitle },
+const COLUMN_DEFS = [
+  { field: 'name', headerName: 'Name', sortable: true },
+  { field: 'job', headerName: 'Job title', sortable: true },
   {
-    id: 'partfull',
-    name: 'Part/Full Time',
-    content: partFullTime(FULLTIME_HOURS),
+    field: 'partfull',
+    headerName: 'Part/Full Time',
   },
-  { id: 'editbtn', name: '', content: editUserButton(editCallback) },
-  { id: 'removebtn', name: '', content: removeUserButton(deleteCallback) },
+  {
+    field: 'empty',
+    headerName: '',
+  },
+  {
+    field: 'editbtn',
+    headerName: '',
+    type: 'rightAligned',
+    pinned: 'right',
+    width: 60,
+    cellRenderer: () => ReactDOMServer.renderToStaticMarkup(<EditUserButton />),
+  },
+  {
+    field: 'removebtn',
+    headerName: '',
+    type: 'rightAligned',
+    pinned: 'right',
+    width: 60,
+    cellRenderer: () =>
+      ReactDOMServer.renderToStaticMarkup(<RemoveUserButton />),
+  },
 ];
 
-const renderTableHeaders = (tableColumns: TableColumn[]) => (
-  <TableHead>
-    <TableRow>
-      {tableColumns.map(({ id, name }: TableColumn) => (
-        <TableCell key={id} className={employeesStyle[id]}>
-          {name}
-        </TableCell>
-      ))}
-    </TableRow>
-  </TableHead>
-);
-
-const renderTableRow = (tableColumns: TableColumn[]) => (row: StaffData) => (
-  <TableRow key={row.id}>
-    {tableColumns.map(({ id, content }: TableColumn) => (
-      <TableCell key={id} className={employeesStyle[id]}>
-        {content(row)}
-      </TableCell>
-    ))}
-  </TableRow>
-);
-
-const renderTable = (tableColumns: TableColumn[]) => (data: StaffData[]) => (
-  <Table size="small">
-    {renderTableHeaders(tableColumns)}
-    <TableBody>
-      {data.length > 0 && data.map(renderTableRow(tableColumns))}
-    </TableBody>
-  </Table>
-);
+const generateRow = (staffData: StaffData) => ({
+  id: staffData.id,
+  rawData: staffData,
+  name: getName(staffData),
+  job: getJobTitle(staffData),
+  partfull: partFullTime(FULLTIME_HOURS)(staffData),
+});
 
 const AddButton = () => {
   const dispatch = useDispatch();
@@ -167,7 +138,17 @@ const Employees = () => {
     dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { staff } }));
   };
 
-  const tableColumns = makeTableColumns(editUser, openDeleteModal);
+  const cellClicked = (event: any) => {
+    switch (event.colDef.field) {
+      case 'editbtn':
+        editUser(event.data.rawData);
+        break;
+      case 'removebtn':
+        openDeleteModal(event.data.rawData);
+        break;
+      default:
+    }
+  };
 
   // Fetch data when component loads
   useEffect(() => {
@@ -182,8 +163,15 @@ const Employees = () => {
     <div className={employeesStyle.employees}>
       <h1 className={employeesStyle.header}> Employees </h1>
       <AddButton />
-      <div className={employeesStyle.tableContainer}>
-        {renderTable(tableColumns)(staffList)}
+      <div
+        className={[employeesStyle.tableContainer, 'ag-theme-alpine'].join(
+          ' '
+        )}>
+        <AgGridReact
+          columnDefs={COLUMN_DEFS}
+          rowData={staffList.map(generateRow)}
+          onCellClicked={cellClicked}
+        />
       </div>
     </div>
   );
