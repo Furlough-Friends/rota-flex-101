@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useSelector, useDispatch } from 'react-redux';
 import toastr from 'toastr';
@@ -64,7 +64,7 @@ enum ColumnNames {
   JOB = 'job',
   PARTFULL = 'partfull',
   EDIT = 'editbtn',
-  REMOVE = 'removebutton'
+  REMOVE = 'removebutton',
 }
 
 const COLUMN_DEFS = [
