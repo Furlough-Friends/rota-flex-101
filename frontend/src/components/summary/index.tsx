@@ -14,15 +14,10 @@ import { useAuth0 } from '../../react-auth0-spa';
 import { StaffData } from '../../constants/employees';
 import { EngagementData } from '../../constants/engagements';
 import capitalizeFirstLetter from '../../utils/string';
+import Dictionary from '../../model/common/dictionary';
 
-const getStaffJob = (staffId: number) => (staffList: StaffData[]) => {
-  const staffMember = staffList.find((staff) => staff.id === staffId);
-  return staffMember ? staffMember.jobTitle : undefined;
-};
-
-interface PieChartData {
-  [key: string]: number;
-}
+const getStaffJob = (staffId: number) => (staffList: StaffData[]) =>
+  staffList.find((staff) => staff.id === staffId)?.jobTitle;
 
 const calcTimeDifference = (start: Date, end: Date) =>
   Math.round(differenceInMinutes(end, start) / 60);
@@ -31,19 +26,22 @@ const getTimesPerJob = (
   staffList: StaffData[],
   engagementList: EngagementData[]
 ) =>
-  engagementList.reduce((total: PieChartData, { staffId, start, end }) => {
-    const jobTypeIfPresent = getStaffJob(staffId)(staffList);
-    if (!jobTypeIfPresent) {
-      return total;
-    }
-    const jobType = capitalizeFirstLetter(jobTypeIfPresent);
-    return Object.prototype.hasOwnProperty.call(total, jobType)
-      ? {
-          ...total,
-          [jobType]: total[jobType] + calcTimeDifference(start, end),
-        }
-      : { ...total, [jobType]: calcTimeDifference(start, end) };
-  }, {});
+  engagementList.reduce(
+    (total: Dictionary<number>, { staffId, start, end }) => {
+      const jobTypeIfPresent = getStaffJob(staffId)(staffList);
+      if (!jobTypeIfPresent) {
+        return total;
+      }
+      const jobType = capitalizeFirstLetter(jobTypeIfPresent);
+      return Object.prototype.hasOwnProperty.call(total, jobType)
+        ? {
+            ...total,
+            [jobType]: total[jobType] + calcTimeDifference(start, end),
+          }
+        : { ...total, [jobType]: calcTimeDifference(start, end) };
+    },
+    {}
+  );
 
 const Summary = () => {
   const [startTime, setStartTime] = useState(new Date());
