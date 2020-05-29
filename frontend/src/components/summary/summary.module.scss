@@ -28,6 +28,14 @@
   }
 }
 
+.hourlyBreakdown {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: center;
+  justify-content: center;
+}
+
 .header {
   @include header;
 }
