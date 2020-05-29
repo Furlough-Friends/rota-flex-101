@@ -1,14 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import toastr from 'toastr';
+
+import { AppThunk, RootState } from '../app/store';
 import {
-  StaffData,
   CreateStaffData,
-  STAFF_FETCH_URL,
-  STAFF_DELETE_URL,
   STAFF_CREATE_URL,
+  STAFF_DELETE_URL,
+  STAFF_FETCH_URL,
+  StaffData,
 } from '../constants/employees';
-import { RootState, AppThunk } from '../app/store';
-import { get, put, post } from '../service/apiService';
+import { get, post, put } from '../service/apiService';
 
 interface StaffState {
   value: StaffData[];

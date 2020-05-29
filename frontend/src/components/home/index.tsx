@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import toastr from 'toastr';
-import Header from '../header';
+
+import { Role } from '../../constants/employees';
+import { getSidebarOptions } from '../../constants/sidebarOptions';
+import { useAuth0 } from '../../react-auth0-spa';
+import { getRole, hasManagerPermissions, hasViewPermissions } from '../../service/auth';
+import logger from '../dev/logger';
 import Employees from '../employees';
+import ErrorPage from '../errorPage';
+import FullPageLoader from '../fullPageLoader';
+import Header from '../header';
 import Rota from '../rota';
 import Sidebar from '../sidebar';
 import Summary from '../summary';
 import homeStyles from './home.module.scss';
-import { useAuth0 } from '../../react-auth0-spa';
-import FullPageLoader from '../fullPageLoader';
-import ErrorPage from '../errorPage';
-import {
-  getRole,
-  hasViewPermissions,
-  hasManagerPermissions,
-} from '../../service/auth';
-import { Role } from '../../constants/employees';
-import { getSidebarOptions } from '../../constants/sidebarOptions';
-import logger from '../dev/logger';
 
 const Home = () => {
   const { getTokenSilently } = useAuth0();

@@ -1,6 +1,6 @@
-import { get } from './apiService';
-import { URL } from '../constants/global';
 import { Role } from '../constants/employees';
+import { URL } from '../constants/global';
+import { get } from './apiService';
 
 export const getRole = async (token?: string) => {
   const response = await get(`${URL}/role`, token);

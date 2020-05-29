@@ -1,12 +1,14 @@
-import React from 'react';
-import FullCalendar from '@fullcalendar/react';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import tippy from 'tippy.js';
-import rotaStyle from './rota.module.scss';
-import 'tippy.js/dist/tippy.css';
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
+import 'tippy.js/dist/tippy.css';
+
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import React from 'react';
+import tippy from 'tippy.js';
+
+import rotaStyle from './rota.module.scss';
 
 const DUMMY_EVENTS = [
   {

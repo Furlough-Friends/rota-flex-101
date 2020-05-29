@@ -1,26 +1,23 @@
-import React, { useEffect } from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { useSelector, useDispatch } from 'react-redux';
-import toastr from 'toastr';
-
-import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import Button from '@material-ui/core/Button';
+import 'toastr/build/toastr.min.css';
 
+import Button from '@material-ui/core/Button';
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
+import { AgGridReact } from 'ag-grid-react';
+import React, { useEffect } from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { useDispatch, useSelector } from 'react-redux';
+import toastr from 'toastr';
 
-import { fetchStaff, selectStaff } from '../../features/staffSlice';
-import { showModal } from '../../features/modalSlice';
-
-import 'toastr/build/toastr.min.css';
 import { StaffData } from '../../constants/employees';
-import capitalizeFirstLetter from '../../utils/string';
-
 import { FULLTIME_HOURS } from '../../constants/global';
-import employeesStyle from './employees.module.scss';
+import { showModal } from '../../features/modalSlice';
+import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import { useAuth0 } from '../../react-auth0-spa';
+import capitalizeFirstLetter from '../../utils/string';
+import employeesStyle from './employees.module.scss';
 
 interface CallbackFunction {
   (data: StaffData): () => void;

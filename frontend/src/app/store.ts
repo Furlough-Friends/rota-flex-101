@@ -1,15 +1,16 @@
 import {
-  configureStore,
-  ThunkAction,
   Action,
+  configureStore,
   getDefaultMiddleware,
   Middleware,
   ReducersMapObject,
+  ThunkAction,
 } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import staffReducer from '../features/staffSlice';
-import modalReducer from '../features/modalSlice';
+
 import engagementReducer from '../features/engagementSlice';
+import modalReducer from '../features/modalSlice';
+import staffReducer from '../features/staffSlice';
 
 const middleware: Middleware[] = [...getDefaultMiddleware(), logger];
 

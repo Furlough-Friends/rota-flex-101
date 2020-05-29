@@ -1,23 +1,21 @@
+import 'toastr/build/toastr.min.css';
+
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormLabel from '@material-ui/core/FormLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import Clear from '@material-ui/icons/Clear';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormLabel from '@material-ui/core/FormLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
-import Clear from '@material-ui/icons/Clear';
-
-import { createStaff } from '../../features/staffSlice';
-import { toDateStr } from '../../constants/global';
 
 import { Role } from '../../constants/employees';
-
+import { toDateStr } from '../../constants/global';
+import { createStaff } from '../../features/staffSlice';
 import { useAuth0 } from '../../react-auth0-spa';
-
-import 'toastr/build/toastr.min.css';
 import createUserModalStyle from './createUserModal.module.scss';
 
 interface Props {

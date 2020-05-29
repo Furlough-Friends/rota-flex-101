@@ -1,0 +1,73 @@
+options:
+  # Don't merge default rules
+  merge-default-rules: false
+  # Raise an error if more than 50 warnings are generated
+  max-warnings: 50
+files:
+  include: 'src/**/*.scss'
+rules:
+  # Mixins
+  extends-before-mixins: 1
+  extends-before-declarations: 1
+  mixins-before-declarations: 1
+
+  # Line Spacing
+  one-declaration-per-line: 1
+  empty-line-between-blocks: 1
+  single-line-per-selector: 1
+
+  # Disallows
+  no-css-comments: 1
+  no-debug: 1
+  no-ids: 2
+
+  # Disabled
+  no-warn: 0
+  force-element-nesting: 0
+  force-attribute-nesting: 0
+  force-pseudo-nesting: 0
+  no-vendor-prefixes: 0
+  shorthand-values: 0
+  zero-unit: 0
+  property-sort-order:
+    - 0
+    - order: concentric
+      ignore-custom-properties: true
+
+  # Style Guide
+  empty-args: 1
+  indentation:
+    - 1
+    - size: 2
+  quotes:
+    - 1
+    - style: single
+  hex-length:
+    - 1
+    - style: short
+  hex-notation:
+    - 1
+    - style: lowercase
+  no-misspelled-properties: 1
+  placeholder-in-extend: 1
+  no-invalid-hex: 1
+  nesting-depth:
+    - 1
+    - max-depth: 4
+  no-qualifying-elements:
+    - 2
+    - allow-element-with-attribute: true
+      allow-element-with-class: true
+      allow-element-with-id: false
+  brace-style:
+    - 2
+    - style: 1tbs
+      allow-single-line: false
+  variable-name-format:
+    - 2
+    - allow-leading-underscore: false
+      convention: hyphenatedlowercase
+
+  # Final Items
+  trailing-semicolon: 1
+  final-newline: 1

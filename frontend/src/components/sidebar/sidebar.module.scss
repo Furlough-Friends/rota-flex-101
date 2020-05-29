@@ -2,9 +2,6 @@
 @import '../home/home.module.scss';
 @import '../../constants/styles.scss';
 
-$boxShadowStart: rgba(0, 0, 0, 0.2);
-$boxShadowEnd: rgba(0, 0, 0, 0.19);
-
 $sidebar-width: 200px;
 
 .container {
@@ -24,7 +21,7 @@ $sidebar-width: 200px;
   color: $colour-text-primary;
   padding: 10px 0px;
   border: 0px;
-  background-color: $colour-darkBlue;
+  background-color: $colour-dark-blue;
   line-height: 2.5rem;
   text-align: center;
   font-size: 1rem;
@@ -44,11 +41,11 @@ $sidebar-width: 200px;
 }
 
 .selectedMenuOption {
-  background-color: $colour-lightBlue;
+  background-color: $colour-light-blue;
 
   &:hover,
   &:focus {
-    background-color: $colour-lightBlue;
+    background-color: $colour-light-blue;
   }
 }
 
@@ -61,7 +58,7 @@ $sidebar-width: 200px;
 }
 
 .sidebarHeader {
-  background-color: $colour-darkBlue;
+  background-color: $colour-dark-blue;
   display: flex;
   justify-content: flex-end;
   height: $header-height;
@@ -93,7 +90,7 @@ $sidebar-width: 200px;
 
 .sidebar {
   & :global(.MuiPaper-root) {
-    background-color: $colour-darkBlue;
+    background-color: $colour-dark-blue;
     overflow-y: unset;
 
     @media (max-width: $small-screen-threshold) {

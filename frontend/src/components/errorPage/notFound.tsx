@@ -1,7 +1,8 @@
-import React from 'react';
 import { Box } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/CancelRounded';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
+
 import errorPageStyle from './notFound.module.scss';
 
 const PageNotFound = () => {

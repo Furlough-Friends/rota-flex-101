@@ -1,4 +1,4 @@
-import { formatISO, parseISO, isValid } from 'date-fns';
+import { formatISO, isValid, parseISO } from 'date-fns';
 
 export const URL = 'http://localhost:8080';
 export const FULLTIME_HOURS = 37.5;

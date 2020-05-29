@@ -1,16 +1,14 @@
+import 'toastr/build/toastr.min.css';
+
+import Button from '@material-ui/core/Button';
+import Clear from '@material-ui/icons/Clear';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
-import Button from '@material-ui/core/Button';
-
-import Clear from '@material-ui/icons/Clear';
 import { StaffData } from '../../constants/employees';
-
-import { useAuth0 } from '../../react-auth0-spa';
-
 import { deleteStaff } from '../../features/staffSlice';
-import 'toastr/build/toastr.min.css';
+import { useAuth0 } from '../../react-auth0-spa';
 import deleteUserModalStyle from './deleteUserModal.module.scss';
 
 interface Props {

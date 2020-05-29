@@ -1,9 +1,10 @@
 import React from 'react';
-import Home from '../home';
-import RootModal from '../rootModal';
-import Landing from '../landing';
+
 import { useAuth0 } from '../../react-auth0-spa';
 import FullPageLoader from '../fullPageLoader';
+import Home from '../home';
+import Landing from '../landing';
+import RootModal from '../rootModal';
 
 const App = () => {
   const { isAuthenticated, loading } = useAuth0();

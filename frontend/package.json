@@ -47,8 +47,13 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "npx prettier --check \"./src/**/*.{js,jsx,ts,tsx,scss}\" && npx eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
-    "format": "npx prettier --write \"./src/**/*.{js,jsx,ts,tsx,scss}\" && npx eslint --fix \"./src/**/*.{js,jsx,ts,tsx}\""
+    "prettier": "prettier --check \"./src/**/*.{ts,tsx,scss}\"",
+    "prettier:autofix": "prettier --write \"./src/**/*.{ts,tsx,scss}\"",
+    "lint:eslint": "eslint \"./src/**/*.{ts,tsx}\"",
+    "lint:eslint:autofix": "eslint --fix \"./src/**/*.{ts,tsx}\"",
+    "lint:sass": "sass-lint -c .sass-lint.yml \"./src/**/*.scss\" -v",
+    "lint": "npm run prettier && npm run lint:eslint && npm run lint:sass",
+    "format": "npm run prettier:autofix && npm run lint:eslint:autofix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -76,6 +81,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.1",
     "json-server": "^0.16.1",
-    "prettier": "2.0.4"
+    "prettier": "2.0.4",
+    "sass-lint": "^1.13.1"
   }
 }
