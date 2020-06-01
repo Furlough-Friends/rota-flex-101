@@ -1,0 +1,52 @@
+@import '../../common/constants/styles.scss';
+@import '../../../node_modules/ag-grid-community/src/styles/ag-grid.scss';
+@import '../../../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss';
+
+.employees {
+  display: grid;
+  height: 100vh;
+  grid-template:
+    'header addbutton' min-content
+    'table table' 1fr
+    /1fr min-content;
+}
+
+.header {
+  @include header;
+}
+
+.addButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.addButton {
+  grid-area: addbutton;
+}
+
+.tableContainer {
+  grid-area: table;
+  overflow: auto;
+}
+
+.editbtn,
+.removebtn {
+  text-align: right;
+  width: 1em;
+}
+
+.editButton,
+.removeButton {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  margin: 0.15em;
+  &:hover {
+    margin: 0em;
+  }
+}
+
+.removeButton {
+  color: red;
+}

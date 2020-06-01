@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { RedirectLoginResult } from '@auth0/auth0-spa-js';
 import { Router } from 'react-router-dom';
-import { Auth0Provider } from './react-auth0-spa';
-import App from './components/app';
+import { Auth0Provider } from './common/react-auth0-spa';
+import App from './app/App';
 import config from './auth_config.json';
-import history from './utils/browserHistory';
+import { browserHistory } from './common/constants/global';
+
 import { store } from './app/store';
 
 interface appState {
@@ -16,7 +17,7 @@ interface appState {
 
 // Routes user to correct url after authenticating
 const onRedirectCallback = (appState: appState) => {
-  history.push(
+  browserHistory.push(
     appState && appState.targetUrl
       ? appState.targetUrl
       : window.location.pathname
@@ -32,7 +33,7 @@ ReactDOM.render(
       audience={config.audience}
       onRedirectCallback={onRedirectCallback}
       scope="openid profile email https://rota-flex-101.com/claims/email">
-      <Router history={history}>
+      <Router history={browserHistory}>
         <App />
       </Router>
     </Auth0Provider>

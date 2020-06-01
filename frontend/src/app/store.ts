@@ -7,9 +7,9 @@ import {
   ReducersMapObject,
 } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import staffReducer from '../features/staffSlice';
-import modalReducer from '../features/modalSlice';
-import engagementReducer from '../features/engagementSlice';
+import staffReducer from '../features/employees/staffSlice';
+import modalReducer from '../features/modal/modalSlice';
+import engagementReducer from '../features/rota/engagementSlice';
 
 const middleware: Middleware[] = [...getDefaultMiddleware(), logger];
 
