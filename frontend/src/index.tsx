@@ -8,7 +8,6 @@ import App from './components/app';
 import config from './auth_config.json';
 import history from './utils/browserHistory';
 import { store } from './app/store';
-import * as serviceWorker from './serviceWorker';
 
 interface appState {
   appState: Promise<RedirectLoginResult>;
@@ -40,8 +39,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
