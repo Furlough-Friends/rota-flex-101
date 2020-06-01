@@ -13,7 +13,7 @@ import {
 import { useAuth0 } from '../../react-auth0-spa';
 import { StaffData } from '../../constants/employees';
 import { EngagementData } from '../../constants/engagements';
-import capitalizeFirstLetter from '../../utils/string';
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import Dictionary from '../../model/common/dictionary';
 
 const getStaffJob = (staffId: number) => (staffList: StaffData[]) =>

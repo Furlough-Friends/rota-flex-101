@@ -17,7 +17,7 @@ import { showModal } from '../../features/modalSlice';
 import 'toastr/build/toastr.min.css';
 import { StaffData } from '../../constants/employees';
 import capitalizeFirstLetter from '../../utils/string';
-
+../../utils/capitalizeFirstLetter
 import { FULLTIME_HOURS } from '../../constants/global';
 import employeesStyle from './employees.module.scss';
 import { useAuth0 } from '../../react-auth0-spa';
