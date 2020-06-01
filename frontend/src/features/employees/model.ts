@@ -1,4 +1,4 @@
-import Role from "../../common/model/Role";
+import Role from '../../common/model/Role';
 
 interface BaseStaffData {
   firstName: string;

@@ -1,4 +1,4 @@
-import { URL } from "../../common/constants/global";
+import { URL } from '../../common/constants/global';
 
 export interface EngagementData {
   staffId: number;

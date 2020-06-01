@@ -1,4 +1,4 @@
-import Role from "../../common/model/Role";
+import Role from '../../common/model/Role';
 
 export interface SidebarOption {
   name: string;

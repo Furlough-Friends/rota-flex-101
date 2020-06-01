@@ -6,10 +6,7 @@ import PieChart from './PieChart';
 
 import summaryStyle from './summary.module.scss';
 import { selectStaff, fetchStaff } from '../employees/staffSlice';
-import {
-  selectEngagement,
-  fetchEngagements,
-} from '../rota/engagementSlice';
+import { selectEngagement, fetchEngagements } from '../rota/engagementSlice';
 import { useAuth0 } from '../../common/react-auth0-spa';
 import { EngagementData } from '../rota/constants';
 import capitalizeFirstLetter from '../../common/utils/capitalizeFirstLetter';
