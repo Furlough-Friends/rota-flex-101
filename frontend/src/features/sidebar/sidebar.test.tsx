@@ -7,7 +7,7 @@ import { useAuth0 } from '../../common/react-auth0-spa';
 import { getSidebarOptions } from './sidebarOptions';
 import Role from '../../common/model/Role';
 
-jest.mock('../../react-auth0-spa');
+jest.mock('../../common/react-auth0-spa');
 
 let windowWidthSpy: jest.SpyInstance;
 // The test fails if window width is below the threshold.
