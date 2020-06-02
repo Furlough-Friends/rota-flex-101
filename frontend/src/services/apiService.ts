@@ -1,18 +1,20 @@
-export const get = async (request: RequestInfo, token?: string) => {
-  return await fetch(request, {
+export const get = async (request: RequestInfo, token?: string) =>
+  fetch(request, {
     headers: { Authorization: `Bearer ${token}` },
   });
-};
 
-export const put = async (request: RequestInfo, token?: string) => {
-  return await fetch(request, {
+export const put = async (request: RequestInfo, token?: string) =>
+  fetch(request, {
     method: 'PUT',
     headers: { Authorization: `Bearer ${token}` },
   });
-};
 
-export const post = async (request: RequestInfo, token?: string, data: object = {}) => {
-  return await fetch(request, {
+export const post = async (
+  request: RequestInfo,
+  token?: string,
+  data: object = {}
+) =>
+  fetch(request, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -20,4 +22,3 @@ export const post = async (request: RequestInfo, token?: string, data: object = 
     },
     body: JSON.stringify(data),
   });
-};

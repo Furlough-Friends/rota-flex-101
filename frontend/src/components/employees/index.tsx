@@ -11,7 +11,6 @@ import ReactDOMServer from 'react-dom/server';
 import { useDispatch, useSelector } from 'react-redux';
 import toastr from 'toastr';
 
-import { FULLTIME_HOURS } from '../../constants/global';
 import { showModal } from '../../features/modalSlice';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import { Staff } from '../../model';
@@ -23,10 +22,11 @@ interface CallbackFunction {
   (data: Staff): () => void;
 }
 
+const fullTimeHours = 37.5;
+
 /**
  * Function which is called when edit buttons are pressed.
  */
-
 const editUser = ({ id }: Staff) => () => toastr.info(`User ${id} edited`);
 
 /**
@@ -38,7 +38,7 @@ const getName = ({ firstName, surname }: Staff) => `${firstName} ${surname}`;
 
 const getJobTitle = ({ jobTitle }: Staff) => capitalizeFirstLetter(jobTitle);
 
-const partFullTime = (fullTimeHours: number) => ({ contractedHours }: Staff) =>
+const partFullTime = ({ contractedHours }: Staff) =>
   contractedHours >= fullTimeHours ? 'Full' : 'Part';
 
 const EditUserButton = () => (
@@ -56,7 +56,7 @@ const RemoveUserButton = () => (
 enum ColumnNames {
   Name = 'name',
   Job = 'job',
-  Partfull = 'partfull',
+  PartFull = 'partfull',
   Edit = 'editbtn',
   Remove = 'removebutton',
 }
@@ -65,7 +65,7 @@ const COLUMN_DEFS = [
   { field: ColumnNames.Name, headerName: 'Name', sortable: true },
   { field: ColumnNames.Job, headerName: 'Job title', sortable: true },
   {
-    field: ColumnNames.Partfull,
+    field: ColumnNames.PartFull,
     headerName: 'Part/Full Time',
   },
   {
@@ -92,15 +92,15 @@ const generateRow = (staff: Staff) => ({
   rawData: staff,
   name: getName(staff),
   job: getJobTitle(staff),
-  partfull: partFullTime(FULLTIME_HOURS)(staff),
+  partfull: partFullTime(staff),
 });
 
 const AddButton = () => {
   const dispatch = useDispatch();
 
-  const createAddModal = () => {
+  const createAddModal = () =>
     dispatch(showModal({ modalType: 'CREATE_USER' }));
-  };
+
   return (
     <div className={employeesStyle.addButtonContainer}>
       <Button

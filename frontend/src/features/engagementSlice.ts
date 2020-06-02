@@ -3,9 +3,10 @@ import { parseISO } from 'date-fns';
 import toastr from 'toastr';
 
 import { AppThunk, RootState } from '../app/store';
-import { BASE_URL } from '../constants/global';
 import { Engagement } from '../model';
 import { get } from '../services/apiService';
+
+const { REACT_APP_BASE_URL } = process.env;
 
 interface EngagementState {
   value: Engagement[];
@@ -16,7 +17,7 @@ const initialState: EngagementState = {
 };
 
 const engagementsFetchUrl = (start: Date, end: Date) =>
-  `${BASE_URL}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`;
+  `${REACT_APP_BASE_URL}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`;
 
 export const engagementSlice = createSlice({
   name: 'engagement',

@@ -1,9 +1,11 @@
 import { formatISO, isValid, parseISO } from 'date-fns';
 
+export const validateDateString = (value: string) => isValid(parseISO(value));
+
 export const serializeDate = (date: Date = new Date()) => {
   const asString = formatISO(date, { representation: 'date' });
 
-  if (isValid(parseISO(asString))) {
+  if (validateDateString(asString)) {
     return asString;
   }
 
