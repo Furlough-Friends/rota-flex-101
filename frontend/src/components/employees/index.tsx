@@ -150,7 +150,6 @@ const Employees = () => {
     };
     getStaff();
   }, [dispatch, getTokenSilently]);
-
   return (
     <div className={employeesStyle.employees}>
       <h1 className={employeesStyle.header}> Employees </h1>
@@ -163,6 +162,8 @@ const Employees = () => {
           columnDefs={COLUMN_DEFS}
           rowData={staffList.map(generateRow)}
           onCellClicked={cellClicked}
+          immutableData
+          getRowNodeId={(data) => data.id}
         />
       </div>
     </div>
