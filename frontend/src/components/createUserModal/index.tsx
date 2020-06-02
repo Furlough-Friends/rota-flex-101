@@ -12,7 +12,7 @@ import Clear from '@material-ui/icons/Clear';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { createStaff } from '../../features/staffSlice';
+import { createEmployee } from '../../features/employeeSlice';
 import { RoleType } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
 import { serializeDate } from '../../utils/date';
@@ -116,7 +116,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
       .map((preferred) => +preferred)
       .join('');
     dispatch(
-      createStaff(
+      createEmployee(
         {
           ...userInfo,
           preferredDates: prefDaysString,

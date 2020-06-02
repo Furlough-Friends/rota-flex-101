@@ -11,15 +11,15 @@ import ReactDOMServer from 'react-dom/server';
 import { useDispatch, useSelector } from 'react-redux';
 import toastr from 'toastr';
 
+import { fetchEmployee, selectEmployees } from '../../features/employeeSlice';
 import { showModal } from '../../features/modalSlice';
-import { fetchStaff, selectStaff } from '../../features/staffSlice';
-import { Staff } from '../../model';
+import { Employee } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
 import { capitalizeFirstLetter } from '../../utils/string';
 import employeesStyle from './employees.module.scss';
 
 interface CallbackFunction {
-  (data: Staff): () => void;
+  (data: Employee): () => void;
 }
 
 const fullTimeHours = 37.5;
@@ -27,18 +27,18 @@ const fullTimeHours = 37.5;
 /**
  * Function which is called when edit buttons are pressed.
  */
-const editUser = ({ id }: Staff) => () => toastr.info(`User ${id} edited`);
+const editUser = ({ id }: Employee) => () => toastr.info(`User ${id} edited`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
- * from Staff.
+ * from Employee.
  */
 
-const getName = ({ firstName, surname }: Staff) => `${firstName} ${surname}`;
+const getName = ({ firstName, surname }: Employee) => `${firstName} ${surname}`;
 
-const getJobTitle = ({ jobTitle }: Staff) => capitalizeFirstLetter(jobTitle);
+const getJobTitle = ({ jobTitle }: Employee) => capitalizeFirstLetter(jobTitle);
 
-const partFullTime = ({ contractedHours }: Staff) =>
+const partFullTime = ({ contractedHours }: Employee) =>
   contractedHours >= fullTimeHours ? 'Full' : 'Part';
 
 const EditUserButton = () => (
@@ -87,12 +87,12 @@ const COLUMN_DEFS = [
   },
 ];
 
-const generateRow = (staff: Staff) => ({
-  id: staff.id,
-  rawData: staff,
-  name: getName(staff),
-  job: getJobTitle(staff),
-  partfull: partFullTime(staff),
+const generateRow = (employee: Employee) => ({
+  id: employee.id,
+  rawData: employee,
+  name: getName(employee),
+  job: getJobTitle(employee),
+  partfull: partFullTime(employee),
 });
 
 const AddButton = () => {
@@ -116,21 +116,21 @@ const AddButton = () => {
 };
 
 const Employees = () => {
-  const staffList = useSelector(selectStaff);
+  const employeeList = useSelector(selectEmployees);
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
 
-  const openDeleteModal = (staff: Staff) => {
-    dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { staff } }));
+  const openDeleteModal = (employee: Employee) => {
+    dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { employee } }));
   };
 
   const cellClicked = (event: any) => {
     switch (event.colDef.field) {
       case ColumnNames.Edit:
-        editUser(event.data.rawData as Staff);
+        editUser(event.data.rawData as Employee);
         break;
       case ColumnNames.Remove:
-        openDeleteModal(event.data.rawData as Staff);
+        openDeleteModal(event.data.rawData as Employee);
         break;
       default:
     }
@@ -138,11 +138,11 @@ const Employees = () => {
 
   // Fetch data when component loads
   useEffect(() => {
-    const getStaff = async () => {
+    const getEmployee = async () => {
       const accessToken = await getTokenSilently();
-      dispatch(fetchStaff(accessToken));
+      dispatch(fetchEmployee(accessToken));
     };
-    getStaff();
+    getEmployee();
   }, [dispatch, getTokenSilently]);
   return (
     <div className={employeesStyle.employees}>
@@ -154,7 +154,7 @@ const Employees = () => {
         )}>
         <AgGridReact
           columnDefs={COLUMN_DEFS}
-          rowData={staffList.map(generateRow)}
+          rowData={employeeList.map(generateRow)}
           onCellClicked={cellClicked}
           immutableData
           getRowNodeId={(data) => data.id}

@@ -6,22 +6,22 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
-import { deleteStaff } from '../../features/staffSlice';
-import { Staff } from '../../model';
+import { deleteEmployee } from '../../features/employeeSlice';
+import { Employee } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
 import deleteUserModalStyle from './deleteUserModal.module.scss';
 
 interface Props {
-  staff: Staff;
+  employee: Employee;
   closeModalFunction: () => void;
 }
 
-const DeleteModal = ({ staff, closeModalFunction }: Props) => {
+const DeleteModal = ({ employee, closeModalFunction }: Props) => {
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
-  const deleteUser = ({ id, firstName, surname }: Staff) => async () => {
+  const deleteUser = ({ id, firstName, surname }: Employee) => async () => {
     const accessToken = await getTokenSilently();
-    dispatch(deleteStaff(id.toString(), accessToken));
+    dispatch(deleteEmployee(id.toString(), accessToken));
     closeModalFunction();
     new Audio('http://nooooooooooooooo.com/nooo.mp4').play();
     toastr.info(`User ${firstName} ${surname} deleted`);
@@ -41,7 +41,7 @@ const DeleteModal = ({ staff, closeModalFunction }: Props) => {
       </div>
       <hr />
       <span>
-        Are you sure you want to delete {staff.firstName} {staff.surname}?
+        Are you sure you want to delete {employee.firstName} {employee.surname}?
       </span>
       <div className={deleteUserModalStyle.buttons}>
         <Button variant="contained" onClick={closeModalFunction}>
@@ -50,7 +50,7 @@ const DeleteModal = ({ staff, closeModalFunction }: Props) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={deleteUser(staff)}>
+          onClick={deleteUser(employee)}>
           DELETE
         </Button>
       </div>

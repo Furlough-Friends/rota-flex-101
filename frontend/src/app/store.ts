@@ -8,14 +8,14 @@ import {
 } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
+import employeeReducer from '../features/employeeSlice';
 import engagementReducer from '../features/engagementSlice';
 import modalReducer from '../features/modalSlice';
-import staffReducer from '../features/staffSlice';
 
 const middleware: Middleware[] = [...getDefaultMiddleware(), logger];
 
 const reducer: ReducersMapObject = {
-  staff: staffReducer,
+  employee: employeeReducer,
   modal: modalReducer,
   engagement: engagementReducer,
 };
