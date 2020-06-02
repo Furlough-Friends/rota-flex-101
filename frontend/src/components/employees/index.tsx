@@ -11,38 +11,35 @@ import ReactDOMServer from 'react-dom/server';
 import { useDispatch, useSelector } from 'react-redux';
 import toastr from 'toastr';
 
-import { StaffData } from '../../constants/employees';
 import { FULLTIME_HOURS } from '../../constants/global';
 import { showModal } from '../../features/modalSlice';
 import { fetchStaff, selectStaff } from '../../features/staffSlice';
+import { Staff } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
-import capitalizeFirstLetter from '../../utils/string';
+import { capitalizeFirstLetter } from '../../utils/string';
 import employeesStyle from './employees.module.scss';
 
 interface CallbackFunction {
-  (data: StaffData): () => void;
+  (data: Staff): () => void;
 }
 
 /**
  * Function which is called when edit buttons are pressed.
  */
 
-const editUser = ({ id }: StaffData) => () => toastr.info(`User ${id} edited`);
+const editUser = ({ id }: Staff) => () => toastr.info(`User ${id} edited`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
- * from StaffData.
+ * from Staff.
  */
 
-const getName = ({ firstName, surname }: StaffData) =>
-  `${firstName} ${surname}`;
+const getName = ({ firstName, surname }: Staff) => `${firstName} ${surname}`;
 
-const getJobTitle = ({ jobTitle }: StaffData) =>
-  capitalizeFirstLetter(jobTitle);
+const getJobTitle = ({ jobTitle }: Staff) => capitalizeFirstLetter(jobTitle);
 
-const partFullTime = (fullTimeHours: number) => ({
-  contractedHours,
-}: StaffData) => (contractedHours >= fullTimeHours ? 'Full' : 'Part');
+const partFullTime = (fullTimeHours: number) => ({ contractedHours }: Staff) =>
+  contractedHours >= fullTimeHours ? 'Full' : 'Part';
 
 const EditUserButton = () => (
   <button type="button" className={employeesStyle.editButton}>
@@ -57,22 +54,22 @@ const RemoveUserButton = () => (
 );
 
 enum ColumnNames {
-  NAME = 'name',
-  JOB = 'job',
-  PARTFULL = 'partfull',
-  EDIT = 'editbtn',
-  REMOVE = 'removebutton',
+  Name = 'name',
+  Job = 'job',
+  Partfull = 'partfull',
+  Edit = 'editbtn',
+  Remove = 'removebutton',
 }
 
 const COLUMN_DEFS = [
-  { field: ColumnNames.NAME, headerName: 'Name', sortable: true },
-  { field: ColumnNames.JOB, headerName: 'Job title', sortable: true },
+  { field: ColumnNames.Name, headerName: 'Name', sortable: true },
+  { field: ColumnNames.Job, headerName: 'Job title', sortable: true },
   {
-    field: ColumnNames.PARTFULL,
+    field: ColumnNames.Partfull,
     headerName: 'Part/Full Time',
   },
   {
-    field: ColumnNames.EDIT,
+    field: ColumnNames.Edit,
     headerName: '',
     type: 'rightAligned',
     pinned: 'right',
@@ -80,7 +77,7 @@ const COLUMN_DEFS = [
     cellRenderer: () => ReactDOMServer.renderToStaticMarkup(<EditUserButton />),
   },
   {
-    field: ColumnNames.REMOVE,
+    field: ColumnNames.Remove,
     headerName: '',
     type: 'rightAligned',
     pinned: 'right',
@@ -90,12 +87,12 @@ const COLUMN_DEFS = [
   },
 ];
 
-const generateRow = (staffData: StaffData) => ({
-  id: staffData.id,
-  rawData: staffData,
-  name: getName(staffData),
-  job: getJobTitle(staffData),
-  partfull: partFullTime(FULLTIME_HOURS)(staffData),
+const generateRow = (staff: Staff) => ({
+  id: staff.id,
+  rawData: staff,
+  name: getName(staff),
+  job: getJobTitle(staff),
+  partfull: partFullTime(FULLTIME_HOURS)(staff),
 });
 
 const AddButton = () => {
@@ -123,17 +120,17 @@ const Employees = () => {
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
 
-  const openDeleteModal = (staff: StaffData) => {
+  const openDeleteModal = (staff: Staff) => {
     dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { staff } }));
   };
 
   const cellClicked = (event: any) => {
     switch (event.colDef.field) {
-      case ColumnNames.EDIT:
-        editUser(event.data.rawData as StaffData);
+      case ColumnNames.Edit:
+        editUser(event.data.rawData as Staff);
         break;
-      case ColumnNames.REMOVE:
-        openDeleteModal(event.data.rawData as StaffData);
+      case ColumnNames.Remove:
+        openDeleteModal(event.data.rawData as Staff);
         break;
       default:
     }

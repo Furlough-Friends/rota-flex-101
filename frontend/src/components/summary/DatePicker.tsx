@@ -23,9 +23,9 @@ interface Props {
 }
 
 enum Periods {
-  DAILY = 'Daily',
-  WEEKLY = 'Weekly',
-  MONTHLY = 'Monthly',
+  Daily = 'Daily',
+  Weekly = 'Weekly',
+  Monthly = 'Monthly',
 }
 
 interface TimeBounds {
@@ -35,14 +35,14 @@ interface TimeBounds {
 
 const getTimeBounds = (period: Periods) => (date: Date): TimeBounds => {
   switch (period) {
-    case Periods.DAILY:
+    case Periods.Daily:
       return { start: startOfDay(date), end: endOfDay(date) };
-    case Periods.WEEKLY:
+    case Periods.Weekly:
       return {
         start: startOfWeek(date, { weekStartsOn: 1 }),
         end: endOfWeek(date, { weekStartsOn: 1 }),
       };
-    case Periods.MONTHLY:
+    case Periods.Monthly:
       return { start: startOfMonth(date), end: endOfMonth(date) };
     default:
       return { start: date, end: date };
@@ -54,11 +54,11 @@ const addTimePeriods = (period: Periods, number: number) => ({
   end,
 }: TimeBounds) => {
   switch (period) {
-    case Periods.DAILY:
+    case Periods.Daily:
       return { start: addDays(start, number), end: addDays(end, number) };
-    case Periods.WEEKLY:
+    case Periods.Weekly:
       return { start: addWeeks(start, number), end: addWeeks(end, number) };
-    case Periods.MONTHLY:
+    case Periods.Monthly:
       return { start: addMonths(start, number), end: addMonths(end, number) };
     default:
       return { start, end };
@@ -70,13 +70,13 @@ const printTimePeriod = (period: Periods) => ({
   end,
 }: TimeBounds): string => {
   switch (period) {
-    case Periods.DAILY:
+    case Periods.Daily:
       return format(start, 'dd/MM/y');
-    case Periods.WEEKLY:
+    case Periods.Weekly:
       return start.getMonth() === end.getMonth()
         ? `${format(start, 'do')}-${format(end, 'do LLLL')}`
         : `${format(start, 'do LLLL')}-${format(end, 'do LLLL')}`;
-    case Periods.MONTHLY:
+    case Periods.Monthly:
       return format(start, 'LLLL');
     default:
       return '';
@@ -84,7 +84,7 @@ const printTimePeriod = (period: Periods) => ({
 };
 
 const DatePicker = ({ callback }: Props) => {
-  const [timePeriod, setTimePeriod] = useState(Periods.WEEKLY);
+  const [timePeriod, setTimePeriod] = useState(Periods.Weekly);
   const [timeBounds, setTimeBounds] = useState(
     getTimeBounds(timePeriod)(new Date())
   );
@@ -112,9 +112,9 @@ const DatePicker = ({ callback }: Props) => {
   return (
     <div className={summaryStyle.datePicker}>
       <Select value={timePeriod} onChange={changeTimePeriod}>
-        <MenuItem value={Periods.DAILY}>{Periods.DAILY}</MenuItem>
-        <MenuItem value={Periods.WEEKLY}>{Periods.WEEKLY}</MenuItem>
-        <MenuItem value={Periods.MONTHLY}>{Periods.MONTHLY}</MenuItem>
+        <MenuItem value={Periods.Daily}>{Periods.Daily}</MenuItem>
+        <MenuItem value={Periods.Weekly}>{Periods.Weekly}</MenuItem>
+        <MenuItem value={Periods.Monthly}>{Periods.Monthly}</MenuItem>
       </Select>
       <div className={summaryStyle.rangeSelector}>
         <button type="button" aria-label="prev-period" onClick={prevTimePeriod}>

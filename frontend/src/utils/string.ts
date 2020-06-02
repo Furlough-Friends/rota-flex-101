@@ -1,4 +1,2 @@
-const capitalizeFirstLetter = (s: string) =>
-  s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
-
-export default capitalizeFirstLetter;
+export const capitalizeFirstLetter = (value: string) =>
+  `${value.charAt(0).toUpperCase()}${value.slice(1).toLowerCase()}`;

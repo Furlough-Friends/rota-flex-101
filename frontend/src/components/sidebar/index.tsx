@@ -7,16 +7,32 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
 
-import { WINDOW_WIDTH_THRESHOLD } from '../../constants/global';
-import {
-  SidebarOption,
-  SideberButtonConfig,
-} from '../../constants/sidebarOptions';
+import { RoleType, SidebarOption } from '../../model';
 import sidebarStyles from './sidebar.module.scss';
+import SidebarButton from './SidebarButton';
 
 const sidebarWidth = 200;
+const WINDOW_WIDTH_THRESHOLD = 780;
+
+const sidebarOptionsDefault = [
+  { name: 'Summary', endpoint: 'summary' },
+  { name: 'Rota', endpoint: 'rota' },
+];
+
+const sidebarOptionsManager = [
+  ...sidebarOptionsDefault,
+  { name: 'Employees', endpoint: 'employees' },
+];
+
+const getSidebarOptions = (role: RoleType) => {
+  switch (role) {
+    case RoleType.Manager:
+      return [...sidebarOptionsManager];
+    default:
+      return [...sidebarOptionsDefault];
+  }
+};
 
 const useStyles = makeStyles((theme: Theme) => ({
   expandedMargin: {
@@ -40,22 +56,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const windowSizeHookOptions = { fps: 45, leading: true };
 
-const SidebarButton = ({
-  name,
-  endpoint,
-  isWindowBig,
-}: SideberButtonConfig) => (
-  <NavLink
-    key={name}
-    to={`/${endpoint}`}
-    className={clsx(sidebarStyles.menuOption, {
-      [useStyles().sizeSidebar]: isWindowBig,
-    })}
-    activeClassName={sidebarStyles.selectedMenuOption}>
-    {name}
-  </NavLink>
-);
-
 const getButtons = (options: SidebarOption[], isWindowBig: boolean) =>
   options.map(({ name, endpoint }) => (
     <SidebarButton
@@ -67,10 +67,11 @@ const getButtons = (options: SidebarOption[], isWindowBig: boolean) =>
   ));
 
 interface SidebarProps {
-  sidebarOptions: SidebarOption[];
+  role: RoleType;
 }
 
-const Sidebar = ({ sidebarOptions }: SidebarProps) => {
+const Sidebar = ({ role }: SidebarProps) => {
+  const sidebarOptions = getSidebarOptions(role);
   const widthHookReturnValue = useWindowWidth(windowSizeHookOptions);
 
   const isWindowBig =

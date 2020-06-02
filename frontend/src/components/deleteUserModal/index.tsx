@@ -6,20 +6,20 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
-import { StaffData } from '../../constants/employees';
 import { deleteStaff } from '../../features/staffSlice';
+import { Staff } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
 import deleteUserModalStyle from './deleteUserModal.module.scss';
 
 interface Props {
-  staff: StaffData;
+  staff: Staff;
   closeModalFunction: () => void;
 }
 
 const DeleteModal = ({ staff, closeModalFunction }: Props) => {
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
-  const deleteUser = ({ id, firstName, surname }: StaffData) => async () => {
+  const deleteUser = ({ id, firstName, surname }: Staff) => async () => {
     const accessToken = await getTokenSilently();
     dispatch(deleteStaff(id.toString(), accessToken));
     closeModalFunction();

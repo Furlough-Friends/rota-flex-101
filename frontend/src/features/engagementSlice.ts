@@ -3,22 +3,26 @@ import { parseISO } from 'date-fns';
 import toastr from 'toastr';
 
 import { AppThunk, RootState } from '../app/store';
-import { EngagementData, engagementsFetchUrl } from '../constants/engagements';
-import { get } from '../service/apiService';
+import { BASE_URL } from '../constants/global';
+import { Engagement } from '../model';
+import { get } from '../services/apiService';
 
 interface EngagementState {
-  value: EngagementData[];
+  value: Engagement[];
 }
 
 const initialState: EngagementState = {
   value: [],
 };
 
+const engagementsFetchUrl = (start: Date, end: Date) =>
+  `${BASE_URL}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`;
+
 export const engagementSlice = createSlice({
   name: 'engagement',
   initialState,
   reducers: {
-    setEngagements: (state, action: PayloadAction<EngagementData[]>) => {
+    setEngagements: (state, action: PayloadAction<Engagement[]>) => {
       state.value = action.payload;
     },
   },

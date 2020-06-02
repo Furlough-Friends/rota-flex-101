@@ -2,29 +2,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import toastr from 'toastr';
 
 import { AppThunk, RootState } from '../app/store';
-import {
-  CreateStaffData,
-  STAFF_CREATE_URL,
-  STAFF_DELETE_URL,
-  STAFF_FETCH_URL,
-  StaffData,
-} from '../constants/employees';
-import { get, post, put } from '../service/apiService';
+import { BASE_URL } from '../constants/global';
+import { Staff } from '../model';
+import { CreateStaffRequest } from '../model/api';
+import { get, post, put } from '../services/apiService';
 
 interface StaffState {
-  value: StaffData[];
+  value: Staff[];
 }
 
 const initialState: StaffState = {
   value: [],
 };
 
+const STAFF_FETCH_URL = `${BASE_URL}/staff/get`;
+const STAFF_DELETE_URL = `${BASE_URL}/staff/remove?id=`;
+const STAFF_CREATE_URL = `${BASE_URL}/staff/create`;
+
 export const staffSlice = createSlice({
   name: 'staff',
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    set: (state, action: PayloadAction<StaffData[]>) => {
+    set: (state, action: PayloadAction<Staff[]>) => {
       state.value = action.payload;
     },
   },
@@ -39,7 +39,7 @@ export const fetchStaff = (token: string | undefined): AppThunk => (dispatch) =>
     .catch((err) => toastr.error(err));
 
 export const createStaff = (
-  staff: CreateStaffData,
+  staff: CreateStaffRequest,
   token: string | undefined
 ): AppThunk => () =>
   post(STAFF_CREATE_URL, token, staff).catch((err) => toastr.error(err));
