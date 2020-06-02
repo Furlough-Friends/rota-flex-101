@@ -1,4 +1,6 @@
 @import '../../constants/styles.scss';
+@import '../../../node_modules/ag-grid-community/src/styles/ag-grid.scss';
+@import '../../../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss';
 
 .employees {
   display: grid;

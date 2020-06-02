@@ -17,6 +17,7 @@ import {
 } from '../../service/auth';
 import { Role } from '../../constants/employees';
 import { getSidebarOptions } from '../../constants/sidebarOptions';
+import logger from '../dev/logger';
 
 const Home = () => {
   const { getTokenSilently } = useAuth0();
@@ -24,7 +25,8 @@ const Home = () => {
   const [roleChecked, setRoleChecked] = useState(false);
   useEffect(() => {
     getTokenSilently()
-      .then((token) => getRole(token))
+      .then(logger('Token: '))
+      .then(getRole)
       .then((fetchedRole) => {
         setRole(fetchedRole);
         setRoleChecked(true);

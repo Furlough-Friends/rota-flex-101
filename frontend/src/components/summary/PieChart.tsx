@@ -2,13 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import tippy from 'tippy.js';
 import piechartStyle from './piechart.module.scss';
-
-interface JobTimes {
-  [key: string]: number;
-}
+import Dictionary from '../../model/common/dictionary';
 
 interface Props {
-  data: JobTimes;
+  data: Dictionary<number>;
   size: number;
   animationTime: number;
   radiusRatio: number; // Determines the thickness of the pie chart ring - 0 gives full circle, 1 just the border
@@ -18,7 +15,7 @@ interface Props {
 const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
 
 const dataTransition = (arc: d3.Arc<void, any>) => (
-  data: d3.PieArcDatum<JobTimes>
+  data: d3.PieArcDatum<Dictionary<number>>
 ) => (t: number) =>
   arc({
     ...data,
@@ -47,9 +44,12 @@ const drawArcs = (domElement: any, props: Props) => {
     .data(pieSliceData)
     .enter()
     .append('path')
-    .attr('class', ({ index }: d3.PieArcDatum<JobTimes>) => `arc${index}`)
+    .attr(
+      'class',
+      ({ index }: d3.PieArcDatum<Dictionary<number>>) => `arc${index}`
+    )
     .attr('fill', (_: any, i: number) => COLOUR_CYCLES[i])
-    .on('mouseover', (d: d3.PieArcDatum<JobTimes>) => {
+    .on('mouseover', (d: d3.PieArcDatum<Dictionary<number>>) => {
       tippy(`.arc${d.index}`, {
         content: `${d.data.key} - ${d.data.value} hours`,
       });
