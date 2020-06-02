@@ -5,7 +5,11 @@ import toastr from 'toastr';
 import { Role } from '../../constants/employees';
 import { getSidebarOptions } from '../../constants/sidebarOptions';
 import { useAuth0 } from '../../react-auth0-spa';
-import { getRole, hasManagerPermissions, hasViewPermissions } from '../../service/auth';
+import {
+  getRole,
+  hasManagerPermissions,
+  hasViewPermissions,
+} from '../../service/auth';
 import logger from '../dev/logger';
 import Employees from '../employees';
 import ErrorPage from '../errorPage';
