@@ -1,5 +1,6 @@
-import React from 'react';
 import Divider from '@material-ui/core/Divider';
+import React from 'react';
+
 import LoginOutButton from '../loginOutButton';
 import style from './landing.module.scss';
 

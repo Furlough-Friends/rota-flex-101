@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import React, { useEffect, useRef } from 'react';
 import tippy from 'tippy.js';
+
 import piechartStyle from './piechart.module.scss';
 import Dictionary from '../../model/common/dictionary';
 

@@ -1,11 +1,12 @@
+import * as windowSizeModule from '@react-hook/window-size/throttled';
+import { render } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { render } from '@testing-library/react';
-import * as windowSizeModule from '@react-hook/window-size/throttled';
-import Sidebar from './index';
-import { useAuth0 } from '../../react-auth0-spa';
-import { getSidebarOptions } from '../../constants/sidebarOptions';
+
+import Sidebar from '.';
 import { Role } from '../../constants/employees';
+import { getSidebarOptions } from '../../constants/sidebarOptions';
+import { useAuth0 } from '../../react-auth0-spa';
 
 jest.mock('../../react-auth0-spa');
 

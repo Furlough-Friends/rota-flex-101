@@ -2,21 +2,20 @@
 // be used in other components.
 // This file is provided by Auth0:
 // https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
-
-import React, { useState, useEffect, useContext } from 'react';
-import toastr from 'toastr';
 import createAuth0Client, {
-  PopupLoginOptions,
-  RedirectLoginResult,
+  Auth0Client,
+  Auth0ClientOptions,
   getIdTokenClaimsOptions,
-  IdToken,
-  RedirectLoginOptions,
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
+  IdToken,
   LogoutOptions,
-  Auth0ClientOptions,
-  Auth0Client,
+  PopupLoginOptions,
+  RedirectLoginOptions,
+  RedirectLoginResult,
 } from '@auth0/auth0-spa-js';
+import React, { useContext, useEffect, useState } from 'react';
+import toastr from 'toastr';
 
 interface Auth0Context {
   isAuthenticated: boolean;

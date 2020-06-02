@@ -1,17 +1,16 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import Modal from '@material-ui/core/Modal';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import rootModalSyles from './rootModal.module.scss';
-
-import DeleteUserModal from '../deleteUserModal';
-import CreateUserModal from '../createUserModal';
 import {
-  ModalType,
-  ModalState,
-  selectModalDetails,
   hideModal,
+  ModalState,
+  ModalType,
+  selectModalDetails,
 } from '../../features/modalSlice';
+import CreateUserModal from '../createUserModal';
+import DeleteUserModal from '../deleteUserModal';
+import rootModalSyles from './rootModal.module.scss';
 
 type ModalHash = {
   [key in ModalType]: (arg0: any) => JSX.Element;

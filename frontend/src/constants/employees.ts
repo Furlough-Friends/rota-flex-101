@@ -1,4 +1,4 @@
-import { URL, DateStr } from './global';
+import { DateStr, URL } from './global';
 
 export const STAFF_FETCH_URL = `${URL}/staff/get`;
 export const STAFF_DELETE_URL = `${URL}/staff/remove?id=`;

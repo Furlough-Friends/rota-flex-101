@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import toastr from 'toastr';
 import { parseISO } from 'date-fns';
-import { RootState, AppThunk } from '../app/store';
-import { get } from '../service/apiService';
+import toastr from 'toastr';
+
+import { AppThunk, RootState } from '../app/store';
 import { EngagementData, engagementsFetchUrl } from '../constants/engagements';
+import { get } from '../service/apiService';
 
 interface EngagementState {
   value: EngagementData[];

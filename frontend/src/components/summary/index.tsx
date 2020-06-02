@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
-import DatePicker from './DatePicker';
-import PieChart from './PieChart';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import summaryStyle from './summary.module.scss';
-import { selectStaff, fetchStaff } from '../../features/staffSlice';
-import {
-  selectEngagement,
-  fetchEngagements,
-} from '../../features/engagementSlice';
-import { useAuth0 } from '../../react-auth0-spa';
 import { StaffData } from '../../constants/employees';
 import { EngagementData } from '../../constants/engagements';
-import capitalizeFirstLetter from '../../utils/string';
+import {
+  fetchEngagements,
+  selectEngagement,
+} from '../../features/engagementSlice';
+import { fetchStaff, selectStaff } from '../../features/staffSlice';
 import Dictionary from '../../model/common/dictionary';
+import { useAuth0 } from '../../react-auth0-spa';
+import capitalizeFirstLetter from '../../utils/string';
+import DatePicker from './DatePicker';
+import PieChart from './PieChart';
+import summaryStyle from './summary.module.scss';
 
 const getStaffJob = (staffId: number) => (staffList: StaffData[]) =>
   staffList.find((staff) => staff.id === staffId)?.jobTitle;

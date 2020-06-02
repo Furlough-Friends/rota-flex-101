@@ -2,7 +2,7 @@
 
 .headerContent {
   grid-area: header;
-  background-color: $colour-darkBlue;
+  background-color: $colour-dark-blue;
   display: grid;
   grid-template-areas: 'left middle right';
   grid-template-columns: 2.5rem 1fr 100px;

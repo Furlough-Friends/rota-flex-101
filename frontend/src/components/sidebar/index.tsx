@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import { NavLink } from 'react-router-dom';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
-import sidebarStyles from './sidebar.module.scss';
+import clsx from 'clsx';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+
+import { WINDOW_WIDTH_THRESHOLD } from '../../constants/global';
 import {
   SidebarOption,
   SideberButtonConfig,
 } from '../../constants/sidebarOptions';
-import { WINDOW_WIDTH_THRESHOLD } from '../../constants/global';
+import sidebarStyles from './sidebar.module.scss';
 
 const sidebarWidth = 200;
 
@@ -110,8 +111,7 @@ const Sidebar = ({ sidebarOptions }: SidebarProps) => {
         className={sidebarStyles.sidebar}
         variant={drawerVariant}
         anchor={drawerAnchor}
-        open={open}
-        hideBackdrop>
+        open={open}>
         <div className={sidebarStyles.sidebarHeader}>{openMenuButton()}</div>
         <Divider />
         <nav className={sidebarStyles.container}>
