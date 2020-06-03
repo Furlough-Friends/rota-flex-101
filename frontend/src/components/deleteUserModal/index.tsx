@@ -6,23 +6,25 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
-import { deleteEmployee } from '../../features/employeeSlice';
+import { useAuth0 } from '../../auth0Spa';
 import { Employee } from '../../model';
-import { useAuth0 } from '../../react-auth0-spa';
+import { deleteEmployee } from '../../store/employeeSlice';
+import { ModalProps } from '../rootModal/modalProps';
 import deleteUserModalStyle from './deleteUserModal.module.scss';
 
-interface Props {
+export interface DeleteUserConfigaration {
   employee: Employee;
-  closeModalFunction: () => void;
 }
 
-const DeleteModal = ({ employee, closeModalFunction }: Props) => {
+type Props = DeleteUserConfigaration & ModalProps;
+
+const DeleteModal = ({ employee, onClose }: Props) => {
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
   const deleteUser = ({ id, firstName, surname }: Employee) => async () => {
     const accessToken = await getTokenSilently();
     dispatch(deleteEmployee(id.toString(), accessToken));
-    closeModalFunction();
+    onClose();
     new Audio('http://nooooooooooooooo.com/nooo.mp4').play();
     toastr.info(`User ${firstName} ${surname} deleted`);
   };
@@ -35,7 +37,7 @@ const DeleteModal = ({ employee, closeModalFunction }: Props) => {
           type="button"
           aria-label="closeButton"
           className={deleteUserModalStyle.xButton}
-          onClick={closeModalFunction}>
+          onClick={onClose}>
           <Clear />
         </button>
       </div>
@@ -44,7 +46,7 @@ const DeleteModal = ({ employee, closeModalFunction }: Props) => {
         Are you sure you want to delete {employee.firstName} {employee.surname}?
       </span>
       <div className={deleteUserModalStyle.buttons}>
-        <Button variant="contained" onClick={closeModalFunction}>
+        <Button variant="contained" onClick={onClose}>
           Cancel
         </Button>
         <Button

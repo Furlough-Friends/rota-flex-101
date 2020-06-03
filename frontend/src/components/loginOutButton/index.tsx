@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import React from 'react';
 
-import { useAuth0 } from '../../react-auth0-spa';
+import { useAuth0 } from '../../auth0Spa';
 
 // Button to log in user via Auth0
 // The button is disabled when Auth0 authentication is loading

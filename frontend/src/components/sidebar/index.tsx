@@ -28,9 +28,9 @@ const sidebarOptionsManager = [
 const getSidebarOptions = (role: RoleType) => {
   switch (role) {
     case RoleType.Manager:
-      return [...sidebarOptionsManager];
+      return sidebarOptionsManager;
     default:
-      return [...sidebarOptionsDefault];
+      return sidebarOptionsDefault;
   }
 };
 

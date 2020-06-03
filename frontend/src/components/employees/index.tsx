@@ -11,10 +11,10 @@ import ReactDOMServer from 'react-dom/server';
 import { useDispatch, useSelector } from 'react-redux';
 import toastr from 'toastr';
 
-import { fetchEmployee, selectEmployees } from '../../features/employeeSlice';
-import { showModal } from '../../features/modalSlice';
+import { useAuth0 } from '../../auth0Spa';
 import { Employee } from '../../model';
-import { useAuth0 } from '../../react-auth0-spa';
+import { fetchEmployee, selectEmployees } from '../../store/employeeSlice';
+import { ModalType, showModal } from '../../store/modalSlice';
 import { capitalizeFirstLetter } from '../../utils/string';
 import employeesStyle from './employees.module.scss';
 
@@ -56,7 +56,7 @@ const RemoveUserButton = () => (
 enum ColumnNames {
   Name = 'name',
   Job = 'job',
-  PartFull = 'partfull',
+  PartFull = 'partFull',
   Edit = 'editbtn',
   Remove = 'removebutton',
 }
@@ -92,14 +92,14 @@ const generateRow = (employee: Employee) => ({
   rawData: employee,
   name: getName(employee),
   job: getJobTitle(employee),
-  partfull: partFullTime(employee),
+  partFull: partFullTime(employee),
 });
 
 const AddButton = () => {
   const dispatch = useDispatch();
 
   const createAddModal = () =>
-    dispatch(showModal({ modalType: 'CREATE_USER' }));
+    dispatch(showModal({ type: ModalType.CreateUser }));
 
   return (
     <div className={employeesStyle.addButtonContainer}>
@@ -121,7 +121,7 @@ const Employees = () => {
   const { getTokenSilently } = useAuth0();
 
   const openDeleteModal = (employee: Employee) => {
-    dispatch(showModal({ modalType: 'DELETE_USER', modalProps: { employee } }));
+    dispatch(showModal({ type: ModalType.DeleteUser, employee }));
   };
 
   const cellClicked = (event: any) => {

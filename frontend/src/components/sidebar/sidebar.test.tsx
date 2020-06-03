@@ -4,10 +4,10 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Sidebar from '.';
+import { useAuth0 } from '../../auth0Spa';
 import { RoleType } from '../../model';
-import { useAuth0 } from '../../react-auth0-spa';
 
-jest.mock('../../react-auth0-spa');
+jest.mock('../../auth0Spa');
 
 let windowWidthSpy: jest.SpyInstance;
 // The test fails if window width is below the threshold.

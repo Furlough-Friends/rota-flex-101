@@ -12,15 +12,15 @@ import Clear from '@material-ui/icons/Clear';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { createEmployee } from '../../features/employeeSlice';
+import { useAuth0 } from '../../auth0Spa';
 import { RoleType } from '../../model';
-import { useAuth0 } from '../../react-auth0-spa';
-import { serializeDate } from '../../utils/date';
+import { createEmployee } from '../../store/employeeSlice';
+import { ModalProps } from '../rootModal/modalProps';
 import createUserModalStyle from './createUserModal.module.scss';
 
-interface Props {
-  closeModalFunction: () => void;
-}
+export interface CreateUserConfigaration {}
+
+type Props = CreateUserConfigaration & ModalProps;
 
 interface TextField {
   id: string;
@@ -48,7 +48,7 @@ const textFields: TextField[] = [
   { id: 'pay', name: 'Pay', type: 'number' },
 ];
 
-const CreateUserModal = ({ closeModalFunction }: Props) => {
+const CreateUserModal = ({ onClose }: Props) => {
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
   const [preferredDays, setPreferredDays] = useState<{
@@ -120,12 +120,12 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
         {
           ...userInfo,
           preferredDates: prefDaysString,
-          startDate: serializeDate(new Date()),
+          startDate: new Date(),
         },
         token
       )
     );
-    closeModalFunction();
+    onClose();
   };
 
   return (
@@ -136,7 +136,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
           type="button"
           aria-label="closeButton"
           className={createUserModalStyle.xButton}
-          onClick={closeModalFunction}>
+          onClick={onClose}>
           <Clear />
         </button>
       </div>
@@ -150,7 +150,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
                 label={field.name}
                 variant="outlined"
                 type={field.type}
-                value={userInfo[field.id as string]}
+                value={userInfo[field.id]}
                 name={field.id}
                 onChange={handleTextFieldChange}
               />
@@ -189,7 +189,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
         </div>
       </div>
       <div className={createUserModalStyle.buttons}>
-        <Button variant="contained" onClick={closeModalFunction}>
+        <Button variant="contained" onClick={onClose}>
           Cancel
         </Button>
         <Button

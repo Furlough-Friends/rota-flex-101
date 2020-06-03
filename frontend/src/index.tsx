@@ -4,11 +4,19 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 
-import { store } from './app/store';
-import config from './auth_config.json';
+import { Auth0Provider } from './auth0Spa';
 import App from './components/app';
-import { Auth0Provider } from './react-auth0-spa';
+import { store } from './store';
 import { history } from './utils/browser';
+import { environment } from './utils/environment';
+
+const {
+  authDomain,
+  authClientId,
+  authAudience,
+  authCallbackUri,
+  authScope,
+} = environment;
 
 interface appState {
   appState: Promise<RedirectLoginResult>;
@@ -27,12 +35,12 @@ const onRedirectCallback = (appState: appState) => {
 ReactDOM.render(
   <Provider store={store}>
     <Auth0Provider
-      domain={config.domain}
-      client_id={config.clientId}
-      redirect_uri={config.callbackUri}
-      audience={config.audience}
+      domain={authDomain}
+      client_id={authClientId}
+      redirect_uri={authCallbackUri}
+      audience={authAudience}
       onRedirectCallback={onRedirectCallback}
-      scope="openid profile email https://rota-flex-101.com/claims/email">
+      scope={authScope}>
       <Router history={history}>
         <App />
       </Router>

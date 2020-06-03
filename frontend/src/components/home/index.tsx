@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import toastr from 'toastr';
 
+import { useAuth0 } from '../../auth0Spa';
 import { RoleType } from '../../model';
-import { useAuth0 } from '../../react-auth0-spa';
 import { getRole } from '../../services/authService';
 import logService from '../../services/logService';
 import { isManagerRole, isValidRole } from '../../utils/role';

@@ -2,13 +2,13 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchEmployee, selectEmployees } from '../../features/employeeSlice';
+import { useAuth0 } from '../../auth0Spa';
+import { Dictionary, Employee, Engagement } from '../../model';
+import { fetchEmployee, selectEmployees } from '../../store/employeeSlice';
 import {
   fetchEngagements,
   selectEngagement,
-} from '../../features/engagementSlice';
-import { Dictionary, Employee, Engagement } from '../../model';
-import { useAuth0 } from '../../react-auth0-spa';
+} from '../../store/engagementSlice';
 import { capitalizeFirstLetter } from '../../utils/string';
 import DatePicker from './DatePicker';
 import PieChart from './PieChart';

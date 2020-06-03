@@ -4,41 +4,46 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   hideModal,
-  ModalState,
+  ModalConfiguarion,
   ModalType,
-  selectModalDetails,
-} from '../../features/modalSlice';
+  selectModalConfiguration,
+} from '../../store/modalSlice';
 import CreateUserModal from '../createUserModal';
 import DeleteUserModal from '../deleteUserModal';
+import { ModalProps } from './modalProps';
 import rootModalSyles from './rootModal.module.scss';
 
-type ModalHash = {
-  [key in ModalType]: (arg0: any) => JSX.Element;
-};
+/* eslint-disable react/jsx-props-no-spreading */
+const getModal = (modalState: ModalConfiguarion, defaultProps: ModalProps) => {
+  const modalType = modalState.type;
 
-const MODAL_COMPONENTS: ModalHash = {
-  DELETE_USER: DeleteUserModal,
-  CREATE_USER: CreateUserModal,
+  switch (modalState.type) {
+    case ModalType.DeleteUser: {
+      const { type, ...rest } = modalState;
+      return <DeleteUserModal {...rest} {...defaultProps} />;
+    }
+    case ModalType.CreateUser: {
+      const { type, ...rest } = modalState;
+      return <CreateUserModal {...rest} {...defaultProps} />;
+    }
+    default:
+      throw new Error(`Unrecognised modal state '${modalType}'`);
+  }
 };
 
 const ModalRoot = () => {
   const dispatch = useDispatch();
 
-  const { modalType, modalProps }: ModalState = useSelector(selectModalDetails);
-  if (modalType === null) {
+  const modalState = useSelector(selectModalConfiguration);
+  if (!modalState?.type) {
     return null;
   }
-
   const closeModalFunction = () => dispatch(hideModal());
-  const SpecificModal = MODAL_COMPONENTS[modalType];
+
   return (
-    /* eslint-disable react/jsx-props-no-spreading */
     <Modal open onClose={closeModalFunction}>
       <div className={rootModalSyles.content}>
-        <SpecificModal
-          {...modalProps}
-          closeModalFunction={closeModalFunction}
-        />
+        {getModal(modalState, { onClose: closeModalFunction })}
       </div>
     </Modal>
   );

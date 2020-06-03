@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAuth0 } from '../../react-auth0-spa';
+import { useAuth0 } from '../../auth0Spa';
 import FullPageLoader from '../fullPageLoader';
 import Home from '../home';
 import Landing from '../landing';

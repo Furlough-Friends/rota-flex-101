@@ -5,20 +5,19 @@ import {
 } from '@reduxjs/toolkit';
 import toastr from 'toastr';
 
-import { AppThunk, RootState } from '../app/store';
 import { Employee } from '../model';
 import { CreateEmployeeRequest } from '../model/api';
 import { get, post, put } from '../services/apiService';
+import { environment } from '../utils/environment';
+import { AppThunk, RootState } from './reducer';
 
-const { REACT_APP_BASE_URL } = process.env;
+const { baseUrl } = environment;
 
-const employeesAdapter = createEntityAdapter<Employee>({
-  sortComparer: (a, b) => a.id - b.id,
-});
+const employeesAdapter = createEntityAdapter<Employee>();
 
-const EMPLOYEE_FETCH_URL = `${REACT_APP_BASE_URL}/staff/get`;
-const EMPLOYEE_DELETE_URL = `${REACT_APP_BASE_URL}/staff/remove?id=`;
-const EMPLOYEE_CREATE_URL = `${REACT_APP_BASE_URL}/staff/create`;
+const EMPLOYEE_FETCH_URL = `${baseUrl}/staff/get`;
+const EMPLOYEE_DELETE_URL = `${baseUrl}/staff/remove?id=`;
+const EMPLOYEE_CREATE_URL = `${baseUrl}/staff/create`;
 
 export const employeeSlice = createSlice({
   name: 'employee',
@@ -30,7 +29,7 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { set } = employeeSlice.actions;
+const { set } = employeeSlice.actions;
 
 export const fetchEmployee = (token: string | undefined): AppThunk => (
   dispatch
