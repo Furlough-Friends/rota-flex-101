@@ -1,0 +1,6 @@
+@import './variables.scss';
+
+@mixin header {
+  grid-area: header;
+  font-family: $header-font;
+}

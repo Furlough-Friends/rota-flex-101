@@ -1,6 +1,6 @@
 export interface Engagement {
-  staffId: number;
-  start: Date;
-  end: Date;
-  type: string;
+  readonly staffId: number;
+  readonly start: Date;
+  readonly end: Date;
+  readonly type: string;
 }
