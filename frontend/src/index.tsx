@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 
 import { Auth0Provider } from './auth0Spa';
-import App from './components/app';
+import App from './screens/App';
 import { store } from './store';
 import { history } from './utils/browser';
 import { environment } from './utils/environment';

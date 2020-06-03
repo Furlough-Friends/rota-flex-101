@@ -7,9 +7,8 @@ import { useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
 import { useAuth0 } from '../../auth0Spa';
-import { Employee } from '../../model';
+import { Employee, ModalProps } from '../../model';
 import { deleteEmployee } from '../../store/employeeSlice';
-import { ModalProps } from '../rootModal/modalProps';
 import deleteUserModalStyle from './deleteUserModal.module.scss';
 
 export interface DeleteUserConfigaration {

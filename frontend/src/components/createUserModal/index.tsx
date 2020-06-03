@@ -13,9 +13,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useAuth0 } from '../../auth0Spa';
-import { RoleType } from '../../model';
+import { ModalProps, RoleType } from '../../model';
 import { createEmployee } from '../../store/employeeSlice';
-import { ModalProps } from '../rootModal/modalProps';
 import createUserModalStyle from './createUserModal.module.scss';
 
 export interface CreateUserConfigaration {}

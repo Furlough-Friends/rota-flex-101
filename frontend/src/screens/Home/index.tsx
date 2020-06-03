@@ -3,17 +3,17 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import toastr from 'toastr';
 
 import { useAuth0 } from '../../auth0Spa';
+import Employees from '../../components/Employees';
+import ErrorPage from '../../components/ErrorPage';
+import Header from '../../components/Header';
+import Rota from '../../components/Rota';
+import Sidebar from '../../components/Sidebar';
+import Summary from '../../components/Summary';
 import { RoleType } from '../../model';
 import { getRole } from '../../services/authService';
 import logService from '../../services/logService';
 import { isManagerRole, isValidRole } from '../../utils/role';
-import Employees from '../employees';
-import ErrorPage from '../errorPage';
-import FullPageLoader from '../fullPageLoader';
-import Header from '../header';
-import Rota from '../rota';
-import Sidebar from '../sidebar';
-import Summary from '../summary';
+import FullPageLoader from '../FullPageLoader';
 import homeStyles from './home.module.scss';
 
 const Home = () => {

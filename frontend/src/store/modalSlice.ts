@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CreateUserConfigaration } from '../components/createUserModal';
-import { DeleteUserConfigaration } from '../components/deleteUserModal';
+import { CreateUserConfigaration } from '../components/CreateUserModal';
+import { DeleteUserConfigaration } from '../components/DeleteUserModal';
 import { RootState } from './reducer';
 
 export enum ModalType {

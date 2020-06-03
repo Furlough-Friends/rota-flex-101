@@ -2,15 +2,15 @@ import Modal from '@material-ui/core/Modal';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import CreateUserModal from '../CreateUserModal';
+import DeleteUserModal from '../DeleteUserModal';
+import { ModalProps } from '../../model';
 import {
   hideModal,
   ModalConfiguarion,
   ModalType,
   selectModalConfiguration,
 } from '../../store/modalSlice';
-import CreateUserModal from '../createUserModal';
-import DeleteUserModal from '../deleteUserModal';
-import { ModalProps } from './modalProps';
 import rootModalSyles from './rootModal.module.scss';
 
 /* eslint-disable react/jsx-props-no-spreading */

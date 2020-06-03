@@ -1,7 +1,7 @@
 import Divider from '@material-ui/core/Divider';
 import React from 'react';
 
-import LoginOutButton from '../loginOutButton';
+import LoginOutButton from '../../components/LoginOutButton';
 import style from './landing.module.scss';
 
 const Landing = () => (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoginOutButton from '../loginOutButton';
+import LoginOutButton from '../LoginOutButton';
 import headerStyles from './header.module.scss';
 
 const Header = () => (
