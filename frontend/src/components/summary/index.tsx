@@ -2,33 +2,31 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { StaffData } from '../../constants/employees';
-import { EngagementData } from '../../constants/engagements';
+import { fetchEmployee, selectEmployees } from '../../features/employeeSlice';
 import {
   fetchEngagements,
   selectEngagement,
 } from '../../features/engagementSlice';
-import { fetchStaff, selectStaff } from '../../features/staffSlice';
-import Dictionary from '../../model/common/dictionary';
+import { Dictionary, Employee, Engagement } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
-import capitalizeFirstLetter from '../../utils/string';
+import { capitalizeFirstLetter } from '../../utils/string';
 import DatePicker from './DatePicker';
 import PieChart from './PieChart';
 import summaryStyle from './summary.module.scss';
 
-const getStaffJob = (staffId: number) => (staffList: StaffData[]) =>
-  staffList.find((staff) => staff.id === staffId)?.jobTitle;
+const getEmployeeJob = (staffId: number) => (employeeList: Employee[]) =>
+  employeeList.find(({ id }) => id === staffId)?.jobTitle;
 
 const calcTimeDifference = (start: Date, end: Date) =>
   Math.round(differenceInMinutes(end, start) / 60);
 
 const getTimesPerJob = (
-  staffList: StaffData[],
-  engagementList: EngagementData[]
+  employeeList: Employee[],
+  engagementList: Engagement[]
 ) =>
   engagementList.reduce(
     (total: Dictionary<number>, { staffId, start, end }) => {
-      const jobTypeIfPresent = getStaffJob(staffId)(staffList);
+      const jobTypeIfPresent = getEmployeeJob(staffId)(employeeList);
       if (!jobTypeIfPresent) {
         return total;
       }
@@ -46,7 +44,7 @@ const getTimesPerJob = (
 const Summary = () => {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  const staffList = useSelector(selectStaff);
+  const employeeList = useSelector(selectEmployees);
   const engagementList = useSelector(selectEngagement);
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
@@ -57,12 +55,12 @@ const Summary = () => {
   };
 
   useEffect(() => {
-    const getStaffAndEngagements = async () => {
+    const getEmployeesAndEngagements = async () => {
       const accessToken = await getTokenSilently();
-      dispatch(fetchStaff(accessToken));
+      dispatch(fetchEmployee(accessToken));
       dispatch(fetchEngagements(startTime, endTime, accessToken));
     };
-    getStaffAndEngagements();
+    getEmployeesAndEngagements();
   }, [startTime, endTime, getTokenSilently, dispatch]);
 
   return (
@@ -72,7 +70,7 @@ const Summary = () => {
       <div className={summaryStyle.hourlyBreakdown}>
         <h4>Hourly Breakdown</h4>
         <PieChart
-          data={getTimesPerJob(staffList, engagementList)}
+          data={getTimesPerJob(employeeList, engagementList)}
           size={100}
           animationTime={1000}
           radiusRatio={0.75}

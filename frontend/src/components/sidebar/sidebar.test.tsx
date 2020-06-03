@@ -4,8 +4,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Sidebar from '.';
-import { Role } from '../../constants/employees';
-import { getSidebarOptions } from '../../constants/sidebarOptions';
+import { RoleType } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
 
 jest.mock('../../react-auth0-spa');
@@ -33,7 +32,7 @@ test('renders the menu options on big screen', () => {
 
   const { getByText } = render(
     <Router>
-      <Sidebar sidebarOptions={getSidebarOptions(Role.MANAGER)} />
+      <Sidebar role={RoleType.Manager} />
     </Router>
   );
 
@@ -47,7 +46,7 @@ test('sidebar options correct for non-manager', () => {
 
   const { getByText } = render(
     <Router>
-      <Sidebar sidebarOptions={getSidebarOptions(Role.USER)} />
+      <Sidebar role={RoleType.User} />
     </Router>
   );
 

@@ -12,10 +12,10 @@ import Clear from '@material-ui/icons/Clear';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Role } from '../../constants/employees';
-import { toDateStr } from '../../constants/global';
-import { createStaff } from '../../features/staffSlice';
+import { createEmployee } from '../../features/employeeSlice';
+import { RoleType } from '../../model';
 import { useAuth0 } from '../../react-auth0-spa';
+import { serializeDate } from '../../utils/date';
 import createUserModalStyle from './createUserModal.module.scss';
 
 interface Props {
@@ -33,7 +33,7 @@ interface UserInfo {
   surname: string;
   jobTitle: string;
   email: string;
-  role: Role.USER;
+  role: RoleType.User;
   contractedHours: number;
   pay: number;
   [key: string]: any;
@@ -68,7 +68,7 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
     surname: '',
     jobTitle: '',
     email: '',
-    role: Role.USER,
+    role: RoleType.User,
     contractedHours: 0,
     pay: 0,
   });
@@ -116,11 +116,11 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
       .map((preferred) => +preferred)
       .join('');
     dispatch(
-      createStaff(
+      createEmployee(
         {
           ...userInfo,
           preferredDates: prefDaysString,
-          startDate: toDateStr(new Date()),
+          startDate: serializeDate(new Date()),
         },
         token
       )
@@ -164,8 +164,8 @@ const CreateUserModal = ({ closeModalFunction }: Props) => {
               onChange={handleDropdownChange}
               label="Role"
               variant="outlined">
-              <MenuItem value={Role.USER}>User</MenuItem>
-              <MenuItem value={Role.MANAGER}>Manager</MenuItem>
+              <MenuItem value={RoleType.User}>User</MenuItem>
+              <MenuItem value={RoleType.Manager}>Manager</MenuItem>
             </Select>
           </span>
         </div>

@@ -1,7 +1,3 @@
-// This file creates the Auth0Client and gives access to various hooks which can
-// be used in other components.
-// This file is provided by Auth0:
-// https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
 import createAuth0Client, {
   Auth0Client,
   Auth0ClientOptions,
@@ -17,6 +13,10 @@ import createAuth0Client, {
 import React, { useContext, useEffect, useState } from 'react';
 import toastr from 'toastr';
 
+// This file creates the Auth0Client and gives access to various hooks which can
+// be used in other components.
+// This file is provided by Auth0:
+// https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
 interface Auth0Context {
   isAuthenticated: boolean;
   user: any;
