@@ -6,5 +6,4 @@ build
 .project
 .settings
 *.iml
-.vscode
 node_modules

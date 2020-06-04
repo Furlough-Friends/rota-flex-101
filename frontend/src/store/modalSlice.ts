@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CreateUserConfigaration } from '../components/CreateUserModal';
-import { DeleteUserConfigaration } from '../components/DeleteUserModal';
+import { CreateUserConfiguration } from '../components/CreateUserModal';
+import { DeleteUserConfiguration } from '../components/DeleteUserModal';
 import { RootState } from './reducer';
 
 export enum ModalType {
@@ -9,20 +9,20 @@ export enum ModalType {
   CreateUser = 'createUser',
 }
 
-interface DeleteUserModalConfigaration extends DeleteUserConfigaration {
+interface DeleteUserModalConfiguration extends DeleteUserConfiguration {
   type: ModalType.DeleteUser;
 }
 
-interface CreateUserModalConfigaration extends CreateUserConfigaration {
+interface CreateUserModalConfiguration extends CreateUserConfiguration {
   type: ModalType.CreateUser;
 }
 
-export type ModalConfiguarion =
-  | DeleteUserModalConfigaration
-  | CreateUserModalConfigaration;
+export type ModalConfiguration =
+  | DeleteUserModalConfiguration
+  | CreateUserModalConfiguration;
 
 export interface ModalState {
-  configuration?: ModalConfiguarion;
+  configuration?: ModalConfiguration;
 }
 
 const initialState: ModalState = {};
@@ -31,7 +31,7 @@ export const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    showModal: (state, action: PayloadAction<ModalConfiguarion>) => {
+    showModal: (state, action: PayloadAction<ModalConfiguration>) => {
       state.configuration = action.payload;
     },
 

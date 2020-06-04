@@ -39,7 +39,7 @@ export const fetchEngagements = (
   get(engagementsFetchUrl(start, end), token)
     .then((response) => response.json())
     .then((response) => dispatch(setEngagements(response)))
-    .catch((err) => toastr.error(err));
+    .catch(toastr.error);
 
 const { selectAll } = engagementAdapter.getSelectors<RootState>(
   ({ engagement }) => engagement

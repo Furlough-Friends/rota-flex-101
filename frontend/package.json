@@ -51,7 +51,7 @@
     "prettier:autofix": "prettier --write \"./src/**/*.{ts,tsx,scss}\"",
     "lint:eslint": "eslint \"./src/**/*.{ts,tsx}\"",
     "lint:eslint:autofix": "eslint --fix \"./src/**/*.{ts,tsx}\"",
-    "lint:sass": "sass-lint -c .sass-lint.yml \"./src/**/*.scss\" -v",
+    "lint:sass": "sass-lint \"./src/**/*.scss\" -v",
     "lint": "npm run prettier && npm run lint:eslint && npm run lint:sass",
     "format": "npm run prettier:autofix && npm run lint:eslint:autofix"
   },

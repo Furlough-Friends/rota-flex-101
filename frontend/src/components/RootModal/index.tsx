@@ -2,19 +2,19 @@ import Modal from '@material-ui/core/Modal';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CreateUserModal from '../CreateUserModal';
-import DeleteUserModal from '../DeleteUserModal';
 import { ModalProps } from '../../model';
 import {
   hideModal,
-  ModalConfiguarion,
+  ModalConfiguration,
   ModalType,
   selectModalConfiguration,
 } from '../../store/modalSlice';
-import rootModalSyles from './rootModal.module.scss';
+import CreateUserModal from '../CreateUserModal';
+import DeleteUserModal from '../DeleteUserModal';
+import rootModalStyles from './rootModal.module.scss';
 
 /* eslint-disable react/jsx-props-no-spreading */
-const getModal = (modalState: ModalConfiguarion, defaultProps: ModalProps) => {
+const getModal = (modalState: ModalConfiguration, defaultProps: ModalProps) => {
   const modalType = modalState.type;
 
   switch (modalState.type) {
@@ -27,7 +27,7 @@ const getModal = (modalState: ModalConfiguarion, defaultProps: ModalProps) => {
       return <CreateUserModal {...rest} {...defaultProps} />;
     }
     default:
-      throw new Error(`Unrecognised modal state '${modalType}'`);
+      throw new Error(`Unrecognized modal state '${modalType}'`);
   }
 };
 
@@ -42,7 +42,7 @@ const ModalRoot = () => {
 
   return (
     <Modal open onClose={closeModalFunction}>
-      <div className={rootModalSyles.content}>
+      <div className={rootModalStyles.content}>
         {getModal(modalState, { onClose: closeModalFunction })}
       </div>
     </Modal>

@@ -1,0 +1,14 @@
+{
+  "editor.formatOnSave": true,
+  "typescriptHero.imports.organizeOnSave": true,
+  "prettier.endOfLine": "crlf",
+  "files.insertFinalNewline": true,
+  "editor.parameterHints.cycle": true,
+  "prettier.singleQuote": true,
+  "scssFormatter.singleQuote": true,
+  "cSpell.words": [
+    "mixins",
+    "reduxjs",
+    "toastr"
+  ]
+}

@@ -37,13 +37,13 @@ export const fetchEmployee = (token: string | undefined): AppThunk => (
   get(EMPLOYEE_FETCH_URL, token)
     .then((response) => response.json())
     .then((response) => dispatch(set(response)))
-    .catch((err) => toastr.error(err));
+    .catch(toastr.error);
 
 export const createEmployee = (
   request: CreateEmployeeRequest,
   token: string | undefined
 ): AppThunk => () =>
-  post(EMPLOYEE_CREATE_URL, token, request).catch((err) => toastr.error(err));
+  post(EMPLOYEE_CREATE_URL, token, request).catch(toastr.error);
 
 export const deleteEmployee = (
   id: string,
@@ -52,7 +52,7 @@ export const deleteEmployee = (
   put(EMPLOYEE_DELETE_URL + id, token)
     .then((response) => response.json())
     .then((response) => dispatch(set(response)))
-    .catch((err) => toastr.error(err));
+    .catch(toastr.error);
 
 const { selectAll } = employeesAdapter.getSelectors<RootState>(
   ({ employee }) => employee

@@ -11,11 +11,11 @@ import { Employee, ModalProps } from '../../model';
 import { deleteEmployee } from '../../store/employeeSlice';
 import deleteUserModalStyle from './deleteUserModal.module.scss';
 
-export interface DeleteUserConfigaration {
+export interface DeleteUserConfiguration {
   employee: Employee;
 }
 
-type Props = DeleteUserConfigaration & ModalProps;
+type Props = DeleteUserConfiguration & ModalProps;
 
 const DeleteModal = ({ employee, onClose }: Props) => {
   const dispatch = useDispatch();

@@ -17,9 +17,9 @@ import { ModalProps, RoleType } from '../../model';
 import { createEmployee } from '../../store/employeeSlice';
 import createUserModalStyle from './createUserModal.module.scss';
 
-export interface CreateUserConfigaration {}
+export interface CreateUserConfiguration {}
 
-type Props = CreateUserConfigaration & ModalProps;
+type Props = CreateUserConfiguration & ModalProps;
 
 interface TextField {
   id: string;
