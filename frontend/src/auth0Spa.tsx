@@ -19,7 +19,7 @@ import toastr from 'toastr';
 // https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
 interface Auth0Context {
   isAuthenticated: boolean;
-  user: any;
+  user: unknown;
   loading: boolean;
   popupOpen: boolean;
   loginWithPopup(options: PopupLoginOptions): Promise<void>;

@@ -7,8 +7,12 @@
   "prettier.singleQuote": true,
   "scssFormatter.singleQuote": true,
   "cSpell.words": [
+    "daygrid",
+    "fullcalendar",
     "mixins",
     "reduxjs",
+    "timegrid",
     "toastr"
-  ]
+  ],
+  "eslint.format.enable": true
 }

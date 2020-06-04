@@ -4,11 +4,12 @@
     "es6": true
   },
   "extends": [
-    "plugin:react/recommended",
     "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
     "prettier",
-    "prettier/@typescript-eslint",
-    "prettier/react"
+    "prettier/react",
+    "prettier/@typescript-eslint"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -21,21 +22,18 @@
     },
     "ecmaVersion": 2018,
     "sourceType": "module",
-    "project": "tsconfig.json"
+    "project": "./tsconfig.json"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "jsx-a11y", "import", "prettier", "@typescript-eslint"],
   "rules": {
-    // Settings below this are those adjusted from the airbnb-typscript
-    // template. We may want to come up with our own list if it
-    // gets too long
+    "prettier/prettier": ["error"],
+    "no-param-reassign": 0,
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "import/no-cycle": "off",
     "import/prefer-default-export": 0,
-    "import/no-cycle": "off", // We may want this on (or on warn), but it makes file stucturing a bit more difficult
-    "no-param-reassign": [
-      "error",
-      { "props": false } // The props value here was returned to its default value of false, in order
-      // to make it compatible with package Immer (used in Redux Toolbox)
-      // Similar to this issue on github: https://github.com/immerjs/immer/issues/189
-    ],
-    "arrow-body-style": ["error", "as-needed"]
+    "import/no-unresolved": 0,
+    "import/extensions": 0
   }
 }

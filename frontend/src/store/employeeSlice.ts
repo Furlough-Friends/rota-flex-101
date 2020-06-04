@@ -31,12 +31,12 @@ export const employeeSlice = createSlice({
 
 const { set } = employeeSlice.actions;
 
-export const fetchEmployee = (token: string | undefined): AppThunk => (
-  dispatch
-) =>
+export const fetchEmployee = (
+  token: string | undefined
+): AppThunk => dispatch =>
   get(EMPLOYEE_FETCH_URL, token)
-    .then((response) => response.json())
-    .then((response) => dispatch(set(response)))
+    .then(response => response.json())
+    .then(response => dispatch(set(response)))
     .catch(toastr.error);
 
 export const createEmployee = (
@@ -48,10 +48,10 @@ export const createEmployee = (
 export const deleteEmployee = (
   id: string,
   token: string | undefined
-): AppThunk => (dispatch) =>
+): AppThunk => dispatch =>
   put(EMPLOYEE_DELETE_URL + id, token)
-    .then((response) => response.json())
-    .then((response) => dispatch(set(response)))
+    .then(response => response.json())
+    .then(response => dispatch(set(response)))
     .catch(toastr.error);
 
 const { selectAll } = employeesAdapter.getSelectors<RootState>(

@@ -5,7 +5,7 @@ import 'toastr/build/toastr.min.css';
 import Button from '@material-ui/core/Button';
 import Clear from '@material-ui/icons/Clear';
 import EditOutlined from '@material-ui/icons/EditOutlined';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact, ColDef } from 'ag-grid-react';
 import React, { useEffect } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useDispatch, useSelector } from 'react-redux';
@@ -124,7 +124,10 @@ const Employees = () => {
     dispatch(showModal({ type: ModalType.DeleteUser, employee }));
   };
 
-  const cellClicked = (event: any) => {
+  const cellClicked = (event: {
+    colDef: ColDef;
+    data: { rawData: Employee };
+  }) => {
     switch (event.colDef.field) {
       case ColumnNames.Edit:
         editUser(event.data.rawData as Employee);
@@ -157,7 +160,7 @@ const Employees = () => {
           rowData={employeeList.map(generateRow)}
           onCellClicked={cellClicked}
           immutableData
-          getRowNodeId={(data) => data.id}
+          getRowNodeId={data => data.id}
         />
       </div>
     </div>

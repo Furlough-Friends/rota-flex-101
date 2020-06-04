@@ -3,7 +3,9 @@ import React, { useEffect, useRef } from 'react';
 import tippy from 'tippy.js';
 
 import { Dictionary } from '../../model';
-import piechartStyle from './piechart.module.scss';
+import pieChartStyle from './pieChart.module.scss';
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface Props {
   data: Dictionary<number>;
@@ -100,7 +102,7 @@ const PieChart = (props: Props) => {
       ref={svgRef}
       width={size}
       height={size}
-      className={piechartStyle.svg}
+      className={pieChartStyle.svg}
     />
   );
 };

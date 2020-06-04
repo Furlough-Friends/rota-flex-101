@@ -35,18 +35,18 @@ export const fetchEngagements = (
   start: Date,
   end: Date,
   token?: string
-): AppThunk => (dispatch) =>
+): AppThunk => dispatch =>
   get(engagementsFetchUrl(start, end), token)
-    .then((response) => response.json())
-    .then((response) => dispatch(setEngagements(response)))
+    .then(response => response.json())
+    .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);
 
 const { selectAll } = engagementAdapter.getSelectors<RootState>(
   ({ engagement }) => engagement
 );
 
-export const selectEngagement = createSelector([selectAll], (engagements) =>
-  engagements.map((engagement) => ({
+export const selectEngagement = createSelector([selectAll], engagements =>
+  engagements.map(engagement => ({
     ...engagement,
     start: toDate(engagement.start),
     end: toDate(engagement.end),

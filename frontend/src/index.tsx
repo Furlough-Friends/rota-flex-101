@@ -18,13 +18,13 @@ const {
   authScope,
 } = environment;
 
-interface appState {
+interface AppState {
   appState: Promise<RedirectLoginResult>;
   targetUrl: string;
 }
 
 // Routes user to correct url after authenticating
-const onRedirectCallback = (appState: appState) => {
+const onRedirectCallback = (appState: AppState) => {
   history.push(
     appState && appState.targetUrl
       ? appState.targetUrl

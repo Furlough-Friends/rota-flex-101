@@ -17,6 +17,7 @@ import { ModalProps, RoleType } from '../../model';
 import { createEmployee } from '../../store/employeeSlice';
 import createUserModalStyle from './createUserModal.module.scss';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CreateUserConfiguration {}
 
 type Props = CreateUserConfiguration & ModalProps;
@@ -35,7 +36,6 @@ interface UserInfo {
   role: RoleType.User;
   contractedHours: number;
   pay: number;
-  [key: string]: any;
 }
 
 const textFields: TextField[] = [
@@ -112,7 +112,7 @@ const CreateUserModal = ({ onClose }: Props) => {
   const handleCreateClick = async () => {
     const token = await getTokenSilently();
     const prefDaysString = Object.values(preferredDays)
-      .map((preferred) => +preferred)
+      .map(preferred => +preferred)
       .join('');
     dispatch(
       createEmployee(
@@ -142,7 +142,7 @@ const CreateUserModal = ({ onClose }: Props) => {
       <hr />
       <div className={createUserModalStyle.form}>
         <div className={createUserModalStyle.formLeft}>
-          {textFields.map((field) => (
+          {textFields.map(field => (
             <span key={field.id} className={createUserModalStyle.field}>
               <TextField
                 id="outlined-basic"

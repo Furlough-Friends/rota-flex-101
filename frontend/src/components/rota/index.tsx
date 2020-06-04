@@ -3,6 +3,7 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import 'tippy.js/dist/tippy.css';
 
+import { EventApi } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import React from 'react';
@@ -27,7 +28,7 @@ const DUMMY_EVENTS = [
   },
 ];
 
-const tooltipFunction = (info: any) => {
+const tooltipFunction = (info: { event: EventApi; el: HTMLElement }) => {
   tippy(info.el, {
     content: info.event.extendedProps.description,
   });

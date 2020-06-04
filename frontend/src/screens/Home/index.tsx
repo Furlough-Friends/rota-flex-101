@@ -24,11 +24,11 @@ const Home = () => {
     getTokenSilently()
       .then(logService('Token: '))
       .then(getRole)
-      .then((fetchedRole) => {
+      .then(fetchedRole => {
         setRole(fetchedRole);
         setRoleChecked(true);
       })
-      .catch((err) => {
+      .catch(err => {
         toastr.error(err);
         toastr.error('User not found');
         setRoleChecked(true);
