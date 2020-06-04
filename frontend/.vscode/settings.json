@@ -14,5 +14,6 @@
     "timegrid",
     "toastr"
   ],
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "typescriptHero.imports.multiLineWrapThreshold": 80
 }

@@ -14,7 +14,9 @@ import { AppThunk, RootState } from './reducer';
 
 const { baseUrl } = environment;
 
-const engagementAdapter = createEntityAdapter<Engagement>();
+const engagementAdapter = createEntityAdapter<Engagement>({
+  selectId: ({ staffId, start }) => `${staffId}::${start}`,
+});
 
 const engagementsFetchUrl = (start: Date, end: Date) =>
   `${baseUrl}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`;

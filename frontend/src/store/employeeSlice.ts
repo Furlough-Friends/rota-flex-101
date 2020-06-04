@@ -13,7 +13,9 @@ import { AppThunk, RootState } from './reducer';
 
 const { baseUrl } = environment;
 
-const employeesAdapter = createEntityAdapter<Employee>();
+const employeesAdapter = createEntityAdapter<Employee>({
+  selectId: ({ id }) => id,
+});
 
 const EMPLOYEE_FETCH_URL = `${baseUrl}/staff/get`;
 const EMPLOYEE_DELETE_URL = `${baseUrl}/staff/remove?id=`;
