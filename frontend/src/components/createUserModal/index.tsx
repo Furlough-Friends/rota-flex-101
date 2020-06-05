@@ -23,7 +23,7 @@ export interface CreateUserConfiguration {}
 type Props = CreateUserConfiguration & ModalProps;
 
 interface TextField {
-  id: string;
+  id: keyof UserInfo;
   name: string;
   type: string;
 }
