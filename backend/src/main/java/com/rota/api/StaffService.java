@@ -127,12 +127,12 @@ public class StaffService {
    * @param newStaff {@link Staff} to be added.
    * @return {@link Staff} object which has just been created.
    */
-  public Staff createStaff(Staff newStaff) {
+  public StaffDto createStaff(StaffDto newStaff) {
     findStaffByEmail(newStaff.getEmail()).ifPresent(
         (Staff staff) -> {
           throw new DuplicateEmailException(newStaff.getEmail());
         });
-    return staffRepository.save(newStaff);
+    return StaffDto.of(staffRepository.save(newStaff.toStaff()));
   }
 
   /**
@@ -140,9 +140,10 @@ public class StaffService {
    *
    * @return A list of all active staff members.
    */
-  public List<Staff> getActiveStaff() {
+  public List<StaffDto> getActiveStaff() {
     return staffRepository.findAll().stream()
         .filter(staff -> !staff.isInactive())
+        .map(StaffDto::of)
         .collect(Collectors.toList());
   }
 
@@ -176,16 +177,14 @@ public class StaffService {
   /**
    * Updates a staff member in the database.
    *
-   * @param id           Of the staff member being updated.
    * @param updatedStaff Updated staff details.
    * @return The updated {@link Staff} member.
    */
-  public Staff updateStaff(int id, StaffDto updatedStaff) {
+  public StaffDto updateStaff(StaffDto updatedStaff) {
     // Check to see if that staff member exists, throw exception if not.
-    staffRepository.findById(id).orElseThrow(() -> new StaffNotFoundException(id));
+    staffRepository.findById(updatedStaff.getId())
+        .orElseThrow(() -> new StaffNotFoundException(updatedStaff.getId()));
     // If it exists, safe new staff information to that ID.
-    Staff staffToSave = updatedStaff.toStaff();
-    staffToSave.setId(id);
-    return staffRepository.save(staffToSave);
+    return StaffDto.of(staffRepository.save(updatedStaff.toStaff()));
   }
 }
