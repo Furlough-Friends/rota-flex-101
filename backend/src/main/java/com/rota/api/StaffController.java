@@ -16,8 +16,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -103,17 +103,17 @@ public class StaffController {
    * @param staffDto Staff details.
    * @return A Response entity of a {@link Staff} object.
    */
-  @PostMapping("/staff/create")
+  @PostMapping("/staff")
   @ApiOperation(value = "Lets an authenticated manager create a new staff user",
       consumes = "application/json", authorizations = {@Authorization(value = "Bearer")})
-  public ResponseEntity<Staff> createStaff(
+  public ResponseEntity<StaffDto> createStaff(
       @Valid
       @RequestBody
       @ApiParam("Staff details for the new user")
           StaffDto staffDto
   ) {
     // Assuming in general staff entered will be active ones
-    Staff createdStaff = staffService.createStaff(staffDto.toStaff());
+    StaffDto createdStaff = staffService.createStaff(staffDto);
 
     return ResponseEntity.ok().body(createdStaff);
   }
@@ -123,33 +123,29 @@ public class StaffController {
    *
    * @return List of all active staff members.
    */
-  @GetMapping("/staff/get")
+  @GetMapping("/staff")
   @ApiOperation(value = "Lets an authenticated manager view list of all active staff",
       authorizations = {@Authorization(value = "Bearer")})
-  public List<Staff> getActiveStaff() {
+  public List<StaffDto> getActiveStaff() {
     return staffService.getActiveStaff();
   }
 
   /**
    * Endpoint to update the information of a staff member.
    *
-   * @param id           The ID of the staff member to be updated.
    * @param updatedStaff Updated staff information.
    * @return The updated {@link Staff} member.
    */
-  @PutMapping("/staff/{id}")
+  @PutMapping("/staff")
   @ApiOperation(value = "Lets an authenticated manager update a staff member", authorizations = {
       @Authorization(value = "Bearer")})
-  public Staff updateStaff(
-      @PathVariable
-      @ApiParam(value = "Staff ID")
-          int id,
+  public StaffDto updateStaff(
       @Valid
       @RequestBody
       @ApiParam(value = "Updated staff object")
           StaffDto updatedStaff
   ) {
-    return staffService.updateStaff(id, updatedStaff);
+    return staffService.updateStaff(updatedStaff);
   }
 
   /**
@@ -158,10 +154,10 @@ public class StaffController {
    * @param id staff id to remove.
    * @return An updated list of active staff members.
    */
-  @PutMapping("/staff/remove")
+  @DeleteMapping("/staff")
   @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
       + "an updated list of active users", authorizations = {@Authorization(value = "Bearer")})
-  public List<Staff> removeStaffMember(
+  public List<StaffDto> removeStaffMember(
       @RequestParam(name = "id", required = true)
           int id
   ) {

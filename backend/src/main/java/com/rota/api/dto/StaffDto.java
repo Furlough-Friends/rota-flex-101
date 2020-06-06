@@ -13,6 +13,9 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class StaffDto {
+  @ApiModelProperty(value = "Staff ID, ignored when creating new staff", required = false)
+  int id;
+
   @NotNull
   @ApiModelProperty(value = "First name", required = true)
   String firstName;
@@ -57,6 +60,7 @@ public class StaffDto {
    */
   public Staff toStaff() {
     return Staff.builder()
+        .id(id)
         .firstName(firstName)
         .surname(surname)
         .role(role)
@@ -68,5 +72,27 @@ public class StaffDto {
         .preferredDates(preferredDates)
         .email(email)
         .build();
+  }
+
+  /**
+   * Converts database Staff object to StaffDto.
+   * 
+   * @param staff Staff object
+   * @return converted StaffDto
+   */
+  public static StaffDto of(Staff staff) {
+    return new StaffDto(
+        staff.getId(),
+        staff.getFirstName(),
+        staff.getSurname(),
+        staff.getRole(),
+        staff.getStartDate(),
+        staff.getContractedHours(),
+        staff.getHourlyRate(),
+        staff.getJobTitle(),
+        staff.getPreferredDates(),
+        staff.isInactive(),
+        staff.getEmail()
+    );
   }
 }

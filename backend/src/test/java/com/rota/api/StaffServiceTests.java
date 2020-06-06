@@ -33,8 +33,8 @@ public class StaffServiceTests {
     MockitoAnnotations.initMocks(this);
   }
 
-  private final StaffDto validStaffDto =
-      new StaffDto("Initial", "Test", Role.USER, null, 0,
+  private final StaffDto invalidStaffDto =
+      new StaffDto(12301, "Initial", "Test", Role.USER, null, 0,
           0, "", "", false, "test@test.com");
 
   @Test
@@ -44,22 +44,22 @@ public class StaffServiceTests {
         .thenThrow(new StaffNotFoundException(invalidUserId));
 
     assertThrows(
-        StaffNotFoundException.class, () -> staffService.updateStaff(invalidUserId, validStaffDto));
+        StaffNotFoundException.class, () -> staffService.updateStaff(invalidStaffDto));
   }
 
   @Test
   public void updateStaff() {
     Staff initialStaffObject = new Staff();
     StaffDto updatedStaffDto =
-        new StaffDto("Updated", "User", Role.USER, null, 0,
+        new StaffDto(1, "Updated", "User", Role.USER, null, 0,
             0, "", "", false, "test@test.com");
     Staff updatedStaffObject = updatedStaffDto.toStaff();
 
     when(staffRepository.findById(1)).thenReturn(Optional.of(initialStaffObject));
     when(staffRepository.save(any(Staff.class))).thenReturn(updatedStaffObject);
 
-    Staff actualResult = staffService.updateStaff(1, updatedStaffDto);
+    StaffDto actualResult = staffService.updateStaff(updatedStaffDto);
 
-    assertThat(actualResult, is(equalTo(updatedStaffObject)));
+    assertThat(actualResult, is(equalTo(updatedStaffDto)));
   }
 }
