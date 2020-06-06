@@ -95,6 +95,32 @@ public class StaffService {
         .collect(Collectors.toList());
   }
 
+  private Optional<Engagement> fromDto(EngagementDto engagement) {
+    Optional<Staff> staffOptional = staffRepository.findById(engagement.getStaffId());
+    return staffOptional.map((Staff staff) -> 
+    Engagement
+        .builder()
+        .staff(staff)
+        .start(engagement.getStart())
+        .end(engagement.getEnd())
+        .type(engagement.getType())
+        .build()
+    );
+
+  }
+
+  /**
+   * Adds an engagement to the database.
+   */
+  public void addEngagement(EngagementDto engagementDto) {
+    Optional<Engagement> engagementOptional = fromDto(engagementDto);
+    engagementOptional.ifPresentOrElse(
+        (Engagement engagement) -> engagementRepository.save(engagement),
+        () -> {
+          throw new StaffNotFoundException();
+        });
+  }
+
   /**
    * Adds a new staff entity to the database.
    *
