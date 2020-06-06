@@ -1,0 +1,19 @@
+{
+  "editor.formatOnSave": true,
+  "typescriptHero.imports.organizeOnSave": true,
+  "prettier.endOfLine": "crlf",
+  "files.insertFinalNewline": true,
+  "editor.parameterHints.cycle": true,
+  "prettier.singleQuote": true,
+  "scssFormatter.singleQuote": true,
+  "cSpell.words": [
+    "daygrid",
+    "fullcalendar",
+    "mixins",
+    "reduxjs",
+    "timegrid",
+    "toastr"
+  ],
+  "eslint.format.enable": true,
+  "typescriptHero.imports.multiLineWrapThreshold": 80
+}

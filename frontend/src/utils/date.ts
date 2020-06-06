@@ -11,3 +11,6 @@ export const serializeDate = (date: Date = new Date()) => {
 
   throw new Error(`Invalid date: ${asString}`);
 };
+
+export const toDate = (value: Date | string) =>
+  value instanceof Date && !Number.isNaN(+value) ? value : new Date(value);

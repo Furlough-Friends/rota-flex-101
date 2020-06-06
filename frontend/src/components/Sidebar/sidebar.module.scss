@@ -1,0 +1,101 @@
+@import '../../styles/variables.scss';
+@import '../../screens/Home/home.module.scss';
+
+$sidebar-width: 200px;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 1;
+  align-items: stretch;
+
+  @media (max-width: $small-screen-threshold) {
+    overflow: hidden;
+  }
+}
+
+.menuOption {
+  all: unset;
+  color: $colour-text-primary;
+  padding: 10px 0px;
+  border: 0px;
+  background-color: $colour-dark-blue;
+  line-height: 2.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-family: $font-primary;
+  cursor: pointer;
+
+  box-shadow: inset 1px -1px 0px 0px rgba(0, 0, 0, 0.12);
+
+  &:hover,
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  @media (max-width: $small-screen-threshold) {
+    min-width: $small-screen-min-width;
+  }
+}
+
+.selectedMenuOption {
+  background-color: $colour-light-blue;
+
+  &:hover,
+  &:focus {
+    background-color: $colour-light-blue;
+  }
+}
+
+%svgIcon {
+  box-sizing: border-box;
+  height: inherit;
+  width: $header-height;
+  padding: 0.15 * $header-height;
+  fill: $colour-text-primary;
+}
+
+.sidebarHeader {
+  background-color: $colour-dark-blue;
+  display: flex;
+  justify-content: flex-end;
+  height: $header-height;
+
+  & svg {
+    @extend %svgIcon;
+  }
+
+  @media (max-width: $small-screen-threshold) {
+    justify-content: center;
+
+    & svg {
+      box-sizing: border-box;
+      height: inherit;
+      width: 100vw;
+      padding: 0.15 * $header-height calc(40vw - 30px);
+    }
+  }
+}
+
+.margin {
+  background-color: lightgray;
+
+  & svg {
+    @extend %svgIcon;
+    position: absolute;
+  }
+}
+
+.sidebar {
+  & :global(.MuiPaper-root) {
+    background-color: $colour-dark-blue;
+    overflow-y: unset;
+
+    @media (max-width: $small-screen-threshold) {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+}

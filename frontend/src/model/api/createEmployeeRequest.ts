@@ -8,7 +8,7 @@ export interface BaseEmployee {
 }
 
 export interface CreateEmployeeRequest extends BaseEmployee {
-  readonly startDate: string;
+  readonly startDate: Date;
   readonly role: RoleType;
   readonly preferredDates: string;
   readonly pay: number;

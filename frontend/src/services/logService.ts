@@ -1,5 +1,7 @@
-const logService = (description: string) => (arg: any) => {
-  if (process.env.NODE_ENV !== 'production') {
+import { isProduction } from '../utils/environment';
+
+const logService = (description: string) => <T>(arg: T) => {
+  if (!isProduction()) {
     // eslint-disable-next-line no-console
     console.info(`${description}\n`, arg);
   }
