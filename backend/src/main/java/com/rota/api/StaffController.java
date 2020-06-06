@@ -3,6 +3,7 @@ package com.rota.api;
 import com.rota.api.dto.EngagementDto;
 import com.rota.api.dto.StaffDto;
 import com.rota.auth.Authentication;
+import com.rota.database.orm.engagement.EngagementType;
 import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.exceptions.StaffNotFoundException;
@@ -163,5 +164,19 @@ public class StaffController {
   ) {
     staffService.removeStaff(id);
     return staffService.getActiveStaff();
+  }
+
+  /**
+   * Endpoint for the manager to add staff member's engagement.
+   */
+  @PostMapping("/staff/addEngagement")
+  @ApiOperation(value = "Allows manager to add an engagement for a certain user", authorizations = {
+      @Authorization(value = "Bearer") })
+  public void addEngagement(
+      @Valid 
+      @RequestBody 
+      EngagementDto engagement
+  ) {
+    staffService.addEngagement(engagement);
   }
 }
