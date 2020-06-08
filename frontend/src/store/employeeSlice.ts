@@ -7,7 +7,7 @@ import toastr from 'toastr';
 
 import { Employee } from '../model';
 import { CreateEmployeeRequest } from '../model/api';
-import { get, post, put } from '../services/apiService';
+import { get, post, del } from '../services/apiService';
 import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
 
@@ -51,7 +51,7 @@ export const deleteEmployee = (
   id: string,
   token: string | undefined
 ): AppThunk => dispatch =>
-  put(EMPLOYEE_DELETE_URL + id, token)
+  del(EMPLOYEE_DELETE_URL + id, token)
     .then(response => response.json())
     .then(response => dispatch(set(response)))
     .catch(toastr.error);

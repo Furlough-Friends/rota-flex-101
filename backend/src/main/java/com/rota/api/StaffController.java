@@ -3,7 +3,6 @@ package com.rota.api;
 import com.rota.api.dto.EngagementDto;
 import com.rota.api.dto.StaffDto;
 import com.rota.auth.Authentication;
-import com.rota.database.orm.engagement.EngagementType;
 import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.exceptions.StaffNotFoundException;
