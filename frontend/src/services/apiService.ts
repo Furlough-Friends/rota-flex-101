@@ -9,7 +9,7 @@ export const put = async (request: RequestInfo, token?: string) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-export const del = async (request: RequestInfo, token?: string) =>
+export const remove = async (request: RequestInfo, token?: string) =>
   fetch(request, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` },
