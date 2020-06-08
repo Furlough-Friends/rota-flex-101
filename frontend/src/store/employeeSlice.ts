@@ -2,6 +2,7 @@ import {
   createEntityAdapter,
   createSlice,
   PayloadAction,
+  ActionCreatorWithPayload,
 } from '@reduxjs/toolkit';
 import toastr from 'toastr';
 
@@ -28,33 +29,40 @@ export const employeeSlice = createSlice({
     set: (state, { payload }: PayloadAction<Employee[]>) => {
       employeesAdapter.setAll(state, payload);
     },
+    add: (state, { payload }: PayloadAction<Employee>) => {
+      employeesAdapter.addOne(state, payload);
+    },
   },
 });
 
-const { set } = employeeSlice.actions;
+const { set, add } = employeeSlice.actions;
+
+const updateFromPromise = <T>(
+  requestPromise: Promise<Response>,
+  dispatch: (payload: { payload: T; type: string }) => void,
+  dispatchedFunction: ActionCreatorWithPayload<T, string>
+) =>
+  requestPromise
+    .then(response => response.json())
+    .then(response => dispatch(dispatchedFunction(response)))
+    .catch(toastr.error);
 
 export const fetchEmployee = (
   token: string | undefined
 ): AppThunk => dispatch =>
-  get(EMPLOYEE_FETCH_URL, token)
-    .then(response => response.json())
-    .then(response => dispatch(set(response)))
-    .catch(toastr.error);
+  updateFromPromise(get(EMPLOYEE_FETCH_URL, token), dispatch, set);
 
 export const createEmployee = (
   request: CreateEmployeeRequest,
   token: string | undefined
-): AppThunk => () =>
-  post(EMPLOYEE_CREATE_URL, token, request).catch(toastr.error);
+): AppThunk => dispatch =>
+  updateFromPromise(post(EMPLOYEE_CREATE_URL, token, request), dispatch, add);
 
 export const deleteEmployee = (
   id: string,
   token: string | undefined
 ): AppThunk => dispatch =>
-  remove(EMPLOYEE_DELETE_URL + id, token)
-    .then(response => response.json())
-    .then(response => dispatch(set(response)))
-    .catch(toastr.error);
+  updateFromPromise(remove(EMPLOYEE_DELETE_URL + id, token), dispatch, set);
 
 const { selectAll } = employeesAdapter.getSelectors<RootState>(
   ({ employee }) => employee
