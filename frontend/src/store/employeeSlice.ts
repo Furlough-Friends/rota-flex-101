@@ -17,9 +17,9 @@ const employeesAdapter = createEntityAdapter<Employee>({
   selectId: ({ id }) => id,
 });
 
-const EMPLOYEE_FETCH_URL = `${baseUrl}/staff/get`;
-const EMPLOYEE_DELETE_URL = `${baseUrl}/staff/remove?id=`;
-const EMPLOYEE_CREATE_URL = `${baseUrl}/staff/create`;
+const EMPLOYEE_FETCH_URL = `${baseUrl}/staff`;
+const EMPLOYEE_DELETE_URL = `${baseUrl}/staff?id=`;
+const EMPLOYEE_CREATE_URL = `${baseUrl}/staff`;
 
 export const employeeSlice = createSlice({
   name: 'employee',
