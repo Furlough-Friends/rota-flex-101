@@ -11,6 +11,8 @@ import { get } from '../services/apiService';
 import { toDate } from '../utils/date';
 import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
+import { getRole } from '../services/authService';
+import { isManagerRole } from '../utils/role';
 
 const { baseUrl } = environment;
 
@@ -18,8 +20,10 @@ const engagementAdapter = createEntityAdapter<Engagement>({
   selectId: ({ staffId, start }) => `${staffId}::${start}`,
 });
 
-const engagementsFetchUrl = (start: Date, end: Date) =>
-  `${baseUrl}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`;
+const engagementsFetchUrl = async (start: Date, end: Date, token?: string) =>
+  isManagerRole(await getRole(token))
+    ? `${baseUrl}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`
+    : `${baseUrl}/myShifts?start=${start.toISOString()}&end=${end.toISOString()}`;
 
 export const engagementSlice = createSlice({
   name: 'engagement',
@@ -37,8 +41,8 @@ export const fetchEngagements = (
   start: Date,
   end: Date,
   token?: string
-): AppThunk => dispatch =>
-  get(engagementsFetchUrl(start, end), token)
+): AppThunk => async dispatch =>
+  get(await engagementsFetchUrl(start, end, token), token)
     .then(response => response.json())
     .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);
