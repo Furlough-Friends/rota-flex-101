@@ -7,7 +7,7 @@ import {
 import toastr from 'toastr';
 
 import { Engagement } from '../model';
-import { get } from '../services/apiService';
+import { get, post } from '../services/apiService';
 import { toDate } from '../utils/date';
 import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
@@ -25,6 +25,8 @@ const engagementsFetchUrl = async (start: Date, end: Date, token?: string) =>
     ? `${baseUrl}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`
     : `${baseUrl}/myShifts?start=${start.toISOString()}&end=${end.toISOString()}`;
 
+const engagementsPostUrl = `${baseUrl}/staff/addEngagement`;
+
 export const engagementSlice = createSlice({
   name: 'engagement',
   initialState: engagementAdapter.getInitialState(),
@@ -32,10 +34,21 @@ export const engagementSlice = createSlice({
     setEngagements: (state, { payload }: PayloadAction<Engagement[]>) => {
       engagementAdapter.setAll(state, payload);
     },
+    addEngagement: (state, { payload }: PayloadAction<Engagement>) => {
+      engagementAdapter.addOne(state, payload);
+    },
   },
 });
 
-export const { setEngagements } = engagementSlice.actions;
+export const { setEngagements, addEngagement } = engagementSlice.actions;
+
+export const createEngagement = (
+  engagement: Engagement,
+  token?: string
+): AppThunk => dispatch =>
+  post(engagementsPostUrl, token, engagement)
+    .then(() => dispatch(addEngagement(engagement)))
+    .catch(toastr.error);
 
 export const fetchEngagements = (
   start: Date,

@@ -8,9 +8,9 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import React, { useEffect } from 'react';
 import tippy from 'tippy.js';
-import toastr from 'toastr';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch } from '@reduxjs/toolkit';
 import rotaStyle from './rota.module.scss';
 import {
   selectEngagement,
@@ -19,6 +19,7 @@ import {
 import { useAuth0 } from '../../auth0Spa';
 import { Engagement, Employee } from '../../model';
 import { fetchEmployee, selectEmployees } from '../../store/employeeSlice';
+import { showModal, ModalType } from '../../store/modalSlice';
 
 const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
 
@@ -59,6 +60,9 @@ const BUTTON_TEXT = {
   list: 'List',
 };
 
+const addEngagementClicked = (dispatch: Dispatch) => () =>
+  dispatch(showModal({ type: ModalType.CreateEngagement }));
+
 const Rota = () => {
   const engagementList = useSelector(selectEngagement);
   const employeeList = useSelector(selectEmployees);
@@ -91,7 +95,7 @@ const Rota = () => {
           customButtons={{
             add: {
               text: 'Add',
-              click: () => toastr.info('Add engagement clicked'),
+              click: addEngagementClicked(dispatch),
             },
           }}
           header={{
