@@ -11,6 +11,8 @@ import { CreateEmployeeRequest } from '../model/api';
 import { get, post, remove } from '../services/apiService';
 import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
+import { getRole } from '../services/authService';
+import { isManagerRole } from '../utils/role';
 
 const { baseUrl } = environment;
 
@@ -49,8 +51,11 @@ const updateFromPromise = <T>(
 
 export const fetchEmployee = (
   token: string | undefined
-): AppThunk => dispatch =>
-  updateFromPromise(get(EMPLOYEE_FETCH_URL, token), dispatch, set);
+): AppThunk => async dispatch => {
+  if (isManagerRole(await getRole(token))) {
+    updateFromPromise(get(EMPLOYEE_FETCH_URL, token), dispatch, set);
+  }
+};
 
 export const createEmployee = (
   request: CreateEmployeeRequest,
