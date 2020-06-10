@@ -1,6 +1,7 @@
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { differenceInDays } from 'date-fns';
 
 import { useAuth0 } from '../../auth0Spa';
 import { Dictionary, Employee, Engagement } from '../../model';
@@ -13,6 +14,7 @@ import { capitalizeFirstLetter } from '../../utils/string';
 import DatePicker from './DatePicker';
 import PieChart from './PieChart';
 import summaryStyle from './summary.module.scss';
+import SpendingAnalysisChart, { Granularity } from './SpendingAnalysisChart';
 
 const getEmployeeJob = (staffId: number) => (employeeList: Employee[]) =>
   employeeList.find(({ id }) => id === staffId)?.jobTitle;
@@ -77,6 +79,17 @@ const Summary = () => {
           textSize={30}
         />
       </div>
+      <SpendingAnalysisChart
+        minTime={startTime}
+        maxTime={endTime}
+        height={300}
+        width={600}
+        granularity={
+          differenceInDays(endTime, startTime) <= 1
+            ? Granularity.Hourly
+            : Granularity.Daily
+        }
+      />
     </div>
   );
 };
