@@ -31,13 +31,13 @@ const CreateEngagementModal = ({ onClose }: ModalProps) => {
   );
 
   const handleEmployeeChange = (
-    event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
+    event: React.ChangeEvent<{ value: unknown }>
   ) => {
     setEmployeeId(event.target.value as number);
   };
 
   const handleEngagementTypeChange = (
-    event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
+    event: React.ChangeEvent<{ value: unknown }>
   ) => {
     setEngagementType(event.target.value as EngagementType);
   };
