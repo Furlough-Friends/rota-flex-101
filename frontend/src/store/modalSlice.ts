@@ -7,6 +7,7 @@ import { RootState } from './reducer';
 export enum ModalType {
   DeleteUser = 'deleteUser',
   CreateUser = 'createUser',
+  CreateEngagement = 'createEngagement',
 }
 
 interface DeleteUserModalConfiguration extends DeleteUserConfiguration {
@@ -17,9 +18,14 @@ interface CreateUserModalConfiguration extends CreateUserConfiguration {
   type: ModalType.CreateUser;
 }
 
+interface CreateEngagementModalConfiguration extends CreateUserConfiguration {
+  type: ModalType.CreateEngagement;
+}
+
 export type ModalConfiguration =
   | DeleteUserModalConfiguration
-  | CreateUserModalConfiguration;
+  | CreateUserModalConfiguration
+  | CreateEngagementModalConfiguration;
 
 export interface ModalState {
   configuration?: ModalConfiguration;
