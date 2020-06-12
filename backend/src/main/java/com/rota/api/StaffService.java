@@ -156,6 +156,9 @@ public class StaffService {
     Optional<Staff> staffMember = staffRepository.findById(id);
     staffMember.ifPresent(staff -> {
       staff.setInactive(true);
+      staff.setFirstName("");
+      staff.setSurname("");
+      staff.setEmail(null);
       staffRepository.save(staff);
     });
   }
@@ -169,8 +172,7 @@ public class StaffService {
   public Optional<Staff> findStaffByEmail(String email) {
     return staffRepository.findAll().stream()
         .filter(staff -> staff
-            .getEmail()
-            .equalsIgnoreCase(email))
+            .getEmail().isPresent() && staff.getEmail().get().equalsIgnoreCase(email))
         .findFirst();
   }
 
