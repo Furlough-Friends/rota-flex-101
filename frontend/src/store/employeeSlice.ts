@@ -20,9 +20,7 @@ const employeesAdapter = createEntityAdapter<Employee>({
   selectId: ({ id }) => id,
 });
 
-const EMPLOYEE_FETCH_URL = `${baseUrl}/staff`;
-const EMPLOYEE_DELETE_URL = `${baseUrl}/staff?id=`;
-const EMPLOYEE_CREATE_URL = `${baseUrl}/staff`;
+const EMPLOYEE_URL = `${baseUrl}/staff`
 
 export const employeeSlice = createSlice({
   name: 'employee',
@@ -53,7 +51,7 @@ export const fetchEmployee = (
   token: string | undefined
 ): AppThunk => async dispatch => {
   if (isManagerRole(await getRole(token))) {
-    updateFromPromise(get(EMPLOYEE_FETCH_URL, token), dispatch, set);
+    updateFromPromise(get(EMPLOYEE_URL, token), dispatch, set);
   }
 };
 
@@ -61,13 +59,13 @@ export const createEmployee = (
   request: CreateEmployeeRequest,
   token: string | undefined
 ): AppThunk => dispatch =>
-  updateFromPromise(post(EMPLOYEE_CREATE_URL, token, request), dispatch, add);
+  updateFromPromise(post(EMPLOYEE_URL, token, request), dispatch, add);
 
 export const deleteEmployee = (
   id: string,
   token: string | undefined
 ): AppThunk => dispatch =>
-  updateFromPromise(remove(EMPLOYEE_DELETE_URL + id, token), dispatch, set);
+  updateFromPromise(remove(`${EMPLOYEE_URL}/${id}`, token), dispatch, set);
 
 const { selectAll } = employeesAdapter.getSelectors<RootState>(
   ({ employee }) => employee
