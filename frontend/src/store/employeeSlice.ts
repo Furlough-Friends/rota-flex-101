@@ -20,7 +20,7 @@ const employeesAdapter = createEntityAdapter<Employee>({
   selectId: ({ id }) => id,
 });
 
-const EMPLOYEE_URL = `${baseUrl}/staff`
+const EMPLOYEE_URL = `${baseUrl}/staff`;
 
 export const employeeSlice = createSlice({
   name: 'employee',
