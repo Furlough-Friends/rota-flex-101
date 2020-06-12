@@ -92,7 +92,7 @@ public class StaffDto {
         staff.getJobTitle(),
         staff.getPreferredDates(),
         staff.isInactive(),
-        staff.getEmail()
+        staff.getEmail().orElse("")
     );
   }
 }
