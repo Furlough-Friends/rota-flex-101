@@ -27,9 +27,9 @@ public class StaffService {
 
   /**
    * Checks if the engagement has any overlap with the requested time frame.
-   * 
+   *
    * @param start start time
-   * @param end end time
+   * @param end   end time
    * @return true if engagement times have any overlap with requested times
    */
   private Predicate<Engagement> isEngagementBetween(Instant start, Instant end) {
@@ -82,9 +82,9 @@ public class StaffService {
    * Returns all engagements between start and end dates (inclusive).
    * Engagements that go through start or end times are truncated.
    * Both start and end dates are optional and can be left as null.
-   * 
+   *
    * @param start start date or null to get from the beginning
-   * @param end end date or null to get to the end
+   * @param end   end date or null to get to the end
    * @return All engagements between the two dates
    */
   public List<EngagementDto> getAllEngagementsBetween(Instant start, Instant end) {
@@ -97,14 +97,14 @@ public class StaffService {
 
   private Optional<Engagement> fromDto(EngagementDto engagement) {
     Optional<Staff> staffOptional = staffRepository.findById(engagement.getStaffId());
-    return staffOptional.map((Staff staff) -> 
-    Engagement
-        .builder()
-        .staff(staff)
-        .start(engagement.getStart())
-        .end(engagement.getEnd())
-        .type(engagement.getType())
-        .build()
+    return staffOptional.map((Staff staff) ->
+        Engagement
+            .builder()
+            .staff(staff)
+            .start(engagement.getStart())
+            .end(engagement.getEnd())
+            .type(engagement.getType())
+            .build()
     );
 
   }
@@ -172,7 +172,7 @@ public class StaffService {
   public Optional<Staff> findStaffByEmail(String email) {
     return staffRepository.findAll().stream()
         .filter(staff -> staff
-            .getEmail().isPresent() && staff.getEmail().get().equalsIgnoreCase(email))
+            .getEmail().filter(email::equalsIgnoreCase).isPresent())
         .findFirst();
   }
 
