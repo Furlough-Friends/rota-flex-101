@@ -1,6 +1,7 @@
 package com.rota.database.orm.staff;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Data
 @Entity
@@ -56,5 +58,9 @@ public class Staff {
   @PreUpdate
   private void onPreUpdate() {
     this.setJobTitle(jobTitle.toLowerCase());
+  }
+
+  public Optional<String> getEmail() {
+    return Optional.ofNullable(email);
   }
 }

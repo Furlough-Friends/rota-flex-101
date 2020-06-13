@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -154,11 +155,11 @@ public class StaffController {
    * @param id staff id to remove.
    * @return An updated list of active staff members.
    */
-  @DeleteMapping("/staff")
+  @DeleteMapping("/staff/{id}")
   @ApiOperation(value = "Allows manager to remove a user with a given id and returns "
       + "an updated list of active users", authorizations = {@Authorization(value = "Bearer")})
   public List<StaffDto> removeStaffMember(
-      @RequestParam(name = "id", required = true)
+      @PathVariable(name = "id", required = true)
           int id
   ) {
     staffService.removeStaff(id);
