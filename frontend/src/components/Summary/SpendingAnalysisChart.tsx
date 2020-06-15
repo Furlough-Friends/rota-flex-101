@@ -105,8 +105,8 @@ const timeStepToInterval = ({ granularity }: Props) => (
 
 const margin = {
   top: 20,
-  bottom: 20,
-  left: 50,
+  bottom: 50,
+  left: 60,
   right: 20,
 };
 
@@ -114,7 +114,7 @@ const SpendingAnalysisChart = (props: Props) => {
   const employeeList = useSelector(selectEmployees);
   const engagementList = useSelector(selectEngagement);
   const chartRef = useRef(null);
-  const { width, height } = props;
+  const { width, height, granularity } = props;
   const canvasWidth = width - margin.left - margin.right;
   const canvasHeight = height - margin.top - margin.bottom;
 
@@ -143,11 +143,31 @@ const SpendingAnalysisChart = (props: Props) => {
     svg
       .append('g')
       .attr('transform', `translate(${margin.left}, ${height - margin.bottom})`)
-      .call(d3.axisBottom(xScale).tickValues(dates));
+      .call(
+        d3
+          .axisBottom(xScale)
+          .tickValues(dates)
+          .tickFormat(
+            d3.timeFormat(
+              granularity === Granularity.Hourly ? '%H:00' : '%d %b'
+            ) as (value: Date | { valueOf(): number }, i: number) => string
+          )
+      )
+      .selectAll('text')
+      .style('text-anchor', 'end')
+      .attr('transform', 'rotate(-45)');
     svg
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
-      .call(d3.axisLeft(yScale));
+      .call(d3.axisLeft(yScale))
+      .append('text')
+      .attr(
+        'transform',
+        `translate(-${margin.left - 10}, ${canvasHeight / 2}) rotate(-90)`
+      )
+      .attr('stroke', 'black')
+      .attr('text-anchor', 'middle')
+      .text('Spending (£)');
     svg
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
@@ -162,7 +182,16 @@ const SpendingAnalysisChart = (props: Props) => {
           .x(d => xScale(d[0]))
           .y(d => yScale(d[1]))(pathData) || ''
       );
-  }, [chartRef, xScale, yScale, height, dates, pathData]);
+  }, [
+    chartRef,
+    xScale,
+    yScale,
+    height,
+    canvasHeight,
+    dates,
+    pathData,
+    granularity,
+  ]);
   return <svg ref={chartRef} width={width} height={height} />;
 };
 
