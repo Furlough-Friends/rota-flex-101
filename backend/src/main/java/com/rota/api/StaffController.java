@@ -5,7 +5,7 @@ import com.rota.api.dto.StaffDto;
 import com.rota.auth.Authentication;
 import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
-import com.rota.exceptions.StaffNotFoundException;
+import com.rota.exceptions.EngagementNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -48,7 +48,9 @@ public class StaffController {
   @ApiOperation(value = "Get the current user role.", response = Role.class, authorizations = {
       @Authorization(value = "Bearer")})
   public Role getRole() {
-    return authentication.getUserFromEmail().orElseThrow(StaffNotFoundException::new).getRole();
+    return authentication.getUserFromEmail()
+        .orElseThrow(EngagementNotFoundException::new)
+        .getRole();
   }
 
   /**
@@ -178,5 +180,13 @@ public class StaffController {
       EngagementDto engagement
   ) {
     staffService.addEngagement(engagement);
+  }
+
+  @PutMapping("/staff/engagement")
+  @ApiOperation(value = "Allows manager to update an existing engagement", authorizations = {
+      @Authorization(value = "Bearer") })
+  public List<EngagementDto> updateEngagement(@Valid @RequestBody EngagementDto engagement) {
+    staffService.updateEngagement(engagement);
+    return staffService.getAllEngagementsBetween(null, null);
   }
 }

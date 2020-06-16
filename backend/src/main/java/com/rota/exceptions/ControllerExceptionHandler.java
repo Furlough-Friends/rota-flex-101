@@ -16,9 +16,9 @@ public class ControllerExceptionHandler {
    * @param httpServletRequest the request that caused the exception.
    * @return An {@link ErrorResponse} in response.
    */
-  @ExceptionHandler(StaffNotFoundException.class)
+  @ExceptionHandler(EngagementNotFoundException.class)
   public ResponseEntity<ErrorResponse> handleStaffNotFoundException(
-      StaffNotFoundException e,
+      EngagementNotFoundException e,
       HttpServletRequest httpServletRequest
   ) {
     return new ResponseEntity<>(

@@ -7,7 +7,7 @@ import {
 import toastr from 'toastr';
 
 import { Engagement } from '../model';
-import { get, post } from '../services/apiService';
+import { get, post, put } from '../services/apiService';
 import { toDate } from '../utils/date';
 import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
@@ -26,6 +26,7 @@ const engagementsFetchUrl = async (start: Date, end: Date, token?: string) =>
     : `${baseUrl}/myShifts?start=${start.toISOString()}&end=${end.toISOString()}`;
 
 const engagementsPostUrl = `${baseUrl}/staff/addEngagement`;
+const engagementPutUrl = `${baseUrl}/staff/engagement`;
 
 export const engagementSlice = createSlice({
   name: 'engagement',
@@ -56,6 +57,15 @@ export const fetchEngagements = (
   token?: string
 ): AppThunk => async dispatch =>
   get(await engagementsFetchUrl(start, end, token), token)
+    .then(response => response.json())
+    .then(response => dispatch(setEngagements(response)))
+    .catch(toastr.error);
+
+export const updateEngagement = (
+  engagement: Engagement,
+  token?: string
+): AppThunk => dispatch =>
+  put(engagementPutUrl, token, engagement)
     .then(response => response.json())
     .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);

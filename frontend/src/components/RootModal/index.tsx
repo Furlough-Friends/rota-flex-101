@@ -11,7 +11,9 @@ import {
 } from '../../store/modalSlice';
 import CreateUserModal from '../CreateUserModal';
 import DeleteUserModal from '../DeleteUserModal';
-import CreateEngagementModal from '../CreateEngagementModal';
+import CreateEngagementModal, {
+  EditEngagementModal,
+} from '../CreateEngagementModal';
 import rootModalStyles from './rootModal.module.scss';
 
 /* eslint-disable react/jsx-props-no-spreading */
@@ -30,6 +32,10 @@ const getModal = (modalState: ModalConfiguration, defaultProps: ModalProps) => {
     case ModalType.CreateEngagement: {
       const { type, ...rest } = modalState;
       return <CreateEngagementModal {...rest} {...defaultProps} />;
+    }
+    case ModalType.EditEngagement: {
+      const { type, ...rest } = modalState;
+      return <EditEngagementModal {...rest} {...defaultProps} />;
     }
     default:
       throw new Error(`Unrecognized modal state '${modalType}'`);

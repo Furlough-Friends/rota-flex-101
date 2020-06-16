@@ -23,12 +23,10 @@ import { showModal, ModalType } from '../../store/modalSlice';
 
 const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
 
-const engagementToCalendarEvent = (employeeList: Employee[]) => ({
-  start,
-  end,
-  staffId,
-  type,
-}: Engagement) => {
+const engagementToCalendarEvent = (employeeList: Employee[]) => (
+  engagement: Engagement
+) => {
+  const { start, end, staffId, type } = engagement;
   const employee = employeeList.find(staff => staff.id === staffId);
   return {
     start,
@@ -36,6 +34,7 @@ const engagementToCalendarEvent = (employeeList: Employee[]) => ({
     title: employee?.surname,
     description: `<p>${employee?.firstName} ${employee?.surname}<p>From: ${start}<p>To: ${end}<p>Type: ${type}`,
     color: COLOUR_CYCLES[staffId % COLOUR_CYCLES.length],
+    extendedProps: { engagement },
   };
 };
 
@@ -61,7 +60,24 @@ const BUTTON_TEXT = {
 };
 
 const addEngagementClicked = (dispatch: Dispatch) => () =>
-  dispatch(showModal({ type: ModalType.CreateEngagement }));
+  dispatch(
+    showModal({
+      type: ModalType.CreateEngagement,
+    })
+  );
+
+const eventClicked = (dispatch: Dispatch) => ({
+  event,
+}: {
+  event: EventApi;
+}) => {
+  dispatch(
+    showModal({
+      type: ModalType.EditEngagement,
+      engagement: event.extendedProps.engagement,
+    })
+  );
+};
 
 const Rota = () => {
   const engagementList = useSelector(selectEngagement);
@@ -77,6 +93,7 @@ const Rota = () => {
     };
     getEmployeesAndEngagements();
   }, [dispatch, getTokenSilently]);
+
   return (
     <div className={rotaStyle.rota}>
       <h1 className={rotaStyle.header}> Rota </h1>
@@ -92,6 +109,7 @@ const Rota = () => {
           events={engagementList.map(engagementToCalendarEvent(employeeList))}
           buttonText={BUTTON_TEXT}
           eventRender={tooltipFunction}
+          eventClick={eventClicked(dispatch)}
           customButtons={{
             add: {
               text: 'Add',

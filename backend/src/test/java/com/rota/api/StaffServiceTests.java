@@ -11,7 +11,7 @@ import com.rota.api.dto.StaffDto;
 import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
-import com.rota.exceptions.StaffNotFoundException;
+import com.rota.exceptions.EngagementNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,10 +41,10 @@ public class StaffServiceTests {
   public void updateStaffInvalidUserId() {
     final int invalidUserId = 12301;
     when(staffRepository.findById(invalidUserId))
-        .thenThrow(new StaffNotFoundException(invalidUserId));
+        .thenThrow(new EngagementNotFoundException(invalidUserId));
 
     assertThrows(
-        StaffNotFoundException.class, () -> staffService.updateStaff(invalidStaffDto));
+        EngagementNotFoundException.class, () -> staffService.updateStaff(invalidStaffDto));
   }
 
   @Test
