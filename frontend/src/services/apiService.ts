@@ -1,30 +1,20 @@
-export const get = async (request: RequestInfo, token?: string) =>
-  fetch(request, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const headers = (token?: string) => ({
+  Authorization: `Bearer ${token}`,
+  'Content-Type': 'application/json',
+});
 
-export const put = async (request: RequestInfo, token?: string) =>
-  fetch(request, {
-    method: 'PUT',
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-export const remove = async (request: RequestInfo, token?: string) =>
-  fetch(request, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-export const post = async (
+const apiRequest = (method: string) => async (
   request: RequestInfo,
   token?: string,
-  data: object = {}
+  data?: object
 ) =>
   fetch(request, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
+    method,
+    headers: headers(token),
+    body: data && JSON.stringify(data),
   });
+
+export const get = apiRequest('GET');
+export const put = apiRequest('PUT');
+export const remove = apiRequest('DELETE');
+export const post = apiRequest('POST');

@@ -56,6 +56,7 @@ public class EngagementTests {
     final List<EngagementDto> expectedResult = List.of(
         new EngagementDto(
             1,
+            1,
             queryTime, 
             engagementEnd, 
             EngagementType.SHIFT)
@@ -74,6 +75,7 @@ public class EngagementTests {
 
     final List<EngagementDto> expectedResult = List.of(
         new EngagementDto(
+            1,
             1,
             engagementStart, 
             queryTime, 
