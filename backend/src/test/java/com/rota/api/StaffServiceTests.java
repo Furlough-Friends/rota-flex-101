@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.rota.api.dto.StaffDto;
@@ -12,6 +11,8 @@ import com.rota.database.orm.staff.Role;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
 import com.rota.exceptions.EngagementNotFoundException;
+
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,16 +50,14 @@ public class StaffServiceTests {
 
   @Test
   public void updateStaff() {
-    Staff initialStaffObject = new Staff();
     StaffDto updatedStaffDto =
         new StaffDto(1, "Updated", "User", Role.USER, null, 0,
             0, "", "", false, "test@test.com");
-    Staff updatedStaffObject = updatedStaffDto.toStaff();
 
-    when(staffRepository.findById(1)).thenReturn(Optional.of(initialStaffObject));
-    when(staffRepository.save(any(Staff.class))).thenReturn(updatedStaffObject);
+    when(staffRepository.findById(1)).thenReturn(Optional.of(updatedStaffDto.toStaff()));
+    when(staffRepository.findAll()).thenReturn(List.of(updatedStaffDto.toStaff()));
 
-    StaffDto actualResult = staffService.updateStaff(updatedStaffDto);
+    StaffDto actualResult = staffService.updateStaff(updatedStaffDto).get(0);
 
     assertThat(actualResult, is(equalTo(updatedStaffDto)));
   }

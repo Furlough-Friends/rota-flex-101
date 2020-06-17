@@ -7,8 +7,7 @@ import {
 import toastr from 'toastr';
 
 import { Employee } from '../model';
-import { CreateEmployeeRequest } from '../model/api';
-import { get, post, remove } from '../services/apiService';
+import { get, post, remove, put } from '../services/apiService';
 import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
 import { getRole } from '../services/authService';
@@ -47,19 +46,23 @@ const updateFromPromise = <T>(
     .then(response => dispatch(dispatchedFunction(response)))
     .catch(toastr.error);
 
-export const fetchEmployee = (
-  token: string | undefined
-): AppThunk => async dispatch => {
+export const fetchEmployee = (token?: string): AppThunk => async dispatch => {
   if (isManagerRole(await getRole(token))) {
     updateFromPromise(get(EMPLOYEE_URL, token), dispatch, set);
   }
 };
 
 export const createEmployee = (
-  request: CreateEmployeeRequest,
-  token: string | undefined
+  request: Employee,
+  token?: string
 ): AppThunk => dispatch =>
   updateFromPromise(post(EMPLOYEE_URL, token, request), dispatch, add);
+
+export const updateEmployee = (
+  request: Employee,
+  token?: string
+): AppThunk => dispatch =>
+  updateFromPromise(put(EMPLOYEE_URL, token, request), dispatch, set);
 
 export const deleteEmployee = (
   id: string,

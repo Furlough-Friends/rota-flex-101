@@ -137,12 +137,12 @@ public class StaffController {
    * Endpoint to update the information of a staff member.
    *
    * @param updatedStaff Updated staff information.
-   * @return The updated {@link Staff} member.
+   * @return The updated {@link Staff} list.
    */
   @PutMapping("/staff")
   @ApiOperation(value = "Lets an authenticated manager update a staff member", authorizations = {
       @Authorization(value = "Bearer")})
-  public StaffDto updateStaff(
+  public List<StaffDto> updateStaff(
       @Valid
       @RequestBody
       @ApiParam(value = "Updated staff object")

@@ -9,7 +9,7 @@ import {
   ModalType,
   selectModalConfiguration,
 } from '../../store/modalSlice';
-import CreateUserModal from '../CreateUserModal';
+import { CreateUserModal, UpdateUserModal } from '../CreateUserModal';
 import DeleteUserModal from '../DeleteUserModal';
 import CreateEngagementModal, {
   EditEngagementModal,
@@ -28,6 +28,10 @@ const getModal = (modalState: ModalConfiguration, defaultProps: ModalProps) => {
     case ModalType.CreateUser: {
       const { type, ...rest } = modalState;
       return <CreateUserModal {...rest} {...defaultProps} />;
+    }
+    case ModalType.EditUser: {
+      const { type, ...rest } = modalState;
+      return <UpdateUserModal {...rest} {...defaultProps} />;
     }
     case ModalType.CreateEngagement: {
       const { type, ...rest } = modalState;
