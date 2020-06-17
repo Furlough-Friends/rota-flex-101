@@ -7,7 +7,9 @@ import com.rota.database.orm.engagement.EngagementRepository;
 import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
 import com.rota.exceptions.DuplicateEmailException;
+import com.rota.exceptions.EngagementNotFoundException;
 import com.rota.exceptions.StaffNotFoundException;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -117,8 +119,25 @@ public class StaffService {
     engagementOptional.ifPresentOrElse(
         (Engagement engagement) -> engagementRepository.save(engagement),
         () -> {
-          throw new StaffNotFoundException();
+          throw new EngagementNotFoundException();
         });
+  }
+
+  /**
+   * Updates an existing engagement.
+   * 
+   * @param engagementDto the update to apply.
+   */
+  public void updateEngagement(EngagementDto engagementDto) {
+    Engagement oldEngagement = engagementRepository.findById(engagementDto.getId())
+        .orElseThrow(() -> new EngagementNotFoundException(engagementDto.getId()));
+    Engagement updatedEngagement = fromDto(engagementDto)
+        .orElseThrow(() -> new StaffNotFoundException(engagementDto.getStaffId()));
+    oldEngagement.setStaff(updatedEngagement.getStaff());
+    oldEngagement.setStart(updatedEngagement.getStart());
+    oldEngagement.setEnd(updatedEngagement.getEnd());
+    oldEngagement.setType(updatedEngagement.getType());
+    engagementRepository.save(oldEngagement);
   }
 
   /**
@@ -185,8 +204,8 @@ public class StaffService {
   public StaffDto updateStaff(StaffDto updatedStaff) {
     // Check to see if that staff member exists, throw exception if not.
     staffRepository.findById(updatedStaff.getId())
-        .orElseThrow(() -> new StaffNotFoundException(updatedStaff.getId()));
-    // If it exists, safe new staff information to that ID.
+        .orElseThrow(() -> new EngagementNotFoundException(updatedStaff.getId()));
+    // If it exists, save new staff information to that ID.
     return StaffDto.of(staffRepository.save(updatedStaff.toStaff()));
   }
 }

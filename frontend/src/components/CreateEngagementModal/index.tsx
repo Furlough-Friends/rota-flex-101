@@ -9,26 +9,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import Flatpickr from 'react-flatpickr';
 
 import { useAuth0 } from '../../auth0Spa';
-import { ModalProps, Employee } from '../../model';
+import { ModalProps, Employee, Engagement } from '../../model';
 import createUserModalStyle from './createEngagementModal.module.scss';
 import { EngagementType } from '../../model/engagementType';
-import { createEngagement } from '../../store/engagementSlice';
+import {
+  createEngagement,
+  updateEngagement,
+} from '../../store/engagementSlice';
 import 'flatpickr/dist/themes/airbnb.css';
 import { selectEmployees } from '../../store/employeeSlice';
+import { hideModal } from '../../store/modalSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface CreateUserConfiguration {}
+export interface CreateEngagementConfiguration {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface EditEngagementConfiguration {
+  engagement: Engagement;
+}
 
-const CreateEngagementModal = ({ onClose }: ModalProps) => {
-  const dispatch = useDispatch();
-  const { getTokenSilently } = useAuth0();
+export interface EngagementConfiguration {
+  currentEngagement: Engagement;
+  SubmitButton: ({ engagement }: { engagement: Engagement }) => JSX.Element;
+}
+
+type Props = ModalProps & EngagementConfiguration;
+type CreateProps = ModalProps;
+type EditProps = ModalProps & { engagement: Engagement };
+
+const EngagementModal = ({
+  onClose,
+  currentEngagement: defaultEngagement,
+  SubmitButton,
+}: Props) => {
+  const {
+    id: defaultId,
+    staffId: defaultEmployeeId,
+    start: defaultStartTime,
+    end: defaultEndTime,
+    type: defaultEngagementType,
+  } = defaultEngagement;
   const employeeList = useSelector(selectEmployees);
-  const [employeeId, setEmployeeId] = useState<number>(0);
-  const [startTime, setStartTime] = useState<Date>(new Date());
-  const [endTime, setEndTime] = useState<Date>(new Date());
+  const [employeeId, setEmployeeId] = useState<number>(defaultEmployeeId);
+  const [startTime, setStartTime] = useState<Date>(defaultStartTime);
+  const [endTime, setEndTime] = useState<Date>(defaultEndTime);
   const [engagementType, setEngagementType] = useState<EngagementType>(
-    EngagementType.Shift
+    defaultEngagementType
   );
+  const getEngagement = () => ({
+    id: defaultId,
+    staffId: employeeId,
+    start: startTime,
+    end: endTime,
+    type: engagementType,
+  });
 
   const handleEmployeeChange = (
     event: React.ChangeEvent<{ value: unknown }>
@@ -40,22 +73,6 @@ const CreateEngagementModal = ({ onClose }: ModalProps) => {
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
     setEngagementType(event.target.value as EngagementType);
-  };
-
-  const handleCreateClick = async () => {
-    const token = await getTokenSilently();
-    dispatch(
-      createEngagement(
-        {
-          staffId: employeeId,
-          start: startTime,
-          end: endTime,
-          type: engagementType,
-        },
-        token
-      )
-    );
-    onClose();
   };
 
   return (
@@ -74,7 +91,12 @@ const CreateEngagementModal = ({ onClose }: ModalProps) => {
       <div className={createUserModalStyle.datepickers}>
         <div>
           <Flatpickr
-            options={{ inline: true, enableTime: true, time_24hr: true }}
+            options={{
+              inline: true,
+              enableTime: true,
+              time_24hr: true,
+              defaultDate: defaultStartTime,
+            }}
             onChange={(dates: Date[]) => setStartTime(dates[0])}
           />
         </div>
@@ -84,6 +106,7 @@ const CreateEngagementModal = ({ onClose }: ModalProps) => {
               inline: true,
               enableTime: true,
               time_24hr: true,
+              defaultDate: defaultEndTime,
               minDate: startTime,
             }}
             onChange={(dates: Date[]) => setEndTime(dates[0])}
@@ -93,6 +116,7 @@ const CreateEngagementModal = ({ onClose }: ModalProps) => {
       <span className={createUserModalStyle.field}>
         <Select
           value={employeeId}
+          defaultValue={employeeId}
           name="employee-id"
           onChange={handleEmployeeChange}
           label="Employee"
@@ -118,15 +142,67 @@ const CreateEngagementModal = ({ onClose }: ModalProps) => {
         <Button variant="contained" onClick={onClose}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleCreateClick}
-          color="secondary">
-          CREATE
-        </Button>
+        <SubmitButton engagement={getEngagement()} />
       </div>
     </>
   );
 };
+
+const CreateButton = ({ engagement }: { engagement: Engagement }) => {
+  const { getTokenSilently } = useAuth0();
+  const dispatch = useDispatch();
+
+  const handleCreateClick = async () => {
+    const token = await getTokenSilently();
+    dispatch(createEngagement(engagement, token));
+    dispatch(hideModal());
+  };
+  return (
+    <Button variant="contained" onClick={handleCreateClick} color="secondary">
+      CREATE
+    </Button>
+  );
+};
+
+const EditButton = ({ engagement }: { engagement: Engagement }) => {
+  const { getTokenSilently } = useAuth0();
+  const dispatch = useDispatch();
+
+  const handleCreateClick = async () => {
+    const token = await getTokenSilently();
+    console.log(engagement);
+    dispatch(updateEngagement(engagement, token));
+    dispatch(hideModal());
+  };
+  return (
+    <Button variant="contained" onClick={handleCreateClick} color="secondary">
+      EDIT
+    </Button>
+  );
+};
+
+const defaultEngagement = {
+  id: 0,
+  staffId: 1,
+  start: new Date(),
+  end: new Date(),
+  type: EngagementType.Shift,
+};
+
+const CreateEngagementModal = ({ onClose }: CreateProps) => (
+  <EngagementModal
+    onClose={onClose}
+    SubmitButton={CreateButton}
+    currentEngagement={defaultEngagement}
+  />
+);
+
+export const EditEngagementModal = ({ onClose, engagement }: EditProps) => (
+  <EngagementModal
+    onClose={onClose}
+    SubmitButton={EditButton}
+    currentEngagement={engagement}
+  />
+);
 
 export default CreateEngagementModal;

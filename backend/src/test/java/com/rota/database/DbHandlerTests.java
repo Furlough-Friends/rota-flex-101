@@ -103,7 +103,7 @@ class DbHandlerTests {
     final Instant updatedEndtime = Instant.parse("2020-04-13T21:00:00Z");
     staffRepository.save(STAFF_MEMBER);
     engagementRepository.save(ENGAGEMENT_1);
-    Engagement engagement = engagementRepository.findById(ENGAGEMENT_ID);
+    Engagement engagement = engagementRepository.findById(ENGAGEMENT_ID).get();
     engagement.setStart(updatedStarttime);
     engagement.setEnd(updatedEndtime);
     Assertions.assertEquals(

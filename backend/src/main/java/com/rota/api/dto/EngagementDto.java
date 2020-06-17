@@ -10,6 +10,9 @@ import lombok.Value;
 @Value
 @AllArgsConstructor
 public class EngagementDto {
+  @ApiModelProperty(value = "Engagement ID")
+  int id;
+
   @ApiModelProperty(value = "Staff ID")
   int staffId;
 
@@ -29,6 +32,7 @@ public class EngagementDto {
    */
   public static EngagementDto fromEngagement(Engagement engagement) {
     return new EngagementDto(
+        engagement.getId(),
         engagement.getStaff().getId(),
         engagement.getStart(),
         engagement.getEnd(),
