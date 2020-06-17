@@ -141,6 +141,16 @@ public class StaffService {
   }
 
   /**
+   * Removes an engagement from the repository.
+   * 
+   * @param id id of the engagement to remove
+   */
+  public void removeEngagement(int id) {
+    engagementRepository
+        .delete(engagementRepository.findById(id).orElseThrow(() -> new EngagementNotFoundException(id)));
+  }
+
+  /**
    * Adds a new staff entity to the database.
    *
    * @param newStaff {@link Staff} to be added.
