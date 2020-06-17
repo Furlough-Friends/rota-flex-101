@@ -30,7 +30,7 @@
     "ag-grid-react": "^23.1.1",
     "clsx": "^1.1.0",
     "d3": "^5.16.0",
-    "date-fns": "^2.13.0",
+    "date-fns": "^2.14.0",
     "flatpickr": "^4.6.3",
     "history": "^4.10.1",
     "node-sass": "^4.14.1",
