@@ -147,7 +147,10 @@ public class StaffService {
    */
   public void removeEngagement(int id) {
     engagementRepository
-        .delete(engagementRepository.findById(id).orElseThrow(() -> new EngagementNotFoundException(id)));
+        .delete(
+            engagementRepository
+                .findById(id)
+                .orElseThrow(() -> new EngagementNotFoundException(id)));
   }
 
   /**
