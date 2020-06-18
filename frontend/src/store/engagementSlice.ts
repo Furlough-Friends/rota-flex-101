@@ -7,7 +7,7 @@ import {
 import toastr from 'toastr';
 
 import { Engagement } from '../model';
-import { get, post, put } from '../services/apiService';
+import { get, post, put, remove } from '../services/apiService';
 import { toDate } from '../utils/date';
 import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
@@ -27,6 +27,7 @@ const engagementsFetchUrl = async (start: Date, end: Date, token?: string) =>
 
 const engagementsPostUrl = `${baseUrl}/staff/addEngagement`;
 const engagementPutUrl = `${baseUrl}/staff/engagement`;
+const engagementDeleteUrl = (id: number) => `${baseUrl}/staff/engagement/${id}`;
 
 export const engagementSlice = createSlice({
   name: 'engagement',
@@ -42,6 +43,14 @@ export const engagementSlice = createSlice({
 });
 
 export const { setEngagements, addEngagement } = engagementSlice.actions;
+
+const updateFromPromise = (
+  requestPromise: Promise<Response>
+): AppThunk => dispatch =>
+  requestPromise
+    .then(response => response.json())
+    .then(response => dispatch(setEngagements(response)))
+    .catch(toastr.error);
 
 export const createEngagement = (
   engagement: Engagement,
@@ -64,11 +73,10 @@ export const fetchEngagements = (
 export const updateEngagement = (
   engagement: Engagement,
   token?: string
-): AppThunk => dispatch =>
-  put(engagementPutUrl, token, engagement)
-    .then(response => response.json())
-    .then(response => dispatch(setEngagements(response)))
-    .catch(toastr.error);
+): AppThunk => updateFromPromise(put(engagementPutUrl, token, engagement));
+
+export const deleteEngagement = (id: number, token?: string): AppThunk =>
+  updateFromPromise(remove(engagementDeleteUrl(id), token));
 
 const { selectAll } = engagementAdapter.getSelectors<RootState>(
   ({ engagement }) => engagement
