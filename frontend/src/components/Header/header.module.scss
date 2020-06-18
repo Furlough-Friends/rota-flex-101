@@ -10,12 +10,11 @@
 
 .headerRight {
   display: flex;
+  align-items: center;
   grid-area: right;
 }
 
 .userName {
   color: $colour-text-primary;
   padding-right: 10px;
-  position: relative;
-  bottom: 5px;
 }

@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className={headerStyles.headerContent}>
       <div className={headerStyles.headerRight}>
-        <p className={headerStyles.userName}>{user && user.nickname}</p>
+        <span className={headerStyles.userName}>{user && user.nickname}</span>
         <LoginOutButton />
       </div>
     </header>
