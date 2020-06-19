@@ -2,12 +2,12 @@ import React from 'react';
 import { Dictionary } from '../../model';
 
 import legendStyle from './legend.module.scss';
+import { COLOUR_CYCLES } from '../../utils/colours';
 
 interface Props {
   data: Dictionary<number>;
 }
 
-const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
 const radius = 5;
 
 export const Legend = ({ data }: Props) => (
