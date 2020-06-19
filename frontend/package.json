@@ -46,7 +46,8 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -55,7 +56,8 @@
     "lint:eslint:autofix": "eslint --fix \"./src/**/*.{ts,tsx}\"",
     "lint:sass": "sass-lint \"./src/**/*.scss\" -v",
     "lint": "npm run lint:eslint && npm run lint:sass",
-    "format": "npm run prettier:autofix && npm run lint:eslint:autofix"
+    "format": "npm run prettier:autofix && npm run lint:eslint:autofix",
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
