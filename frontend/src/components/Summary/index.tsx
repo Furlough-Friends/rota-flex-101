@@ -15,6 +15,7 @@ import DatePicker from './DatePicker';
 import PieChart from './PieChart';
 import summaryStyle from './summary.module.scss';
 import SpendingAnalysisChart, { Granularity } from './SpendingAnalysisChart';
+import { Legend } from './Legend';
 
 const getEmployeeJob = (staffId: number) => (employeeList: Employee[]) =>
   employeeList.find(({ id }) => id === staffId)?.jobTitle;
@@ -50,6 +51,7 @@ const Summary = () => {
   const engagementList = useSelector(selectEngagement);
   const dispatch = useDispatch();
   const { getTokenSilently } = useAuth0();
+  const data = getTimesPerJob(employeeList, engagementList);
 
   const setTimes = (start: Date, end: Date) => {
     setStartTime(start);
@@ -72,24 +74,29 @@ const Summary = () => {
       <div className={summaryStyle.hourlyBreakdown}>
         <h4>Hourly Breakdown</h4>
         <PieChart
-          data={getTimesPerJob(employeeList, engagementList)}
+          data={data}
           size={100}
           animationTime={1000}
           radiusRatio={0.75}
           textSize={30}
         />
       </div>
-      <SpendingAnalysisChart
-        minTime={startTime}
-        maxTime={endTime}
-        height={300}
-        width={600}
-        granularity={
-          differenceInDays(endTime, startTime) <= 1
-            ? Granularity.Hourly
-            : Granularity.Daily
-        }
-      />
+      <div className={summaryStyle.legend}>
+        <Legend data={data} />
+      </div>
+      <div className={summaryStyle.spendingChart}>
+        <SpendingAnalysisChart
+          minTime={startTime}
+          maxTime={endTime}
+          height={300}
+          width={600}
+          granularity={
+            differenceInDays(endTime, startTime) <= 1
+              ? Granularity.Hourly
+              : Granularity.Daily
+          }
+        />
+      </div>
     </div>
   );
 };
