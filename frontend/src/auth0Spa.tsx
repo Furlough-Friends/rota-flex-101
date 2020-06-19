@@ -19,7 +19,7 @@ import toastr from 'toastr';
 // https://github.com/auth0/auth0-spa-js/issues/39#issuecomment-505901626
 interface Auth0Context {
   isAuthenticated: boolean;
-  user: unknown;
+  user?: User;
   loading: boolean;
   popupOpen: boolean;
   loginWithPopup(options: PopupLoginOptions): Promise<void>;
@@ -33,6 +33,16 @@ interface Auth0Context {
 interface Auth0ProviderOptions {
   children: React.ReactElement;
   onRedirectCallback?(result: RedirectLoginResult): void;
+}
+
+interface User {
+  email: string;
+  email_verified: boolean;
+  name: string;
+  nickname: string;
+  picture: string;
+  sub: string;
+  updated_at: string;
 }
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
