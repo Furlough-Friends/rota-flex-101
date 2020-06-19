@@ -15,6 +15,7 @@ import { EngagementType } from '../../model/engagementType';
 import {
   createEngagement,
   updateEngagement,
+  deleteEngagement,
 } from '../../store/engagementSlice';
 import 'flatpickr/dist/themes/airbnb.css';
 import { selectEmployees } from '../../store/employeeSlice';
@@ -22,7 +23,6 @@ import { hideModal } from '../../store/modalSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CreateEngagementConfiguration {}
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface EditEngagementConfiguration {
   engagement: Engagement;
 }
@@ -168,16 +168,27 @@ const EditButton = ({ engagement }: { engagement: Engagement }) => {
   const { getTokenSilently } = useAuth0();
   const dispatch = useDispatch();
 
-  const handleCreateClick = async () => {
+  const handleEditClick = async () => {
     const token = await getTokenSilently();
-    console.log(engagement);
     dispatch(updateEngagement(engagement, token));
     dispatch(hideModal());
   };
+
+  const handleDeleteClick = async () => {
+    const token = await getTokenSilently();
+    dispatch(deleteEngagement(engagement.id, token));
+    dispatch(hideModal());
+  };
+
   return (
-    <Button variant="contained" onClick={handleCreateClick} color="secondary">
-      EDIT
-    </Button>
+    <>
+      <Button variant="contained" onClick={handleEditClick} color="secondary">
+        EDIT
+      </Button>
+      <Button variant="contained" onClick={handleDeleteClick} color="secondary">
+        DELETE
+      </Button>
+    </>
   );
 };
 

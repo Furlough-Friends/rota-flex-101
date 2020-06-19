@@ -189,4 +189,15 @@ public class StaffController {
     staffService.updateEngagement(engagement);
     return staffService.getAllEngagementsBetween(null, null);
   }
+
+  @DeleteMapping("/staff/engagement/{id}")
+  @ApiOperation(value = "Allows manager to remove an engagement",
+      authorizations = { @Authorization(value = "Bearer") })
+  public List<EngagementDto> removeEngagement(
+      @PathVariable(name = "id", required = true)
+          int id
+  ) {
+    staffService.removeEngagement(id);
+    return staffService.getAllEngagementsBetween(null, null);
+  }
 }
