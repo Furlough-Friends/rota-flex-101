@@ -41,6 +41,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "redux-logger": "^3.0.6",
+    "serve": "^11.3.2",
     "tippy.js": "^6.2.3",
     "toastr": "^2.1.4",
     "typescript": "^3.8.3"
