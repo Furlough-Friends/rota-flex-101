@@ -16,7 +16,7 @@ npm i
 ```
 After installing the required packages, start the development server using
 ```
-npm start
+npm run dev
 ```
 
 ### Back-end
