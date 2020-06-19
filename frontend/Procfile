@@ -1,0 +1,1 @@
+api: npm i && npm i serve && npm run build && serve -s build
