@@ -1,14 +1,11 @@
 import { RoleType } from '../roleType';
 
-export interface BaseEmployee {
-  readonly id: number;
+export interface UserInfo {
   readonly firstName: string;
   readonly surname: string;
-  readonly role: RoleType;
-  readonly startDate: Date;
+  readonly jobTitle: string;
+  readonly email: string;
+  readonly role: RoleType.User;
   readonly contractedHours: number;
   readonly hourlyRate: number;
-  readonly jobTitle: string;
-  readonly preferredDates: string;
-  readonly email: string;
 }

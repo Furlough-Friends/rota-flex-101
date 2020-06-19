@@ -1,7 +1,7 @@
-import { BaseEmployee } from './api';
+import { UserInfo } from './api';
 
-export interface Employee extends BaseEmployee {
+export interface Employee extends UserInfo {
   readonly id: number;
-  readonly hourlyRate: number;
-  readonly contractedHours: number;
+  readonly startDate: Date;
+  readonly preferredDates: string;
 }

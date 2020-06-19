@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import com.rota.api.dto.StaffDto;
 import com.rota.database.orm.staff.Role;
-import com.rota.database.orm.staff.Staff;
 import com.rota.database.orm.staff.StaffRepository;
 import com.rota.exceptions.EngagementNotFoundException;
 

@@ -11,6 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import Clear from '@material-ui/icons/Clear';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { UserInfo } from '../../model/api';
 
 import { useAuth0 } from '../../auth0Spa';
 import { ModalProps, RoleType, Employee } from '../../model';
@@ -36,16 +37,6 @@ interface TextField {
   id: keyof UserInfo;
   name: string;
   type: string;
-}
-
-interface UserInfo {
-  firstName: string;
-  surname: string;
-  jobTitle: string;
-  email: string;
-  role: RoleType.User;
-  contractedHours: number;
-  hourlyRate: number;
 }
 
 const textFields: TextField[] = [
@@ -78,12 +69,12 @@ const UserModal = ({ onClose, currentEmployee, SubmitButton }: Props) => {
   const handlePreferredDaysChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const weekday = +event.target.name;
+    const dayIndex = +event.target.name;
     const isChecked = +!event.target.value;
     const preferredDates =
-      userInfo.preferredDates.slice(0, weekday) +
+      userInfo.preferredDates.slice(0, dayIndex) +
       isChecked +
-      userInfo.preferredDates.slice(weekday + 1);
+      userInfo.preferredDates.slice(dayIndex + 1);
     setUserInfo({
       ...userInfo,
       preferredDates,
