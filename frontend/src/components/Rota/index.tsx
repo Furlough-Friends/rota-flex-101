@@ -20,8 +20,7 @@ import { useAuth0 } from '../../auth0Spa';
 import { Engagement, Employee } from '../../model';
 import { fetchEmployee, selectEmployees } from '../../store/employeeSlice';
 import { showModal, ModalType } from '../../store/modalSlice';
-
-const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
+import { COLOUR_CYCLES } from '../../utils/colours';
 
 const engagementToCalendarEvent = (employeeList: Employee[]) => (
   engagement: Engagement

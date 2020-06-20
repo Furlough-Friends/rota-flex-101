@@ -4,6 +4,7 @@ import tippy from 'tippy.js';
 
 import { Dictionary } from '../../model';
 import pieChartStyle from './pieChart.module.scss';
+import { COLOUR_CYCLES } from '../../utils/colours';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -14,8 +15,6 @@ interface Props {
   radiusRatio: number; // Determines the thickness of the pie chart ring - 0 gives full circle, 1 just the border
   textSize: number; // Inner text size
 }
-
-const COLOUR_CYCLES = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow'];
 
 const dataTransition = (arc: d3.Arc<void, any>) => (
   data: d3.PieArcDatum<Dictionary<number>>
