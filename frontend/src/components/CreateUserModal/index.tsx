@@ -159,7 +159,7 @@ const CreateUserModal = ({ onClose }: Props) => {
             <Select
               id="demo-simple-select-outlined"
               value={userInfo.role}
-              name="user"
+              name="role"
               onChange={handleDropdownChange}
               label="Role"
               variant="outlined">
