@@ -1,16 +1,11 @@
 import { RoleType } from '../roleType';
 
-export interface BaseEmployee {
+export interface UserInfo {
   readonly firstName: string;
   readonly surname: string;
   readonly jobTitle: string;
-  readonly contractedHours: number;
-}
-
-export interface CreateEmployeeRequest extends BaseEmployee {
-  readonly startDate: Date;
-  readonly role: RoleType;
-  readonly preferredDates: string;
-  readonly pay: number;
   readonly email: string;
+  readonly role: RoleType.User;
+  readonly contractedHours: number;
+  readonly hourlyRate: number;
 }

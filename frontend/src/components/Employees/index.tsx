@@ -10,7 +10,6 @@ import { AgGridReact } from 'ag-grid-react';
 import React, { useEffect } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useDispatch, useSelector } from 'react-redux';
-import toastr from 'toastr';
 
 import { useAuth0 } from '../../auth0Spa';
 import { Employee } from '../../model';
@@ -24,11 +23,6 @@ interface CallbackFunction {
 }
 
 const fullTimeHours = 37.5;
-
-/**
- * Function which is called when edit buttons are pressed.
- */
-const editUser = ({ id }: Employee) => () => toastr.info(`User ${id} edited`);
 
 /**
  * Functions which extract the data to be displayed in the table columns
@@ -125,13 +119,17 @@ const Employees = () => {
     dispatch(showModal({ type: ModalType.DeleteUser, employee }));
   };
 
+  const openEditModal = (employee: Employee) => {
+    dispatch(showModal({ type: ModalType.EditUser, employee }));
+  };
+
   const cellClicked = (event: {
     colDef: ColDef;
     data: { rawData: Employee };
   }) => {
     switch (event.colDef.field) {
       case ColumnNames.Edit:
-        editUser(event.data.rawData as Employee);
+        openEditModal(event.data.rawData as Employee);
         break;
       case ColumnNames.Remove:
         openDeleteModal(event.data.rawData as Employee);

@@ -11,31 +11,32 @@ import TextField from '@material-ui/core/TextField';
 import Clear from '@material-ui/icons/Clear';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { UserInfo } from '../../model/api';
 
 import { useAuth0 } from '../../auth0Spa';
-import { ModalProps, RoleType } from '../../model';
-import { createEmployee } from '../../store/employeeSlice';
+import { ModalProps, RoleType, Employee } from '../../model';
+import { createEmployee, updateEmployee } from '../../store/employeeSlice';
 import createUserModalStyle from './createUserModal.module.scss';
+import { hideModal } from '../../store/modalSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CreateUserConfiguration {}
+export interface EditUserConfiguration {
+  employee: Employee;
+}
+export interface UserConfiguration {
+  currentEmployee: Employee;
+  SubmitButton: (employee: Employee) => JSX.Element;
+}
 
-type Props = CreateUserConfiguration & ModalProps;
+type Props = UserConfiguration & ModalProps;
+type CreateProps = ModalProps;
+type EditProps = ModalProps & { employee: Employee };
 
 interface TextField {
   id: keyof UserInfo;
   name: string;
   type: string;
-}
-
-interface UserInfo {
-  firstName: string;
-  surname: string;
-  jobTitle: string;
-  email: string;
-  role: RoleType.User;
-  contractedHours: number;
-  pay: number;
 }
 
 const textFields: TextField[] = [
@@ -44,40 +45,39 @@ const textFields: TextField[] = [
   { id: 'jobTitle', name: 'Job title', type: 'text' },
   { id: 'email', name: 'Email', type: 'text' },
   { id: 'contractedHours', name: 'Contracted hours', type: 'number' },
-  { id: 'pay', name: 'Pay', type: 'number' },
+  { id: 'hourlyRate', name: 'Pay (£/hour)', type: 'number' },
 ];
 
-const CreateUserModal = ({ onClose }: Props) => {
-  const dispatch = useDispatch();
-  const { getTokenSilently } = useAuth0();
-  const [preferredDays, setPreferredDays] = useState<{
-    [key: string]: boolean;
-  }>({
-    Mon: false,
-    Tue: false,
-    Wed: false,
-    Thu: false,
-    Fri: false,
-    Sat: false,
-    Sun: false,
-  });
+const weekdayArray = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    firstName: '',
-    surname: '',
-    jobTitle: '',
-    email: '',
-    role: RoleType.User,
-    contractedHours: 0,
-    pay: 0,
-  });
+const defaultUserInfo: Employee = {
+  id: 0,
+  firstName: '',
+  surname: '',
+  jobTitle: '',
+  email: '',
+  role: RoleType.User,
+  contractedHours: 0,
+  hourlyRate: 0,
+  startDate: new Date(),
+  preferredDates: '0000000',
+};
+
+const UserModal = ({ onClose, currentEmployee, SubmitButton }: Props) => {
+  const [userInfo, setUserInfo] = useState<Employee>(currentEmployee);
 
   const handlePreferredDaysChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setPreferredDays({
-      ...preferredDays,
-      [event.target.name]: event.target.checked,
+    const dayIndex = +event.target.name;
+    const isChecked = +!event.target.value;
+    const preferredDates =
+      userInfo.preferredDates.slice(0, dayIndex) +
+      isChecked +
+      userInfo.preferredDates.slice(dayIndex + 1);
+    setUserInfo({
+      ...userInfo,
+      preferredDates,
     });
   };
 
@@ -102,29 +102,11 @@ const CreateUserModal = ({ onClose }: Props) => {
   };
 
   const handleDropdownChange = (
-    event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
+    event: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
     const userField = event.target.name as string;
     const newValue = event.target.value as string | number;
     updateUserInfo(userField, newValue);
-  };
-
-  const handleCreateClick = async () => {
-    const token = await getTokenSilently();
-    const prefDaysString = Object.values(preferredDays)
-      .map(preferred => +preferred)
-      .join('');
-    dispatch(
-      createEmployee(
-        {
-          ...userInfo,
-          preferredDates: prefDaysString,
-          startDate: new Date(),
-        },
-        token
-      )
-    );
-    onClose();
   };
 
   return (
@@ -171,17 +153,17 @@ const CreateUserModal = ({ onClose }: Props) => {
         <div className={createUserModalStyle.formRight}>
           <FormGroup>
             <FormLabel component="legend">Preferred days</FormLabel>
-            {Object.entries(preferredDays).map(([day, selected]) => (
+            {userInfo.preferredDates.split('').map((selected, idx) => (
               <FormControlLabel
-                key={day}
+                key={weekdayArray[idx]}
                 control={
                   <Checkbox
-                    checked={selected}
+                    checked={selected === '1'}
                     onChange={handlePreferredDaysChange}
-                    name={day}
+                    name={idx.toString()}
                   />
                 }
-                label={day}
+                label={weekdayArray[idx]}
               />
             ))}
           </FormGroup>
@@ -191,15 +173,68 @@ const CreateUserModal = ({ onClose }: Props) => {
         <Button variant="contained" onClick={onClose}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleCreateClick}
-          color="secondary">
-          CREATE
-        </Button>
+        {SubmitButton(userInfo)}
       </div>
     </>
   );
 };
+
+const CreateButton = (userInfo: Employee) => {
+  const dispatch = useDispatch();
+  const { getTokenSilently } = useAuth0();
+  const handleCreateClick = async () => {
+    const token = await getTokenSilently();
+    dispatch(
+      createEmployee(
+        {
+          ...userInfo,
+          startDate: new Date(),
+        },
+        token
+      )
+    );
+    dispatch(hideModal());
+  };
+
+  return (
+    <Button variant="contained" onClick={handleCreateClick} color="secondary">
+      CREATE
+    </Button>
+  );
+};
+
+const UpdateButton = (userInfo: Employee) => {
+  const dispatch = useDispatch();
+  const { getTokenSilently } = useAuth0();
+  const handleCreateClick = async () => {
+    const token = await getTokenSilently();
+    dispatch(updateEmployee(userInfo, token));
+    dispatch(hideModal());
+  };
+
+  return (
+    <Button variant="contained" onClick={handleCreateClick} color="secondary">
+      EDIT
+    </Button>
+  );
+};
+export const CreateUserModal = ({ onClose }: CreateProps) => (
+  <UserModal
+    onClose={onClose}
+    currentEmployee={defaultUserInfo}
+    SubmitButton={CreateButton}
+  />
+);
+
+export const UpdateUserModal = ({ onClose, employee }: EditProps) => (
+  <UserModal
+    onClose={onClose}
+    currentEmployee={{
+      ...employee,
+      preferredDates: employee.preferredDates || '0000000',
+    }}
+    SubmitButton={UpdateButton}
+  />
+);
 
 export default CreateUserModal;

@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CreateUserConfiguration } from '../components/CreateUserModal';
+import {
+  CreateUserConfiguration,
+  EditUserConfiguration,
+} from '../components/CreateUserModal';
 import { DeleteUserConfiguration } from '../components/DeleteUserModal';
 import { RootState } from './reducer';
 import {
@@ -10,6 +13,7 @@ import {
 
 export enum ModalType {
   DeleteUser = 'deleteUser',
+  EditUser = 'editUser',
   CreateUser = 'createUser',
   CreateEngagement = 'createEngagement',
   EditEngagement = 'editEngagement',
@@ -32,9 +36,14 @@ interface EditEngagementModalConfiguration extends EditEngagementConfiguration {
   type: ModalType.EditEngagement;
 }
 
+interface EditUserModalConfiguration extends EditUserConfiguration {
+  type: ModalType.EditUser;
+}
+
 export type ModalConfiguration =
   | DeleteUserModalConfiguration
   | CreateUserModalConfiguration
+  | EditUserModalConfiguration
   | CreateEngagementModalConfiguration
   | EditEngagementModalConfiguration;
 

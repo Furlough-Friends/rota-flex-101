@@ -212,13 +212,14 @@ public class StaffService {
    * Updates a staff member in the database.
    *
    * @param updatedStaff Updated staff details.
-   * @return The updated {@link Staff} member.
+   * @return The updated {@link Staff} list.
    */
-  public StaffDto updateStaff(StaffDto updatedStaff) {
+  public List<StaffDto> updateStaff(StaffDto updatedStaff) {
     // Check to see if that staff member exists, throw exception if not.
     staffRepository.findById(updatedStaff.getId())
         .orElseThrow(() -> new EngagementNotFoundException(updatedStaff.getId()));
     // If it exists, save new staff information to that ID.
-    return StaffDto.of(staffRepository.save(updatedStaff.toStaff()));
+    staffRepository.save(updatedStaff.toStaff());
+    return getActiveStaff();
   }
 }
