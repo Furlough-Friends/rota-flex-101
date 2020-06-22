@@ -9,12 +9,9 @@ import toastr from 'toastr';
 import { Engagement } from '../model';
 import { get, post, put, remove } from '../services/apiService';
 import { toDate } from '../utils/date';
-import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
 import { getRole } from '../services/authService';
 import { isManagerRole } from '../utils/role';
-
-const { baseUrl } = environment;
 
 const engagementAdapter = createEntityAdapter<Engagement>({
   selectId: ({ staffId, start }) => `${staffId}::${start}`,
@@ -22,12 +19,12 @@ const engagementAdapter = createEntityAdapter<Engagement>({
 
 const engagementsFetchUrl = async (start: Date, end: Date, token?: string) =>
   isManagerRole(await getRole(token))
-    ? `${baseUrl}/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`
-    : `${baseUrl}/myShifts?start=${start.toISOString()}&end=${end.toISOString()}`;
+    ? `/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`
+    : `/myShifts?start=${start.toISOString()}&end=${end.toISOString()}`;
 
-const engagementsPostUrl = `${baseUrl}/staff/addEngagement`;
-const engagementPutUrl = `${baseUrl}/staff/engagement`;
-const engagementDeleteUrl = (id: number) => `${baseUrl}/staff/engagement/${id}`;
+const engagementsPostUrl = `/staff/addEngagement`;
+const engagementPutUrl = `/staff/engagement`;
+const engagementDeleteUrl = (id: number) => `/staff/engagement/${id}`;
 
 export const engagementSlice = createSlice({
   name: 'engagement',
@@ -45,10 +42,9 @@ export const engagementSlice = createSlice({
 export const { setEngagements, addEngagement } = engagementSlice.actions;
 
 const updateFromPromise = (
-  requestPromise: Promise<Response>
+  requestPromise: Promise<Engagement[]>
 ): AppThunk => dispatch =>
   requestPromise
-    .then(response => response.json())
     .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);
 
@@ -57,7 +53,7 @@ export const createEngagement = (
   token?: string
 ): AppThunk => dispatch =>
   post(engagementsPostUrl, token, engagement)
-    .then(() => dispatch(addEngagement(engagement)))
+    .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);
 
 export const fetchEngagements = (
@@ -66,7 +62,6 @@ export const fetchEngagements = (
   token?: string
 ): AppThunk => async dispatch =>
   get(await engagementsFetchUrl(start, end, token), token)
-    .then(response => response.json())
     .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);
 

@@ -174,12 +174,13 @@ public class StaffController {
   @PostMapping("/staff/addEngagement")
   @ApiOperation(value = "Allows manager to add an engagement for a certain user", authorizations = {
       @Authorization(value = "Bearer") })
-  public void addEngagement(
+  public List<EngagementDto> addEngagement(
       @Valid 
       @RequestBody 
       EngagementDto engagement
   ) {
     staffService.addEngagement(engagement);
+    return staffService.getAllEngagementsBetween(null, null);
   }
 
   @PutMapping("/staff/engagement")
