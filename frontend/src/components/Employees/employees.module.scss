@@ -51,3 +51,7 @@
 .removeButton {
   color: red;
 }
+
+:global(.ag-center-cols-container) {
+  width: 100% !important;
+}
