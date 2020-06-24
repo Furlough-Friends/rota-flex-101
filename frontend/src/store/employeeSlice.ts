@@ -8,18 +8,15 @@ import toastr from 'toastr';
 
 import { Employee } from '../model';
 import { get, post, remove, put } from '../services/apiService';
-import { environment } from '../utils/environment';
 import { AppThunk, RootState } from './reducer';
 import { getRole } from '../services/authService';
 import { isManagerRole } from '../utils/role';
-
-const { baseUrl } = environment;
 
 const employeesAdapter = createEntityAdapter<Employee>({
   selectId: ({ id }) => id,
 });
 
-const EMPLOYEE_URL = `${baseUrl}/staff`;
+const EMPLOYEE_URL = '/staff';
 
 export const employeeSlice = createSlice({
   name: 'employee',
@@ -37,12 +34,11 @@ export const employeeSlice = createSlice({
 const { set, add } = employeeSlice.actions;
 
 const updateFromPromise = <T>(
-  requestPromise: Promise<Response>,
+  requestPromise: Promise<T>,
   dispatch: (payload: { payload: T; type: string }) => void,
   dispatchedFunction: ActionCreatorWithPayload<T, string>
 ) =>
   requestPromise
-    .then(response => response.json())
     .then(response => dispatch(dispatchedFunction(response)))
     .catch(toastr.error);
 
