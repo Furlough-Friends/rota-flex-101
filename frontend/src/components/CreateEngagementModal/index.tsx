@@ -8,7 +8,6 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Flatpickr from 'react-flatpickr';
 
-import { useAuth0 } from '../../auth0Spa';
 import { ModalProps, Employee, Engagement } from '../../model';
 import createUserModalStyle from './createEngagementModal.module.scss';
 import { EngagementType } from '../../model/engagementType';
@@ -149,12 +148,10 @@ const EngagementModal = ({
 };
 
 const CreateButton = ({ engagement }: { engagement: Engagement }) => {
-  const { getTokenSilently } = useAuth0();
   const dispatch = useDispatch();
 
   const handleCreateClick = async () => {
-    const token = await getTokenSilently();
-    dispatch(createEngagement(engagement, token));
+    dispatch(createEngagement(engagement));
     dispatch(hideModal());
   };
   return (
@@ -165,18 +162,15 @@ const CreateButton = ({ engagement }: { engagement: Engagement }) => {
 };
 
 const EditButton = ({ engagement }: { engagement: Engagement }) => {
-  const { getTokenSilently } = useAuth0();
   const dispatch = useDispatch();
 
   const handleEditClick = async () => {
-    const token = await getTokenSilently();
-    dispatch(updateEngagement(engagement, token));
+    dispatch(updateEngagement(engagement));
     dispatch(hideModal());
   };
 
   const handleDeleteClick = async () => {
-    const token = await getTokenSilently();
-    dispatch(deleteEngagement(engagement.id, token));
+    dispatch(deleteEngagement(engagement.id));
     dispatch(hideModal());
   };
 

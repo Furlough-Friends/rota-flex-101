@@ -42,29 +42,20 @@ const updateFromPromise = <T>(
     .then(response => dispatch(dispatchedFunction(response)))
     .catch(toastr.error);
 
-export const fetchEmployee = (token?: string): AppThunk => async dispatch => {
-  if (isManagerRole(await getRole(token))) {
-    updateFromPromise(get(EMPLOYEE_URL, token), dispatch, set);
+export const fetchEmployee = (): AppThunk => async dispatch => {
+  if (isManagerRole(await getRole())) {
+    updateFromPromise(get(EMPLOYEE_URL), dispatch, set);
   }
 };
 
-export const createEmployee = (
-  request: Employee,
-  token?: string
-): AppThunk => dispatch =>
-  updateFromPromise(post(EMPLOYEE_URL, token, request), dispatch, add);
+export const createEmployee = (request: Employee): AppThunk => dispatch =>
+  updateFromPromise(post(EMPLOYEE_URL, request), dispatch, add);
 
-export const updateEmployee = (
-  request: Employee,
-  token?: string
-): AppThunk => dispatch =>
-  updateFromPromise(put(EMPLOYEE_URL, token, request), dispatch, set);
+export const updateEmployee = (request: Employee): AppThunk => dispatch =>
+  updateFromPromise(put(EMPLOYEE_URL, request), dispatch, set);
 
-export const deleteEmployee = (
-  id: string,
-  token: string | undefined
-): AppThunk => dispatch =>
-  updateFromPromise(remove(`${EMPLOYEE_URL}/${id}`, token), dispatch, set);
+export const deleteEmployee = (id: string): AppThunk => dispatch =>
+  updateFromPromise(remove(`${EMPLOYEE_URL}/${id}`), dispatch, set);
 
 const { selectAll } = employeesAdapter.getSelectors<RootState>(
   ({ employee }) => employee
