@@ -44,9 +44,18 @@ const getTimesPerJob = (
     {}
   );
 
+const getGranularity = (start?: Date, end?: Date) => {
+  if (!start || !end) {
+    return Granularity.Daily;
+  }
+  return differenceInDays(end, start) <= 1
+    ? Granularity.Hourly
+    : Granularity.Daily;
+};
+
 const Summary = () => {
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [startTime, setStartTime] = useState<Date | undefined>();
+  const [endTime, setEndTime] = useState<Date | undefined>();
   const employeeList = useSelector(selectEmployees);
   const engagementList = useSelector(selectEngagement);
   const dispatch = useDispatch();
@@ -60,43 +69,50 @@ const Summary = () => {
 
   useEffect(() => {
     const getEmployeesAndEngagements = async () => {
-      const accessToken = await getTokenSilently();
-      dispatch(fetchEmployee(accessToken));
-      dispatch(fetchEngagements(startTime, endTime, accessToken));
+      if (startTime && endTime) {
+        const accessToken = await getTokenSilently();
+        dispatch(fetchEmployee(accessToken));
+        dispatch(fetchEngagements(startTime, endTime, accessToken));
+      }
     };
     getEmployeesAndEngagements();
   }, [startTime, endTime, getTokenSilently, dispatch]);
+
+  const renderPageBody = () =>
+    startTime && endTime ? (
+      <>
+        <div className={summaryStyle.hourlyBreakdown}>
+          <h4>Hourly Breakdown</h4>
+          <PieChart
+            data={data}
+            size={100}
+            animationTime={1000}
+            radiusRatio={0.75}
+            textSize={30}
+          />
+        </div>
+        <div className={summaryStyle.legend}>
+          <Legend data={data} />
+        </div>
+        <div className={summaryStyle.spendingChart}>
+          <SpendingAnalysisChart
+            minTime={startTime || new Date()}
+            maxTime={endTime || new Date()}
+            height={300}
+            width={600}
+            granularity={getGranularity(startTime, endTime)}
+          />
+        </div>
+      </>
+    ) : (
+      <></>
+    );
 
   return (
     <div className={summaryStyle.summary}>
       <h1 className={summaryStyle.header}> Summary </h1>
       <DatePicker callback={setTimes} />
-      <div className={summaryStyle.hourlyBreakdown}>
-        <h4>Hourly Breakdown</h4>
-        <PieChart
-          data={data}
-          size={100}
-          animationTime={1000}
-          radiusRatio={0.75}
-          textSize={30}
-        />
-      </div>
-      <div className={summaryStyle.legend}>
-        <Legend data={data} />
-      </div>
-      <div className={summaryStyle.spendingChart}>
-        <SpendingAnalysisChart
-          minTime={startTime}
-          maxTime={endTime}
-          height={300}
-          width={600}
-          granularity={
-            differenceInDays(endTime, startTime) <= 1
-              ? Granularity.Hourly
-              : Granularity.Daily
-          }
-        />
-      </div>
+      {renderPageBody()}
     </div>
   );
 };
