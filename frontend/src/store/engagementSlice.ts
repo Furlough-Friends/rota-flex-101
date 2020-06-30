@@ -17,8 +17,8 @@ const engagementAdapter = createEntityAdapter<Engagement>({
   selectId: ({ staffId, start }) => `${staffId}::${start}`,
 });
 
-const engagementsFetchUrl = async (start: Date, end: Date, token?: string) =>
-  isManagerRole(await getRole(token))
+const engagementsFetchUrl = async (start: Date, end: Date) =>
+  isManagerRole(await getRole())
     ? `/staff/shifts?start=${start.toISOString()}&end=${end.toISOString()}`
     : `/myShifts?start=${start.toISOString()}&end=${end.toISOString()}`;
 
@@ -49,29 +49,25 @@ const updateFromPromise = (
     .catch(toastr.error);
 
 export const createEngagement = (
-  engagement: Engagement,
-  token?: string
+  engagement: Engagement
 ): AppThunk => dispatch =>
-  post(engagementsPostUrl, token, engagement)
+  post(engagementsPostUrl, engagement)
     .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);
 
 export const fetchEngagements = (
   start: Date,
-  end: Date,
-  token?: string
+  end: Date
 ): AppThunk => async dispatch =>
-  get(await engagementsFetchUrl(start, end, token), token)
+  get(await engagementsFetchUrl(start, end))
     .then(response => dispatch(setEngagements(response)))
     .catch(toastr.error);
 
-export const updateEngagement = (
-  engagement: Engagement,
-  token?: string
-): AppThunk => updateFromPromise(put(engagementPutUrl, token, engagement));
+export const updateEngagement = (engagement: Engagement): AppThunk =>
+  updateFromPromise(put(engagementPutUrl, engagement));
 
-export const deleteEngagement = (id: number, token?: string): AppThunk =>
-  updateFromPromise(remove(engagementDeleteUrl(id), token));
+export const deleteEngagement = (id: number): AppThunk =>
+  updateFromPromise(remove(engagementDeleteUrl(id)));
 
 const { selectAll } = engagementAdapter.getSelectors<RootState>(
   ({ engagement }) => engagement

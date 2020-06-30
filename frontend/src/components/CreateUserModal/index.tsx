@@ -13,7 +13,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { UserInfo } from '../../model/api';
 
-import { useAuth0 } from '../../auth0Spa';
 import { ModalProps, RoleType, Employee } from '../../model';
 import { createEmployee, updateEmployee } from '../../store/employeeSlice';
 import createUserModalStyle from './createUserModal.module.scss';
@@ -181,17 +180,12 @@ const UserModal = ({ onClose, currentEmployee, SubmitButton }: Props) => {
 
 const CreateButton = (userInfo: Employee) => {
   const dispatch = useDispatch();
-  const { getTokenSilently } = useAuth0();
   const handleCreateClick = async () => {
-    const token = await getTokenSilently();
     dispatch(
-      createEmployee(
-        {
-          ...userInfo,
-          startDate: new Date(),
-        },
-        token
-      )
+      createEmployee({
+        ...userInfo,
+        startDate: new Date(),
+      })
     );
     dispatch(hideModal());
   };
@@ -205,10 +199,8 @@ const CreateButton = (userInfo: Employee) => {
 
 const UpdateButton = (userInfo: Employee) => {
   const dispatch = useDispatch();
-  const { getTokenSilently } = useAuth0();
   const handleCreateClick = async () => {
-    const token = await getTokenSilently();
-    dispatch(updateEmployee(userInfo, token));
+    dispatch(updateEmployee(userInfo));
     dispatch(hideModal());
   };
 

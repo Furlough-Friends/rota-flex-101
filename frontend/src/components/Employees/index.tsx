@@ -141,8 +141,7 @@ const Employees = () => {
   // Fetch data when component loads
   useEffect(() => {
     const getEmployee = async () => {
-      const accessToken = await getTokenSilently();
-      dispatch(fetchEmployee(accessToken));
+      dispatch(fetchEmployee());
     };
     getEmployee();
   }, [dispatch, getTokenSilently]);

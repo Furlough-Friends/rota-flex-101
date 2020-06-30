@@ -70,9 +70,8 @@ const Summary = () => {
   useEffect(() => {
     const getEmployeesAndEngagements = async () => {
       if (startTime && endTime) {
-        const accessToken = await getTokenSilently();
-        dispatch(fetchEmployee(accessToken));
-        dispatch(fetchEngagements(startTime, endTime, accessToken));
+        dispatch(fetchEmployee());
+        dispatch(fetchEngagements(startTime, endTime));
       }
     };
     getEmployeesAndEngagements();

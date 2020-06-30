@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { environment } from '../utils/environment';
+import { authWrapper } from '../auth0Spa';
 
 const headers = (token?: string) => ({
   Authorization: `Bearer ${token}`,
@@ -13,14 +14,13 @@ const axiosInstance = axios.create({
 
 const apiRequest = (method: 'GET' | 'PUT' | 'POST' | 'DELETE') => async (
   url: string,
-  token?: string,
   data?: object
 ) =>
   axiosInstance
     .request({
       url,
       method,
-      headers: headers(token),
+      headers: headers(await authWrapper.authClient?.getTokenSilently()),
       data,
     })
     .then(response => response.data);

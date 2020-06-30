@@ -86,9 +86,8 @@ const Rota = () => {
 
   useEffect(() => {
     const getEmployeesAndEngagements = async () => {
-      const accessToken = await getTokenSilently();
-      dispatch(fetchEmployee(accessToken));
-      dispatch(fetchEngagements(new Date(0), new Date(1e14), accessToken));
+      dispatch(fetchEmployee());
+      dispatch(fetchEngagements(new Date(0), new Date(1e14)));
     };
     getEmployeesAndEngagements();
   }, [dispatch, getTokenSilently]);

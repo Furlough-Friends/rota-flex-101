@@ -50,6 +50,10 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
 
 export const Auth0Context = React.createContext<Auth0Context | null>(null);
 export const useAuth0 = () => useContext(Auth0Context)!;
+
+// A hack to access auth0Client from outside the react wrapper
+export const authWrapper = { authClient: { getTokenSilently: async () => '' } };
+
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
@@ -64,6 +68,7 @@ export const Auth0Provider = ({
   useEffect(() => {
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions);
+      authWrapper.authClient = auth0FromHook;
       setAuth0(auth0FromHook);
 
       if (window.location.search.includes('code=')) {

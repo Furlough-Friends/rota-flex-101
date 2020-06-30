@@ -6,7 +6,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import toastr from 'toastr';
 
-import { useAuth0 } from '../../auth0Spa';
 import { Employee, ModalProps } from '../../model';
 import { deleteEmployee } from '../../store/employeeSlice';
 import deleteUserModalStyle from './deleteUserModal.module.scss';
@@ -19,10 +18,8 @@ type Props = DeleteUserConfiguration & ModalProps;
 
 const DeleteModal = ({ employee, onClose }: Props) => {
   const dispatch = useDispatch();
-  const { getTokenSilently } = useAuth0();
   const deleteUser = ({ id, firstName, surname }: Employee) => async () => {
-    const accessToken = await getTokenSilently();
-    dispatch(deleteEmployee(id.toString(), accessToken));
+    dispatch(deleteEmployee(id.toString()));
     onClose();
     new Audio('http://nooooooooooooooo.com/nooo.mp4').play();
     toastr.info(`User ${firstName} ${surname} deleted`);
